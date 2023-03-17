@@ -3,10 +3,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">	
 	<meta property="og:locale" content="pt_BR">
 	<meta property="og:type" content="website">
-	<meta property="og:site_name" content="Emuladores PS1, PS2, PSP e PS3 Com Todos Os Jogos Já Lançados (17161 Jogos).">
+	<meta property="og:site_name" content="52 Emuladores com 36237 Jogos.">
 	<meta name="application-name" content="Emuladores">
-	<title>Emuladores PS1, PS2, PSP e PS3 Com Todos Os Jogos Já Lançados (17161 Jogos).</title>
+	<title>52 Emuladores com 36237 Jogos.</title>
 	<meta name="viewport" content="width=device-width">
+	
 	<style>.bee-row,
 	.bee-row-content {
 		position: relative
@@ -515,14 +516,49 @@
 		padding-top: 10px;
 		width: 100%
 	}
+
+
 	
 * {box-sizing: content-box}
 .mySlides1, .mySlides2 {display: none}
 img {vertical-align: middle;}
 
-.my-float{
-	margin-top:16px;
+/* Slideshow container */
+.slideshow-container {
+  max-width: 50%;
+  position: relative;
+  margin: auto;
 }
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  padding: 16px;
+  margin-top: -22px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+  color: black;
+}
+
+/* On hover, add a grey background color */
+.prev:hover, .next:hover {
+  background-color: #828282;
+  color: black;
+}
+
 
 .float{
 	position:fixed;
@@ -538,6 +574,38 @@ img {vertical-align: middle;}
 	box-shadow: 2px 2px 3px #999;
   z-index:100;
 }
+
+.my-float{
+	margin-top:16px;
+}
+
+#timer {
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  top: 0;
+  opacity: 0.6;
+  background-color: #000;
+  font-size: 26px;
+  text-align: center;
+  color: red;
+}
+
+/* Adjust the font size and position of the timer on small screens */
+@media (max-width: 600px) {
+    #timer {
+		position: fixed;
+		width: 100%;
+		z-index: 999;
+		top: 0;
+		opacity: 0.6;
+		background-color: #000;
+		font-size: 26px;
+		text-align: center;
+		color: red;
+    }
+  }
+
 </style>
 
 <!-- Meta Pixel Code -->
@@ -561,11 +629,57 @@ img {vertical-align: middle;}
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-964605959"></script>
 
+<script>
+
+	function zerofill(n) {
+		if (n < 10) {
+			return "0" + n;
+		}
+		return n;
+	}
+
+	function counter() {
+		// Set the date we're counting down to
+		var countDownDate = new Date().getTime() + (4 * 60 * 60 * 1000);
+	
+		// Update the count down every 1 second
+		var x = setInterval(function() {
+	
+			// Get today's date and time
+			var now = new Date().getTime();
+		
+			// Find the distance between now and the count down date
+			var distance = countDownDate - now;
+		
+			// Time calculations for days, hours, minutes and seconds
+			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+			
+			// Output the result in an element with id="timer"
+			const basetext = "<strong>A OFERTA ACABA EM </strong> "
+			document.getElementById("timer").innerHTML = basetext + "<b>" + zerofill(hours) + 
+				":" + zerofill(minutes) + ":" 
+				+ zerofill(seconds) + "</b>";
+		
+			// If the count down is over, write some text
+			if (distance < 0) {
+				clearInterval(x);
+				document.getElementById("timer").innerHTML = "<strong>VOCÊ AINDA PODE ADQUIRIR PELO PREÇO PROMOCIONAL</strong>";
+			}
+		}, 1000);
+	}
+  </script>
+
 </head>
 <body cz-shortcut-listen="true">
+
+	<!-- p id="timer"></p -->
+
 	<div id="fb-root"></div>
-	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v15.0&appId=462904197064938&autoLogAppEvents=1" nonce="gtq2v6la"></script>
-	
+	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v15.0&appId=462904197064938&autoLogAppEvents=1" nonce="gtq2v6la"></script>  
+
 	<div class="bee-page-container">
 		<div class="bee-row bee-row-1">
 			<div class="bee-row-content">
@@ -580,8 +694,8 @@ img {vertical-align: middle;}
 		<div class="bee-row-content" style="text-align: center;padding-top: 10px;">
 			<div class="bee-col bee-col-1 bee-col-w6" style="padding-top: 0px;padding-bottom: 0px;">
 				<div class="bee-block bee-block-1 bee-image" style="padding-top: 0px;padding-bottom: 0px;max-width: 100%;max-width: 90%">
-					<a target="_blank" href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-ba0699b2-f095-4be7-b7f3-c20833c66bcb">
-						<img class="bee-center bee-fixedwidth" style="padding-top: 0px;padding-bottom: 0px" src="./images/psxgames.png" alt="Image" />
+					<a target="_blank" href="https://pay.blimboo.com/o0NNV">
+						<img class="bee-center bee-fixedwidth" style="padding-top: 0px;padding-bottom: 0px" src="./images/52Emuladores1.png" alt="Image" />
 					</a>
 				</div>
 			</div>
@@ -589,19 +703,23 @@ img {vertical-align: middle;}
 				<div class="bee-block bee-block-1 bee-text" style="text-align: center;padding-top: 0px;">
 					<div style="font-size: 14px; line-height: 180%; padding-top: 0px; color: #555555; font-family: inherit;" class="bee-text-content">
 						<p style="text-align: center;">
+							<!-- span style="font-size: 26px; color: #ffffff;">
+								Receba agora <strong>52 Emuladores e 36237 Jogos Configurados.</strong> compativel com PC, Tvbox e Celular.
+							</span -->
 							<span style="font-size: 26px; color: #ffffff;">
-								Emuladores <strong>PS1, PS2, PSP e PS3 </strong> Com mais de 17161 Jogos
+								Receba agora uma Plataforma Multijogos com <strong>52 Consoles e 36237 Jogos Configurados.</strong> compativel com PC, Tvbox e Celular.
 							</span>
+							
 						</p>
 						<p style="font-size: 14px; line-height: 25px; text-align: center; padding-top: 0px;">
 							<span style="font-size: 18px; line-height: 36px; color: #ffffff;">
-								Acesso imediato logo após a compra.
+								<strong>Acesso imediato logo após a compra.</strong>
 							</span>
 						</p>
 						<div class="bee-block bee-block-2 bee-button" style="padding-top: 0px;padding-bottom: 0px">
 							<a style="font-size: 26px;background-color: #ff0000;border-bottom: 0px solid transparent;border-left: 0px solid transparent;border-radius: 30px;border-right: 0px solid transparent;border-top: 0px solid transparent;color: #ffffff;direction: ltr;font-family: inherit;font-weight: 400;max-width: 100%;padding-bottom: 10px;padding-left: 30px;padding-right: 30px;padding-top: 10px;width: auto;display: inline-block;" 
 							class="bee-button-content" target="_blank"
-							href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-ba0699b2-f095-4be7-b7f3-c20833c66bcb">
+							href="https://pay.blimboo.com/o0NNV">
 								<span dir="ltr" style="word-break: break-word; font-size: 26px; line-height: 200%;">
 									<strong style="font-size: 26px;">COMPRAR AGORA!</strong>
 								</span>
@@ -609,12 +727,11 @@ img {vertical-align: middle;}
 						</div>
 						<p style="font-size: 14px; line-height: 25px; text-align: center;">
 							<span style="font-size: 20px; line-height: 36px; color: #ffffff;">
-								Reviva a época dourada do <b>PS1, PS2, PS3 e PSP</b> com os melhores jogos para jogar em seu PC. 
-								Jogos como The Last of us, Black, GTA San Andreas, God of War, God of War 2, God of War 3 
-								, Resident Evil 4, Dragon Ball Tenkaichi 3, Chrono Cross, Shadow of the Colossus,
-								Crash Bandicoot, Castlevania: Symphony of the Night
-								Uncharted, Uncharted 2: Among Thieves ,Uncharted 3: Drake's Deception 
-								Final Fantasy VII, Final Fantasy X, Final Fantasy XIII, Final Fantasy Crisis Core e muito mais. <br/>
+								Reviva a epoca dourada dos Consoles com os melhores jogos. 
+								Jogos como The Last of Us, Black, GTA San Andreas, God of War, God of War 2, God of War 3 , Resident Evil 4, GoldenEye 007, GTA San Andreas, Marvel vs Capcom, The Legend of Zelda,  Metal Gear Solid
+								, Super Mario Bross, Super Mario 64, Mario Kart, King of Fighters, Megaman X, Killer Instinct, Pokemon, Street Fighter, Tekken, Mortal Kombat, Super Metroid, Sonic,  Donkey Kong,
+ 								 Tartarugas Ninjas, Guitar Hero, Soul Calibur e muito mais. 
+								 <br/>
 								<strong>Compre agora mesmo por menos do preço de um lanche.</strong> 
 							</span>
 						</p>
@@ -627,6 +744,14 @@ img {vertical-align: middle;}
 		<div class="bee-row-content" style="text-align: center;">
 			<div class="bee-col bee-col-1 bee-col-w12" style="text-align: center;">
 				
+				
+				<div style="text-align: center;" class="bee-block bee-block-2 bee-text">
+	
+					<iframe width="370" height="255" src="https://www.youtube.com/embed/mMzKVxJV458">
+					</iframe>
+				</div>
+			
+				
 				<div class="bee-block bee-block-2 bee-text">
 					<div class="bee-block bee-block-2 bee-text">
 						<p style="text-align: center; font-size: 20px; line-height: 24px;color: #ff0000;">
@@ -634,7 +759,7 @@ img {vertical-align: middle;}
 						</p>
 					</div>
 					<div style="text-align: center;" class="bee-text-content">
-						<img src="./images/299por29.png" alt="Image">
+						<img src="./images/499por30.png" alt="Image">
 					</div>
 				</div>
 			</div>
@@ -643,7 +768,7 @@ img {vertical-align: middle;}
 	<div class="bee-block bee-block-2 bee-button" style="text-align: center; padding-top: 0px;padding-bottom: 0px">
 		<a style="font-size: 26px;background-color: #ff0000;border-bottom: 0px solid transparent;border-left: 0px solid transparent;border-radius: 30px;border-right: 0px solid transparent;border-top: 0px solid transparent;color: #ffffff;direction: ltr;font-family: inherit;font-weight: 400;max-width: 100%;padding-bottom: 10px;padding-left: 30px;padding-right: 30px;padding-top: 10px;width: auto;display: inline-block;" 
 		class="bee-button-content" target="_blank"
-		href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-ba0699b2-f095-4be7-b7f3-c20833c66bcb">
+		href="https://pay.blimboo.com/o0NNV">
 			<span dir="ltr" style="word-break: break-word; font-size: 26px; line-height: 200%;">
 				<strong style="font-size: 26px;">COMPRAR AGORA!</strong>
 			</span>
@@ -657,7 +782,7 @@ img {vertical-align: middle;}
 					<div style="font-size: 12px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
 						<p style="text-align: center; font-size: 20px; line-height: 24px;">
 							<span style="font-size: 20px; line-height: 24px;">
-								Lista de <strong style="">Plataformas</strong>:
+								Lista de <strong style="">Emuladores e Jogos que você receberá</strong>:
 							</span>
 						</p>
 					</div>
@@ -672,6 +797,43 @@ img {vertical-align: middle;}
 										<div style="font-size: 12px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
 											<p style="font-size: 12px; text-align: center; line-height: 21px;">
 												<span style="font-size: 12px; line-height: 21px;">
+													<!-- strong style="">Super Nintendo</strong> - Todos os Jogos já Lançados -->
+													<img src="images/logos/consoles/snes.png"/> <b> - Todos os Jogos já Lançados </b> 
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/n64logo.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/nintendo.png"/> <b> - Todos os Jogos já Lançados </b> 
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/wii.png"/> <b> - Todos os Jogos já Lançados </b> 
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/wiiu.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/3ds.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
 													<img src="images/logos/consoles/ps1.png"/>  <b> - Todos os Jogos já Lançados </b>
 												</span>
 											</p>
@@ -684,7 +846,7 @@ img {vertical-align: middle;}
 											<br/>
 											<p style="font-size: 12px; text-align: center; line-height: 21px;">
 												<span style="font-size: 12px; line-height: 21px;">
-													<img src="images/logos/consoles/ps3.png"/> <b> - Todos os Jogos já Lançados <font color="red">(Não roda em Android e TvBox)</font></b>
+													<img src="images/logos/consoles/ps3.png"/> <b> - Todos os Jogos já Lançados </b>
 												</span>
 											</p>
 											<br/>
@@ -694,12 +856,274 @@ img {vertical-align: middle;}
 												</span>
 											</p>
 											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/gameboy.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/gameboycolor.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/gameboyadvance.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/nintendods.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/gamecube.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/md.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/dreamcast.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/ms.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/sega32x.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/neogeopoket.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/atari2600.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/Atari5200.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/atari7800.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/mame.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/turbograftx.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/Sinclair_ZX.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/3do.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/capcom.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/cave.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/cps1.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/cps2.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/cps3.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/dataeast.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/galaxian.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;"> 
+													<img src="images/logos/consoles/irem.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/kaneko.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/konami.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/neogeo.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/pacman.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/pgm.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/psikyo.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/sega.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/seta.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/taito.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/technos.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/teoplan.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/miscpre90.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/miscpos90.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/gamegear.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/pcengine.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/sg-1000.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/colecovision.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<p style="font-size: 12px; text-align: center; line-height: 21px;">
+												<span style="font-size: 12px; line-height: 21px;">
+													<img src="images/logos/consoles/msx.png"/> <b> - Todos os Jogos já Lançados </b>
+												</span>
+											</p>
+											<br/>
+											<br/>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="bee-row bee-row-3"><div class="bee-row-content">
+						<div class="bee-row bee-row-3" style="text-align: center;">
+							<img class="bee-center bee-fixedwidth" src="./images/compativelcom.png" alt="Plataformas Compativeis" style="max-width: 90%;"/>
+						</div>
+						<div class="bee-row bee-row-3" style="text-align: center;"><div class="bee-row-content">
 							<div class="bee-col bee-col-1 bee-col-w4">
 								<div class="bee-block bee-block-1 bee-image">
 									<img class="bee-center bee-fixedwidth" src="./images/controle.png" style="max-width:84px;" alt="Image">
@@ -707,7 +1131,20 @@ img {vertical-align: middle;}
 								<div class="bee-block bee-block-2 bee-text">
 									<div style="font-size: 14px; line-height: 150%; color: #555555; font-family: inherit;" class="bee-text-content">
 										<p style="font-size: 14px; line-height: 21px; text-align: center;">
-											Todos os 17161 Jogos já Lançados para o PS1, PS2, PSP e PS3
+											Mais de 36000 Jogos, plataformas como <strong style="">Atari</strong>, 
+											<strong style="">Super Nintendo</strong>, 
+											<strong style="">Fliperamas</strong>, 
+											<strong style="">Mega Drive</strong>, 
+											<strong style="">PS1</strong>, 
+											<strong style="">PS2</strong>,
+											<strong style="">PS3</strong>, 
+											<strong style="">PSP</strong>, 
+											<strong style="">Dreamcast</strong>, 
+											<strong style="">Nintendo</strong> 
+											<strong style="">Gamecube</strong>, 
+											<strong style="">Wii</strong>,
+											<strong style="">Wii U</strong>, 
+											<strong style="">3DS</strong>,&nbsp; e muito mais!
 										</p>
 									</div>
 								</div>
@@ -745,7 +1182,7 @@ img {vertical-align: middle;}
 								<div class="bee-block bee-block-1 bee-image">
 									<img class="bee-center bee-fixedwidth" src="./images/circulo-usd.png" style="max-width:84px;" alt="Image">
 									<p style="font-size: 14px; line-height: 21px; text-align: center;">
-										Pagamento Totalmente Seguro pelo Mercado Pago. Aceitamos: Cartão de Crédito, PIX, Boleto e Paypal
+										Pagamento Totalmente Seguro pela Blimboo. Aceitamos: Cartão de Crédito, PIX, Boleto
 									</p>
 								</div>
 							</div>
@@ -761,18 +1198,41 @@ img {vertical-align: middle;}
 				</div>
 				<div style="text-align: center;" class="bee-block bee-block-2 bee-button" style="text-align: center; padding-top: 0px;padding-bottom: 0px">
 					<br/><br/>
-					<img src="images/mercadopagogarantia.jpg"  />
+					<img src="images/selo-garantia-7-dias-small.jpg"  />
 					<p style="text-align: center; font-size: 20px; line-height: 24px;color: #000000;font-weight: bold;">
-						Programa Compra Garantida direto pelo Mercado Pago. Satisfação Garantida ou Seu Dinheiro de Volta.
+						Programa Compra Garantida direto pela Blimboo. Satisfação Garantida ou Seu Dinheiro de Volta.
 					</p>
 				</div>
+
+					<div class="slideshow-container">
+						<div>
+							<p style="text-align: center; font-size: 16px; line-height: 24px;color: #000000;font-weight: bold;">
+								Veja o que nossos clientes dizem sobre o produto.
+							</p>
+						</div>
+						<span >
+							<img src="images/provassociais/depoimento1.jpg"  height="70%">
+						</span>
+					
+						<span>
+							<img src="images/provassociais/depoimento2.jpg"  height="70%">
+						</span>
+					
+						<span >
+							<img src="images/provassociais/depoimento3.jpg"  height="70%">
+						</span>
+					
+						<!--a class="prev" onclick="plusSlides(-1, 0)">&#10094;</a -->
+						<!--a class="next" onclick="plusSlides(1, 0)">&#10095;</a -->
+					</div>
 				
+
 				<div style="text-align: center;" class="bee-row bee-row-7">
 					<br/><br/>
 					<div class="bee-row-content">
 						<div class="bee-col bee-col-1 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/ffxiii.jpg" style="max-width:143px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/gta-logo.png" style="max-width:143px;" alt="Image">
 							</div>
 						</div>
 	
@@ -783,12 +1243,12 @@ img {vertical-align: middle;}
 						</div>
 						<div class="bee-col bee-col-2 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/castelvania.jpg" style="max-width:123px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/cadilac.png" style="max-width:123px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-4 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/demons-souls-thumb.jpg" style="max-width:153px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/mk.png" style="max-width:153px;" alt="Image">
 							</div>
 						</div>
 					</div>
@@ -797,22 +1257,22 @@ img {vertical-align: middle;}
 					<div class="bee-row-content">
 						<div class="bee-col bee-col-1 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/ffcrisiscore.jpg" style="max-width:143px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/sonic.jpg" style="max-width:143px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-2 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/gowchains.jpg" style="max-width:123px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/metalgear.png" style="max-width:123px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-3 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/uncharted3.jpg" style="max-width:153px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/megaman1.png" style="max-width:153px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-4 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/The_Last_of_Us_logo.png" style="max-width:123px;max-height:123;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/dbz.png" style="max-width:153px;" alt="Image">
 							</div>
 						</div>
 					</div>
@@ -821,28 +1281,27 @@ img {vertical-align: middle;}
 					<div class="bee-row-content">
 						<div class="bee-col bee-col-1 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/Raging_Blast_2.jpg" style="max-width:143px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/mvsc.png" style="max-width:143px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-2 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/naruto.png" style="max-width:123px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/Sf3logo.png" style="max-width:123px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-3 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/type0.png" style="max-width:153px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/mario64.jfif" style="max-width:153px;" alt="Image">
 							</div>
 						</div>
 						<div class="bee-col bee-col-4 bee-col-w3">
 							<div class="bee-block bee-block-1 bee-image">
-								<img class="bee-center bee-fixedwidth" src="./images/logos/metalgear4.png" style="max-width:153px;" alt="Image">
+								<img class="bee-center bee-fixedwidth" src="./images/logos/tmnt.png" style="max-width:153px;" alt="Image">
 							</div>
 						</div>
 					</div>
 				</div>
-				
-
+			
 		<div style="text-align: center;" class="bee-row bee-row-25">
 			<div class="bee-row-content">
 				</div></div>
@@ -856,7 +1315,7 @@ img {vertical-align: middle;}
 													<span style="font-size: 18px; line-height: 32px; color: #ffffff;">Facil de usar, basta baixar, extrair, executar o programa, escolher o jogo e jogar</span>
 												</li>
 												<li style="font-size: 14px; line-height: 25px;">
-													<span style="font-size: 18px; line-height: 32px; color: #ffffff;">Mais de 17161 jogos, com toda nuvem disponivel para você, baixe o que quiser quando quiser e quantas vezes quiser </span>
+													<span style="font-size: 18px; line-height: 32px; color: #ffffff;">Mais de 36000 jogos, com toda nuvem disponivel para você, baixe o que quiser quando quiser e quantas vezes quiser </span>
 												</li>
 												<li style="font-size: 14px; line-height: 25px;">
 													<span style="font-size: 18px; line-height: 32px; color: #ffffff;">Baixe em quantos dispositivos e maquinas quiser, sem restrições</span>
@@ -883,7 +1342,7 @@ img {vertical-align: middle;}
 																									</p>
 																								</div>
 																								<div style="text-align: center;" class="bee-text-content">
-																									<img src="./images/299por29.png" alt="Image">
+																									<img src="./images/499por30.png" alt="Image">
 																								</div>
 																						</div>
 																						<div class="bee-block bee-block-4 bee-spacer"><strong style="">
@@ -907,9 +1366,9 @@ img {vertical-align: middle;}
 																																				<p style="font-size: 18px; line-height: 21px;">
 																																					<span style="font-size: 18px; line-height: 21px;">
 																																						<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																							Ao adquirir este produto você receberá os emuladores de PS1, PS2, PS3 e PSP para jogar no Windows, Celular Android ,TVBox Android junto com 
-																																							todos os 17161 Jogos para baixar. Alem disso os jogos são também compativeis com os consoles de origem desde que sejam desbloqueados.
-																																							Por exemplo (OPL em ps2, Multiman ps3, etc.)
+																																							Ao adquirir este produto você receberá acesso vitalicio ao nosso disco virtual (nuvem),
+																																							com 52 plataformas de consoles diferentes (listados acima) com todos os jogos já lançados de cada uma delas,
+																																							junto com os softwares de emulação de cada plataforma para Windows, incluindo manuais explicativos.
 																																						</strong>
 																																					</span>
 																																				</p>
@@ -922,15 +1381,10 @@ img {vertical-align: middle;}
 																																					<p style="font-size: 18px; line-height: 21px;">
 																																						<span style="font-size: 18px; line-height: 21px;">
 																																							<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																								Windows (através dos emuladores), <br/>
-																																								Celulares Android (através dos emuladores, (PS1, PSP e PS2 (Android 8 ou superior somente) são compativeis)), <br/>
-																																								TVBox Android (através dos emuladores, (PS1, PSP e PS2 (Android 8 ou superior somente) são compativeis))
-																																								Playstation 1 (Gravando as isos do PS1 em CDs ou hd externo), <br/> 
-																																								Playstation 2 (Gravando as isos do PS2 em um DVD ou em um hd externo ou pendrive atravéz do OPL), <br/>
-																																								Playstation 3 (Colocando as isos no hd externo ou pendrive através do multiman ou outro desbloqueio), <br/>
-																																								PSP (isos de psp com desbloqueio) <br/>
-																																								Xbox One (através dos emuladores) <br/>
-																																								Xbox Series (através dos emuladores) <br/>
+																																								Windows, Linux, Mac, Android, IOS, Arduino, Raspberry Pi, ou qualquer outro dispositivo
+																																								que tenha um software de emulação para os jogos (roms) do nosso pacote. Em nosso pacote já vem incluso 
+																																								gratuitamente os softwares de emulação para Windows de todas as plataformas inclusas, mas o cliente poderá baixar a
+																																								parte os programas de emulação para a plataforma que quiser e utilizar para emular os jogos desse pacote sem problemas. 
 																																							</strong>
 																																						</span>
 																																					</p>
@@ -943,7 +1397,7 @@ img {vertical-align: middle;}
 																																						<p style="font-size: 18px; line-height: 21px;">
 																																							<span style="font-size: 18px; line-height: 21px;">
 																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									GRATUITO! pois se trata de um produto digital, ao efetuar o pagamento você receberá imediatamente o acesso para baixar o produto.
+																																									GRATUITO! pois se trata de um produto digital, ao efetuar o pagamento você receberá imediatamente o acesso para baixar os produtos.
 																																								</strong>
 																																							</span>
 																																						</p>
@@ -965,162 +1419,11 @@ img {vertical-align: middle;}
 																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
 																																				<p style="font-size: 18px; line-height: 21px;">
 																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Quanto tempo tenho para baixar os conteúdos?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									O acesso é vitalicio, não expira, você pode baixar quando quiser.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Posso baixar em mais de uma maquina?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você pode baixar em quantas maquinas desejar.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona em TVBox Android</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Os de PS1 e PSP funcionam sem problemas na grande maioria das TVBox Android.
-																																									Já os de PS2 precisa ser um modelo mais potente de TVBox que rode jogos mais pesados.
-																																									O PS3 recomendamos utilizar no computador pois mesmo as TVBox mais potentes não tem capacidade para roda-los.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona em Celular Android</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Os de PS1 e PSP funcionam sem problemas na grande maioria dos Celulares Android.
-																																									Já os de PS2 precisa ser um modelo mais potente de TVBox que rode jogos mais pesados.
-																																									O PS3 recomendamos utilizar no computador pois mesmo as TVBox mais potentes não tem capacidade para roda-los.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona no PS2?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você pode gravar as isos do pacote em um DVD e roda-los no PS2 ou através de um
-																																									HD externo ou até mesmo um pendrive. (Através do OPL)
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona no PS1?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você pode gravar as isos do pacote em um CD e roda-los no PS1 ou através de um
-																																									HD externo ou até mesmo um pendrive.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona no PS3?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você pode gravar as isos do pacote em um CD e roda-los no PS3 ou através de um
-																																									HD externo ou até mesmo um pendrive. (Através do Multiman)
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona no PSP?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você pode gravar as isos do pacote em um CD e roda-los no PSP ou através de um
-																																									HD externo ou até mesmo um pendrive.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Funciona no Xbox One e Xbox Series?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, funciona através do emulador
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
 																																						<strong style="">- E fácil de instalar?</strong></span></p>
 																																						<p style="font-size: 18px; line-height: 21px;">
 																																							<span style="font-size: 18px; line-height: 21px;">
 																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, é muito fácil baixar e jogar. Vem com todas as instruções
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Vem tutoriais e manual de instruções?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, vem com tutoriais e manual de instrução ensinando como baixar e configurar e se for necessário damos suporte quando precisar.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- Vocês dão suporte a instalação, caso eu precise?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim. Apesar de ser extremamente fácil a instalação nós damos todo o suporte necessário sem custo adicional algum.
-																																									Estamos diretamente acessiveis pelo Whatsapp
+																																									Sim, é muito fácil baixar e jogar. A maioria vem compactado em winrar ou 7zip, basta baixar e extrair, todos vem com manuais de instalação e configuração.
 																																								</strong>
 																																							</span>
 																																						</p>
@@ -1133,13 +1436,14 @@ img {vertical-align: middle;}
 																																						<p style="font-size: 18px; line-height: 21px;">
 																																							<span style="font-size: 18px; line-height: 21px;">
 																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Sim, você recebe um acesso vitalicio a nossa nuvem e pode baixar de lá os jogos separadamentes.
-																																									Jogar os que você quer no momento e depois deletar para liberar espaço em seu hd e baixar outros os quais desejar.
+																																									 Sim, você recebe um acesso vitalicio a nossa nuvem e pode baixar de lá os jogos separadamentes. Jogar os que você quer no momento e depois deletar para liberar espaço em seu hd e baixar outros os quais desejar.
 																																								</strong>
 																																							</span>
 																																						</p>
 																																			</div>
 																																			<p></p>
+
+
 																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
 																																				<p style="font-size: 18px; line-height: 21px;">
 																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
@@ -1153,20 +1457,6 @@ img {vertical-align: middle;}
 																																						</p>
 																																			</div>
 																																			<p></p>
-																																			<div style="font-size: 14px; line-height: 120%; color: #555555; font-family: inherit;" class="bee-text-content">
-																																				<p style="font-size: 18px; line-height: 21px;">
-																																					<span style="font-size: 18px; line-height: 21px; color: #000;">
-																																						<strong style="">- E se caso não rodar bem em minha maquina?</strong></span></p>
-																																						<p style="font-size: 18px; line-height: 21px;">
-																																							<span style="font-size: 18px; line-height: 21px;">
-																																								<strong style=""><span style="color: #f01010; line-height: 14px;">Resposta</span>: 
-																																									Caso tiver qualquer problema você tem 7 dias de garantia e poderá pedir o seu dinheiro de volta que será extornado imediatamente.
-																																								</strong>
-																																							</span>
-																																						</p>
-																																			</div>
-																																			<p></p>
-																																			
 																																	</div>
 																																</div>
 																															</div>
@@ -1177,7 +1467,7 @@ img {vertical-align: middle;}
 																																		<div class="bee-block bee-block-2 bee-button" style="text-align: center; padding-top: 0px;padding-bottom: 0px">
 																																			<a style="font-size: 26px;background-color: #ff0000;border-bottom: 0px solid transparent;border-left: 0px solid transparent;border-radius: 30px;border-right: 0px solid transparent;border-top: 0px solid transparent;color: #ffffff;direction: ltr;font-family: inherit;font-weight: 400;max-width: 100%;padding-bottom: 10px;padding-left: 30px;padding-right: 30px;padding-top: 10px;width: auto;display: inline-block;" 
 																																			class="bee-button-content" target="_blank"
-																																			href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-ba0699b2-f095-4be7-b7f3-c20833c66bcb">
+																																			href="https://pay.blimboo.com/o0NNV">
 																																				<span dir="ltr" style="word-break: break-word; font-size: 26px; line-height: 200%;">
 																																					<strong style="font-size: 26px;">COMPRAR AGORA!</strong>
 																																				</span>
@@ -1219,22 +1509,17 @@ img {vertical-align: middle;}
 																																								</a>		
 																																						</span>
 																																					</div>
-																								
+																																					<div class="bee-col bee-col-3 bee-col-w4">
+																																						<span dir="ltr" style="word-break: break-word; font-size: 16px; line-height: 200%;">
+																																								<a style="text-decoration: none;" target="_blank" href="https://dashboard.kiwify.com.br/join/affiliate/lJoz4BUD">
+																																									<img src="images/dinheiro.png" style="width: 30px;height: 30px"></img>
+																																									Afilie-se
+																																								</a>		
+																																						</span>
+																																					</div>
 																																					
 																																				</div>																										
 
-																																			</div>
-
-																																			<div class="bee-row bee-row">
-																																				<div class="bee-row-content">
-																																					<div >
-																																						<span >
-																																							<span>
-																																								<img src="images/mercadopagoparcele.png" alt="Image" style="width: 100%;">
-																																							</span>			
-																																						</span>
-																																					</div>
-																																				</div>
 																																			</div>
 																																
 																																			<div class="bee-row bee-row-63">
@@ -1265,37 +1550,12 @@ img {vertical-align: middle;}
 																																			</div>
 																															</strong>
 																														</div>
-	
-																														
-	
-																														<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">																													
+																															
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">																													
 
-																														<!-- Custom styles and bee overwrites -->
-																														<link href="./images/bee-pages.css" rel="stylesheet" type="text/css" async="">
+	<!-- Custom styles and bee overwrites -->
+	<link href="./images/bee-pages.css" rel="stylesheet" type="text/css" async="">
 	
-
-	<script>
-		let slideIndex = [1,1];
-		let slideId = ["mySlides1", "mySlides2"]
-		showSlides(1, 0);
-		showSlides(1, 1);
-		
-		function plusSlides(n, no) {
-		  showSlides(slideIndex[no] += n, no);
-		}
-		
-		function showSlides(n, no) {
-		  let i;
-		  let x = document.getElementsByClassName(slideId[no]);
-		  if (n > x.length) {slideIndex[no] = 1}    
-		  if (n < 1) {slideIndex[no] = x.length}
-		  for (i = 0; i < x.length; i++) {
-			 x[i].style.display = "none";  
-		  }
-		  x[slideIndex[no]-1].style.display = "block";  
-		}
-		</script>
-
 <!-- Code injected by live-server -->
 <script>
 	// <![CDATA[  <-- For SVG support
@@ -1334,12 +1594,11 @@ img {vertical-align: middle;}
 	}
 	// ]]>
 </script>
-
 </strong>
-
 <!-- BOTÃO WHATSAPP -->
-<a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria de mais informações sobre o produto Emuladores PS1, PS2, PSP e PS3 Com Todos Os Jogos Já Lançados (17161 Jogos)." class="float" target="_blank">
-	<i class="fa fa-whatsapp my-float"></i>
-	</a>
+<a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria de mais informações sobre o produto 52 Emuladores Configurados com 36237 jogos" class="float" target="_blank">
+<i class="fa fa-whatsapp my-float"></i>
+</a>
+
 </body>
 </html>
