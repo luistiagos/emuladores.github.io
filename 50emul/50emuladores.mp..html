@@ -629,53 +629,8 @@ img {vertical-align: middle;}
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=AW-964605959"></script>
 
-<script>
-
-	function zerofill(n) {
-		if (n < 10) {
-			return "0" + n;
-		}
-		return n;
-	}
-
-	function counter() {
-		// Set the date we're counting down to
-		var countDownDate = new Date().getTime() + (4 * 60 * 60 * 1000);
-	
-		// Update the count down every 1 second
-		var x = setInterval(function() {
-	
-			// Get today's date and time
-			var now = new Date().getTime();
-		
-			// Find the distance between now and the count down date
-			var distance = countDownDate - now;
-		
-			// Time calculations for days, hours, minutes and seconds
-			var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-			var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-			var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-			
-			// Output the result in an element with id="timer"
-			const basetext = "<strong>A OFERTA ACABA EM </strong> "
-			document.getElementById("timer").innerHTML = basetext + "<b>" + zerofill(hours) + 
-				":" + zerofill(minutes) + ":" 
-				+ zerofill(seconds) + "</b>";
-		
-			// If the count down is over, write some text
-			if (distance < 0) {
-				clearInterval(x);
-				document.getElementById("timer").innerHTML = "<strong>VOCÊ AINDA PODE ADQUIRIR PELO PREÇO PROMOCIONAL</strong>";
-			}
-		}, 1000);
-	}
-  </script>
-
 </head>
 <body cz-shortcut-listen="true">
-
-	<!-- p id="timer"></p -->
 
 	<div id="fb-root"></div>
 	<script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v15.0&appId=462904197064938&autoLogAppEvents=1" nonce="gtq2v6la"></script>  
@@ -742,13 +697,13 @@ img {vertical-align: middle;}
 	</div>
 	<br/>
 	<div style="text-align: center;">
-		<div  class="bee-block bee-block-2 bee-text">
-			<iframe width="100%" height="100%" style="max-width: 350px;max-height: 255px;" src="https://www.youtube.com/embed/mMzKVxJV458">
+		<div  class="bee-block bee-block-2 bee-text">	
+			<iframe class="lazy" width="100%" height="100%" style="max-width: 350px;max-height: 255px;" data-src="https://www.youtube.com/embed/mMzKVxJV458">
 			</iframe>
 		</div>
 		<br/>
 		<div class="bee-block bee-block-2 bee-text">
-			<iframe width="100%" height="100%" style="max-width: 350px;max-height: 255px;" src="https://www.youtube.com/embed/5TSlwF2YKbY">
+			<iframe class="lazy" width="100%" height="100%" style="max-width: 350px;max-height: 255px;" data-src="https://www.youtube.com/embed/5TSlwF2YKbY">
 			</iframe>
 		</div>
 	</div>
@@ -1577,7 +1532,31 @@ img {vertical-align: middle;}
 
 	<!-- Custom styles and bee overwrites -->
 	<link href="./images/bee-pages.css" rel="stylesheet" type="text/css" async="">
+
 	
+<script>
+	// Set the options globally
+	// to make LazyLoad self-initialize
+	window.lazyLoadOptions = {
+		// Your custom settings go here
+	};
+
+	// Listen to the initialization event
+	// and get the instance of LazyLoad
+	window.addEventListener("LazyLoad::Initialized", function (event) {
+		window.lazyLoadInstance = event.detail.instance;
+	}, false);
+</script>
+
+<script
+  async
+  src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"
+></script>
+
+<script>
+	lazyLoadInstance.update();
+</script>
+
 <!-- Code injected by live-server -->
 <script>
 	// <![CDATA[  <-- For SVG support
