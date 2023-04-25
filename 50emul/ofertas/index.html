@@ -13,6 +13,16 @@
     let checkSaturn = document.getElementById('checkSaturn').checked;
     let checkSwitch = document.getElementById('checkSwitch').checked;
 
+    let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
+    ((checkSaturn) ? '1' : '0') + '0';
+
+    let url = 'https://digitalstoregames.pythonanywhere.com/purchaselink?sid=' + sid
+
+    fetch(url)
+    .then(response => response.json())
+    .then(data => window.open(data))
+    .catch(error => console.error(error));
+    /*
     if (!checkXbox && !checkSaturn && !checkSwitch) { 
       window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-37554e35-1012-407e-8899-30c39f43d202', '_blank').focus();
     } else if(checkXbox && !checkSaturn && !checkSwitch) { 
@@ -29,7 +39,8 @@
       window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-46d72940-6000-4cc7-a552-70ffea6c76f4', '_blank').focus();
     } else if(checkSwitch) { 
       window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-085f11c4-3590-41fe-b8ea-f655e3e23dd0', '_blank').focus();
-    } 
+    }
+    */ 
   } 
 </script>
 </head>
