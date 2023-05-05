@@ -8,7 +8,26 @@
 <title>Ofertas</title>
 <link rel="stylesheet" href="style.css">
 <script>
+
+  let links = [];
+  
+
+  function load() {
+    links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
+    links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
+    links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
+    links['20010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-65fecf55-2760-498e-93cd-2eb1a1f3e659';
+    links['21110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-4f81f297-ccc9-4d9e-a79c-841fe6ee6e60';
+    links['21100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d609fd56-fdb1-4b4b-a770-06d2bc461ae4';
+    links['21010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d21861b2-8601-42d7-a90d-bdd94a45f16f';
+    links['21000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-b59025a6-3b1c-47d3-9668-3a5e369ff2a3';
+  }
+
   function pagar() {
+    if (links.length == 0) {
+      load();
+    } 
+
     let checkXbox = document.getElementById('checkXbox').checked;
     let checkSaturn = document.getElementById('checkSaturn').checked;
     let checkSwitch = document.getElementById('checkSwitch').checked;
@@ -16,12 +35,16 @@
     let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
     ((checkSaturn) ? '1' : '0') + '0';
 
+    window.location = links[sid]; 
+
+    /*
     let url = 'https://digitalstoregames.pythonanywhere.com/purchaselink?sid=' + sid
 
     fetch(url)
     .then(response => response.json())
     .then(data => window.open(data))
     .catch(error => console.error(error));
+    */
     /*
     if (!checkXbox && !checkSaturn && !checkSwitch) { 
       window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-37554e35-1012-407e-8899-30c39f43d202', '_blank').focus();
@@ -44,7 +67,7 @@
   } 
 </script>
 </head>
-<body>
+<body onload="load()">
    <div style="display:block;text-align: center;background-color:#5271ff">
         <img src="../images/digitalstoregames.png" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
     </div>
