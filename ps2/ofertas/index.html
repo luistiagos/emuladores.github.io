@@ -7,10 +7,32 @@
 <meta data-n-head="ssr" data-hid="description" name="description" content="">
 <title>Ofertas</title>
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
 
 
+  let links = [];
+
+  function load() {
+    fetch('links.csv')
+      .then(response => response.text())
+      .then(data => {
+        const parsedData = Papa.parse(data).data;
+    
+        parsedData.forEach(row => {
+          links[row[0]] = row[1];
+        });
+
+        console.log(links);
+    });
+  }
+
   function pagar() {
+
+    if (links.length == 0) {
+      load();
+    }
+
     let checkSony = document.getElementById('checkSony').checked;
     let checkNintendo = document.getElementById('checkNintendo').checked;
     let checkOutros = document.getElementById('checkOutros').checked;
@@ -20,12 +42,7 @@
     let sid = '3' + ((checkSony) ? '1' : '0') + ((checkNintendo) ? '1' : '0') + ((checkOutros) ? '1' : '0') + 
     ((checkXbox) ? '1' : '0') + ((checkSwitch) ? '1' : '0');
 
-    let url = 'https://digitalstoregames.pythonanywhere.com/purchaselink?sid=' + sid
-
-    fetch(url)
-    .then(response => response.json())
-    .then(data => window.open(data))
-    .catch(error => console.error(error));
+    window.location = links[sid];
     
     /*
     if (!checkSony && !checkNintendo && !checkOutros) { 
@@ -50,7 +67,7 @@
   } 
 </script>
 </head>
-<body>
+<body onload="load()">
    <div style="display:block;text-align: center;background-color:#5271ff">
         <img src="../images/digitalstoregames.png" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
     </div>
