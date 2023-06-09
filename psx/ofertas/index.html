@@ -7,12 +7,15 @@
 <meta data-n-head="ssr" data-hid="description" name="description" content="">
 <title>Ofertas</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../shared-style.css">
+<script src="../../utils/utils.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
   
   let links = [];
 
   function load() {
+    hideSpinner();  
     fetch('links.csv')
       .then(response => response.text())
       .then(data => {
@@ -22,12 +25,27 @@
         });
     });
   }
+
+  function validarEmail() {
+    var inputEmail = document.getElementById('email');
+    return validaEmail(inputEmail);    
+  }
+
+  function formatarTelefone() {
+    var inputTelefone = document.getElementById('fone');
+    formataTelefone(inputTelefone);
+  }
   
   function pagar() {
+    if (!validarEmail()) {
+      return;
+    } 
 
     if (links.length == 0) {
       load();
     }
+
+    showSpinner();
 
     let checkNintendo = document.getElementById('checkNintendo').checked;
     let checkOutros = document.getElementById('checkOutros').checked;
@@ -37,23 +55,25 @@
     let sid = '4' +  ((checkNintendo) ? '1' : '0') + ((checkOutros) ? '1' : '0') + 
     ((checkXbox) ? '1' : '0') + ((checkSwitch) ? '1' : '0');
 
-    window.location = links[sid];
+    var email = document.getElementById('email').value;
+    var telefone = document.getElementById('fone').value;
 
-    /*
-    if (!checkNintendo && !checkOutros) {
-      window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-5ecae4b0-013b-43f0-9f0c-5bba0755c582', '_blank').focus();
-    } else if(checkNintendo && checkOutros) {
-      window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-52d3c376-b773-4433-b03d-030711a486d1', '_blank').focus();
-    } else if(checkNintendo && !checkOutros) {
-      window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-6a3060bc-4ea1-4994-93a3-125088fc833b', '_blank').focus();
-    } else if(!checkNintendo && checkOutros) {
-      window.open('https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-69032b22-5b60-4a61-8675-ea2f5d65a1fa', '_blank').focus();
-    } 
-    */
+    efetuarPagamento(email, telefone, sid);
+
   } 
 </script>
 </head>
 <body onload="load()">
+    <div id="spinner" class="modal">
+      <div class="modal-content">
+        <div class="loadingio-spinner-spinner-htrbegfqb4n">
+          <div class="ldio-vys3jira1sn">
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+          </div>
+        </div>
+      </div>
+  </div>
+
    <div style="display:block;text-align: center;background-color:#5271ff">
         <img src="../images/digitalstoregames.png" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
     </div>
@@ -87,9 +107,19 @@
                         </b>  
                       </p> 
                     </div>
-                    <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
-                            <a href="javascript:pagar()" class="w-full button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;">Pagar Agora</a>
-                          </div>
+                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
+                      <div class="input">
+                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
+                        <label class="label selected">Email:*</label>
+                      </div>
+                      <div class="input">
+                        <input type="text" id="fone" oninput="formatarTelefone()" autocomplete="off" required name="fone" class="input-field">
+                        <label class="label selected">Celular com DDD:</label>
+                      </div>
+                      <a href="javascript:pagar()" class="w-full button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;">
+                          Pagar Agora
+                      </a>
+                    </div>
                     <div id="checkoutblock" class="text-black bg-white rounded-md py-4 px-3 md:px-6 mb-4 sm:mb-0 sm:border sm:shadow w-full">
                       <!---->
                       <div class="w-full">
