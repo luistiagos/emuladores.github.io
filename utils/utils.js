@@ -45,7 +45,7 @@ function efetuarPagamento(email, telefone, sid) {
       })
       .then(function(data) {
         // Obter a URL retornada pelo serviço
-        hideSpinner();
+        //hideSpinner();
         var urlRetornada = data;        
         console.log(urlRetornada);
         window.location.href = urlRetornada;
