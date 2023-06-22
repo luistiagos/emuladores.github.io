@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transaction Table</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <table id="transactionTable">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>Datetime</th>
+                <th>Product ID</th>
+                <th>Value</th>
+                <th>WhatsApp Link</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            function populateTable(data) {
+                const tableBody = document.querySelector('#transactionTable tbody');
+
+                data.forEach(transaction => {
+                    const row = document.createElement('tr');
+
+                    const emailCell = document.createElement('td');
+                    emailCell.textContent = transaction.email;
+                    row.appendChild(emailCell);
+
+                    const datetimeCell = document.createElement('td');
+                    datetimeCell.textContent = transaction.datetime;
+                    row.appendChild(datetimeCell);
+
+                    const productIdCell = document.createElement('td');
+                    productIdCell.textContent = transaction.productid;
+                    row.appendChild(productIdCell);
+
+                    const valueCell = document.createElement('td');
+                    valueCell.textContent = transaction.value;
+                    row.appendChild(valueCell);
+
+                    let whatsaplink = '';
+
+                    if (transaction.whatsapp_link != '') {
+                        whatsaplink = 'WhatsApp Link';
+                    }
+
+                    const whatsappCell = document.createElement('td');
+                    const whatsappLink = document.createElement('a');
+                    whatsappLink.href = transaction.whatsapp_link;
+                    whatsappLink.textContent = whatsaplink;
+                    whatsappCell.appendChild(whatsappLink);
+                    row.appendChild(whatsappCell);
+
+                    tableBody.appendChild(row);
+                });
+            }
+
+            fetch('https://digitalstoregames.pythonanywhere.com/phone_who_notpurchase')
+                .then(response => response.json())
+                .then(data => {
+                    populateTable(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+</html>
