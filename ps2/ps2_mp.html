@@ -593,6 +593,14 @@
 			</div>
 		</div>
 	</div>
+	<br/>
+	<div style="text-align: center;">
+		<div  class="bee-block bee-block-2 bee-text">	
+			<iframe class="lazy" width="100%" height="100%" style="max-width: 350px;max-height: 255px;" data-src="https://www.youtube.com/embed/mAwtWmtCURw">
+			</iframe>
+		</div>
+		<br/>
+	</div>
 	<div class="bee-row bee-row-6">
 		<div class="bee-row-content">
 			<div class="bee-col bee-col-1 bee-col-w12">
@@ -603,7 +611,7 @@
 						</p>
 					</div>
 					<div style="text-align: center;" class="bee-text-content">
-						<img src="./images/199por15.png" alt="Image">
+						<img src="./images/199por25.png" alt="Image">
 					</div>
 					<div class="bee-block bee-block-2 bee-text">
 						<p style="text-align: center; font-size: 20px; line-height: 24px;color: #ff0000;font-weight: bold;">
@@ -792,7 +800,7 @@
 																									</p>
 																								</div>
 																								<div class="bee-text-content" style="text-align: center">
-																									<img src="./images/199por15.png" alt="Image">
+																									<img src="./images/199por25.png" alt="Image">
 																								</div>
 																								<div class="bee-block bee-block-2 bee-text">
 																									<p style="text-align: center; font-size: 20px; line-height: 24px;color: #ff0000;font-weight: bold;">
@@ -1076,58 +1084,30 @@
 
 																														</div>
 
-
-	<script src="./images/base-script.js.download" async=""></script>
-
-	<!-- Custom styles and bee overwrites -->
-	<link href="./images/beefree-pages-overwrites" rel="stylesheet" type="text/css" async="">
 	<link href="./images/bee-pages.css" rel="stylesheet" type="text/css" async="">
 
-	<!-- jQuery -->
-	<script src="./images/jquery-351" type="text/javascript"></script>
+<script>
+	// Set the options globally
+	// to make LazyLoad self-initialize
+	window.lazyLoadOptions = {
+		// Your custom settings go here
+	};
 
-	<!-- Page data -->
-	<script type="text/javascript">
-	var _pageID = parseInt('21072627');
-	var _pageType = parseInt('12');
-	var _redirectID = parseInt('0');
-	var _machineID = parseInt('657982');
-	var _chatCode = '';
-	var _leadSource = '';
-	var _leadSCK = '';
-	var _clientLang = 'pt-BR';
-	var _isTest = Boolean(parseInt('0'));
-	var _isMultiCapture = Boolean(parseInt('0'));
-	var _LGPDConsentText = '';
-	var _LGPDLinkTerms = '';
-	var _LGPDUrlTerms = '';
-	var _facebookApiConversionPixels = '';
+	// Listen to the initialization event
+	// and get the instance of LazyLoad
+	window.addEventListener("LazyLoad::Initialized", function (event) {
+		window.lazyLoadInstance = event.detail.instance;
+	}, false);
+</script>
 
-	var _cfIpCountry = 'UNKNOW';
-	var _cfHostname = 'meunegocio.company';
-	</script>
+<script
+  async
+  src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"
+></script>
 
-	<!-- PoweredBy -->
-
-
-	<!-- PageViews -->
-	<script src="./images/page-views" type="text/javascript" async=""></script>
-
-	<!-- Capture Script and CSS -->
-	<link href="./images/capture-css-component" rel="stylesheet" type="text/css" async="">
-	<script src="./images/capture-script-component" type="text/javascript" async=""></script>
-
-	<!-- LeadLovers Captcha -->
-
-	<!-- LGPD -->
-
-	<!-- Facebook Api Conversion -->
-
-	<!-- Masks -->
-	<script src="./images/cleave" type="text/javascript" async=""></script>
-	<script src="./images/ll-fields-mask" type="text/javascript" async=""></script>
-
-
+<script>
+	lazyLoadInstance.update();
+</script>
 
 <!-- Code injected by live-server -->
 <script>
