@@ -35,13 +35,21 @@
     var inputTelefone = document.getElementById('fone');
     formataTelefone(inputTelefone);
   }
-  
-  function pagar() {
-     if (!validarEmail()) {
-      return;
-    } 
+ 
+  function finalizarPagamento(sid) {
+    var email = document.getElementById('email').value;
+    var telefone = document.getElementById('fone').value;
+    efetuarPagamento(email, telefone, sid);
+  }
 
-    if (links.length == 0) {
+  function pagar1() {
+    /* 
+    if (!validarEmail()) {
+      return;
+    }
+    */
+
+    if (undefined == links || !links || !links.length || links.length == 0) {
       load();
     }
 
@@ -55,12 +63,18 @@
     let sid = '6' +  ((checkPsx) ? '1' : '0') + ((checkNintendo) ? '1' : '0') + ((checkOutros) ? '1' : '0') + 
     '0' + ((checkSwitch) ? '1' : '0');
 
-    var email = document.getElementById('email').value;
-    var telefone = document.getElementById('fone').value;
+    finalizarPagamento(sid);
+  }
 
-    efetuarPagamento(email, telefone, sid);
+  function pagar() {
+    try {
+      pagar1();
+    } catch (error) {
+      finalizarPagamento('600000');
+    }
+  }
 
-  } 
+  
 </script>
 </head>
 <body onload="load()">
