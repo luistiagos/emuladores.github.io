@@ -8,19 +8,21 @@ function showSpinner() {
 
 function validaEmail(inputEmail) {
     var email = inputEmail.value;
-    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    //var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     
     if (email.length == 0) {
       inputEmail.classList.add('invalid');
       inputEmail.nextElementSibling.textContent = 'Email obrigatório';
+      alert('Email obrigatório');
       return false;
     }
+    /*
     if (!emailRegex.test(email)) {
       inputEmail.classList.add('invalid');
       inputEmail.nextElementSibling.textContent = 'Email inválido';
       return false;
     }
-    
+    */
     inputEmail.classList.remove('invalid');
     inputEmail.nextElementSibling.textContent = 'Email';
     return true;
