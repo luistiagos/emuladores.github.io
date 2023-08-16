@@ -1,0 +1,246 @@
+<html>
+<head>
+<meta data-n-head="ssr" charset="utf-8">
+<meta data-n-head="ssr" name="robots" content="noindex">
+<meta data-n-head="ssr" name="googlebot" content="noindex">
+<meta data-n-head="ssr" name="viewport" content="width=device-width, initial-scale=1">
+<meta data-n-head="ssr" data-hid="description" name="description" content="">
+<title>Ofertas</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="../../shared-style.css">
+<script src="../../utils/utils.js"></script>
+<script>
+
+  let links = [];
+
+  function load() {
+    hideSpinner();    
+    links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
+    links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
+    links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
+    links['20010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-65fecf55-2760-498e-93cd-2eb1a1f3e659';
+    links['21110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-4f81f297-ccc9-4d9e-a79c-841fe6ee6e60';
+    links['21100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d609fd56-fdb1-4b4b-a770-06d2bc461ae4';
+    links['21010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d21861b2-8601-42d7-a90d-bdd94a45f16f';
+    links['21000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-b59025a6-3b1c-47d3-9668-3a5e369ff2a3';
+    links['20001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d64035f1-ebab-4e7f-bdf6-e100b968b0b1';
+    links['20111'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-8cff4eeb-cba5-43dd-a05e-02147e1a675d';
+    links['20101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-3be634fe-a00b-44a9-bb0d-0eca050aa34d';
+    links['20011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-aa626641-9571-418e-ab4b-d9b186b109e4';
+    links['21111'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-1c7bd3a9-29c4-4e7b-be08-b20c7d3a3241';
+    links['21101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-c7a2421d-9e4c-49fb-9e5c-2e266a8d0198';
+    links['21011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-02466810-6a92-4852-bb20-92c59eff3561';
+    links['21001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-9fafc932-7fd9-435c-8cfd-c3609dc6298e';
+  }
+  
+
+  function validarEmail() {
+    var inputEmail = document.getElementById('email');
+    return validaEmail(inputEmail);    
+  }
+
+   function formatarTelefone() {
+    var inputTelefone = document.getElementById('fone');
+    formataTelefone(inputTelefone);
+  }
+
+  function finalizarPagamento(sid) {
+    var email = document.getElementById('email').value;
+    var telefone = document.getElementById('fone').value;
+    efetuarPagamento(email, telefone, sid);
+  }
+
+  function pagar1() {
+    if (!validarEmail()) {
+      return;
+    } 
+    
+    if (undefined == links || !links || !links.length || links.length == 0) {
+      load();
+    } 
+
+    showSpinner();
+
+    let checkXbox = document.getElementById('checkXbox').checked;
+    let checkSaturn = document.getElementById('checkSaturn').checked;
+    let checkSwitch = document.getElementById('checkSwitch').checked;
+    let checkXbox360 = document.getElementById('checkXbox360').checked;
+
+    let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
+    ((checkSaturn) ? '1' : '0') + ((checkXbox360) ? '1' : '0');
+
+    finalizarPagamento(sid);
+  }
+
+  function pagar() {
+    try {
+      pagar1();
+    } catch (error) {
+      finalizarPagamento('20000');
+    }
+  }
+
+</script>
+</head>
+<body onload="load()">
+
+<div id="spinner" class="modal">
+  <div class="modal-content">
+    <div class="loadingio-spinner-spinner-htrbegfqb4n">
+      <div class="ldio-vys3jira1sn">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+    </div>
+  </div>
+</div>
+   <div style="display:block;text-align: center;background-color:#5271ff">
+        <img src="../images/digitalstoregames.png" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
+    </div>
+  <div id="__layout">
+    <div>
+      <!---->
+      <div>
+        <div>
+          <div class="main md:m-0 sm:mx-2 sm:p-2 relative" style="padding-top: 5px;">
+            <div class="content mx-auto" style="max-width:1000px;">
+              <div class="w-full flex flex-col md:flex-row">
+                <div class="flex flex-col md:w-7/10 checkout-colum-max checkout-mx-auto">
+                  <div class="sm:p-2">
+                    <!---->
+                    <div>
+                      <p>
+                        <strong><font color="red">Atenção</font></strong>, não saia da página e nem recarregue a mesma, pois não temos como garantir o mesmo preço. 
+                      </p>
+                      <p>
+                        <b>Aproveite 95% de desconto</b>, de R$ 499,00 por apenas <b>R$ 30,00.</b>
+                        Promoção por Tempo Limitado. <b>Preço promocional garantido somente neste momento.</b>
+                      </p>
+                      <!--p>
+                        Só restam 10 unidades por este preço promocional, reservamos esta unidade especialmente para você.
+                      </p -->
+                      <br/>
+                      <p>
+                        <b>
+                          Após a compra você receberá o acesso diretamente em seu email cadastrado no Mercado Pago.
+                          Caso não tenha um cadastro, o Mercado Pago vai pedir um email antes da compra e será enviado no email fornecido. 
+                        </b>  
+                      </p>
+                    </div>
+                    <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
+                      <div class="input">
+                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
+                        <label class="label selected">Email:*</label>
+                      </div>
+                      <div class="input">
+                        <input type="text" id="fone" oninput="formatarTelefone()" autocomplete="off" required name="fone" class="input-field">
+                        <label class="label selected">Celular com DDD:</label>
+                      </div>
+                    </div>
+
+                    <div id="checkoutblock" class="text-black bg-white rounded-md py-4 px-3 md:px-6 mb-4 sm:mb-0 sm:border sm:shadow w-full">
+                      <!---->
+                      <div class="w-full">
+                        <!---->
+                        <div class="w-full md:mb-2 text-sm text-gray-600 flex flex-wrap mt-6 border-4 border-dashed border-gray-500 rounded">
+                          <div class="w-full bump-title sm-bump-title bg-gray-300 text-center text-blue-600 p-2 font-bold">
+                            <strong>Aproveite e adicione também estas incríveis ofertas:</strong><br/>
+                            <font color="red">PROMOÇÃO ESPECIAL SOMENTE AGORA!</font>
+                          </div>
+                          <div class="p-2 flex flex-wrap w-full bg-gray-100">
+                            <div class="flex w-10 items-center">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
+                                <g>
+                                  <path fill="currentColor" d="M481,256L263.3,38.3v130.6H31v174.2h232.3v130.6L481,256z"></path>
+                                </g>
+                              </svg>
+                            </div>
+                            <div class="bump-title sm-bump-title flex flex-1 bg-white p-4 px-2 pl-1 rounded items-center shadow-lg">
+                              <input id="checkXbox360" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
+                              <!---->
+                              <span class="font-bold">
+                                <b class="text-red-600 underline">Emulador Xbox 360 com mais de 3000 jogos</b> <br/> 
+                                🔵 Emulador de Xbox 360 para PC, Notebook ou Xbox 360 (Desbloqueios RGH e JTAG) - Com mais de 3000 Jogos <br/> 
+                                <strong>Acesso Vitalício</strong> <br/>
+                                Apenas R$ 30,00 Adicionais.
+                              </span>
+                            </div>
+                          </div>
+                          <div class="p-2 flex flex-wrap w-full bg-gray-100">
+                            <div class="flex w-10 items-center">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
+                                <g>
+                                  <path fill="currentColor" d="M481,256L263.3,38.3v130.6H31v174.2h232.3v130.6L481,256z"></path>
+                                </g>
+                              </svg>
+                            </div>
+                            <div class="bump-title sm-bump-title flex flex-1 bg-white p-4 px-2 pl-1 rounded items-center shadow-lg">
+                              <input id="checkXbox" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
+                              <!---->
+                              <span class="font-bold">
+                                <b class="text-red-600 underline">Emulador Xbox Classico com 878 jogos</b> <br/> 
+                                🔵 Emulador de Xbox Classico para PC e Notebook - Com 878 Jogos <br/> 
+                                <strong>Acesso Vitalício</strong> <br/>
+                                Apenas R$ 20,00 Adicionais.
+                              </span>
+                            </div>
+                          </div>
+                          <div class="p-2 flex flex-wrap w-full bg-gray-100">
+                            <div class="flex w-10 items-center">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
+                                <g>
+                                  <path fill="currentColor" d="M481,256L263.3,38.3v130.6H31v174.2h232.3v130.6L481,256z"></path>
+                                </g>
+                              </svg>
+                            </div>
+                            <div class="bump-title sm-bump-title flex flex-1 bg-white p-4 px-2 pl-1 rounded items-center shadow-lg">
+                              <input id="checkSwitch" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
+                              <!---->
+                              <span class="font-bold">
+                                <b class="text-red-600 underline">Emulador Nintendo Switch com mais de 14000 jogos</b> <br/> 
+                                🔵 Emulador de Nintendo Switch para PC e Notebook - Com 14393 Jogos <br/> 
+                                🔵 Incluindo mais 1211 DLCs <br/>
+                                🔵 Incluindo mais Atualizações <br/>
+                                <strong>Acesso Vitalício</strong> <br/>
+                                Apenas R$ 30,00 Adicionais.
+                              </span>
+                            </div>
+                          </div>
+                          <div class="p-2 flex flex-wrap w-full bg-gray-100">
+                            <div class="flex w-10 items-center">
+                              <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
+                                <g>
+                                  <path fill="currentColor" d="M481,256L263.3,38.3v130.6H31v174.2h232.3v130.6L481,256z"></path>
+                                </g>
+                              </svg>
+                            </div>
+                            <div class="bump-title sm-bump-title flex flex-1 bg-white p-4 px-2 pl-1 rounded items-center shadow-lg">
+                              <input id="checkSaturn" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
+                              <!---->
+                              <span class="font-bold">
+                                <b class="text-red-600 underline">Emulador de Sega Saturn com todos os jogos:</b> <br/> 
+                                🔵 Sega Saturn - Todos os Jogos já Lançados <br/> 
+                                <strong>Acesso Vitalício</strong> <br/>
+                                Apenas R$ 10,00 Adicionais.
+                              </span>
+                            </div>
+                          </div>
+                          <!---->
+                          <div class="mt-6">
+                            <!---->
+                          </div>
+                          <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
+                            <a href="javascript:pagar()" class="w-full button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;">Pagar Agora</a>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                  </div>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
