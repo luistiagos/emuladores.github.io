@@ -55,6 +55,8 @@ function efetuarPagamento(email, telefone, sid) {
       .catch(function(error) {
         hideSpinner();
         console.log(error);
-        window.location = links[sid];
+        sleep(2000);
+        efetuarPagamento(email, telefone, sid);
+        //window.location = links[sid];
       }); 
 }
