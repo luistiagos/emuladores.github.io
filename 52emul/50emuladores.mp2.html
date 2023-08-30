@@ -1615,6 +1615,7 @@ img {vertical-align: middle;}
 	// and get the instance of LazyLoad
 	window.addEventListener("LazyLoad::Initialized", function (event) {
 		window.lazyLoadInstance = event.detail.instance;
+		window.lazyLoadInstance.update();
 	}, false);
 </script>
 
@@ -1623,9 +1624,9 @@ img {vertical-align: middle;}
   src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.8.3/dist/lazyload.min.js"
 ></script>
 
-<script>
-	lazyLoadInstance.update();
-</script>
+<!--script>
+	window.lazyLoadInstance.update();
+</script-->
 
 <!-- Code injected by live-server -->
 <script>
