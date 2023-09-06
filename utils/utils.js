@@ -37,6 +37,10 @@ function formataTelefone(inputTelefone) {
     inputTelefone.value = telefone;
 }
 
+function sleep(time) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 function efetuarPagamento(email, telefone, sid) {
   // Montar a URL do serviço REST com os parâmetros do formulário
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone) + '&sid=' + encodeURIComponent(sid);
@@ -55,8 +59,8 @@ function efetuarPagamento(email, telefone, sid) {
       .catch(function(error) {
         hideSpinner();
         console.log(error);
-        sleep(2000);
-        efetuarPagamento(email, telefone, sid);
-        //window.location = links[sid];
+        sleep(2000).then(()=>{
+          efetuarPagamento(email, telefone, sid);
+        });
       }); 
 }
