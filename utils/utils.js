@@ -1,3 +1,9 @@
+function logError(file, method, message) {
+    // Montar a URL do serviço REST com os parâmetros do formulário
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/logErr?file=' + file + '&method=' + method + '&message=' + message;
+    fetch(urlServico);
+}
+
 function showSpinner() {
     document.getElementById("spinner").style.display = "flex";
   }
@@ -57,6 +63,7 @@ function efetuarPagamento(email, telefone, sid) {
         window.location.href = urlRetornada;
       })
       .catch(function(error) {
+        logError('utils.js', 'efetuarPagamento', error);
         hideSpinner();
         console.log(error);
         sleep(2000).then(()=>{
