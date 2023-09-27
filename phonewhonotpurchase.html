@@ -56,6 +56,10 @@
                     const valueCell = document.createElement('td');
                     valueCell.textContent = transaction.value;
                     row.appendChild(valueCell);
+                    
+                    const msgCell = document.createElement('td');
+                    msgCell.textContent = transaction.msg;
+                    row.appendChild(msgCell);
 
                     let whatsaplink = '';
 
@@ -66,10 +70,10 @@
                     const whatsappCell = document.createElement('td');
                     const whatsappLink = document.createElement('a');
                     whatsappLink.href = transaction.whatsapp_link;
-                    whatsappLink.textContent = whatsaplink;
+                    whatsappLink.textContent = whatsaplink + '&text=' + transaction.msg.replace(' ','%20');
                     whatsappCell.appendChild(whatsappLink);
                     row.appendChild(whatsappCell);
-
+                   
                     tableBody.appendChild(row);
                 });
             }
