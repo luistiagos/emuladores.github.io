@@ -28,6 +28,7 @@
                 <th>Product ID</th>
                 <th>Value</th>
                 <th>WhatsApp Link</th>
+                <th>Mensagem</th>
             </tr>
         </thead>
         <tbody></tbody>
@@ -56,10 +57,6 @@
                     const valueCell = document.createElement('td');
                     valueCell.textContent = transaction.value;
                     row.appendChild(valueCell);
-                    
-                    const msgCell = document.createElement('td');
-                    msgCell.textContent = transaction.msg;
-                    row.appendChild(msgCell);
 
                     let whatsaplink = '';
 
@@ -70,10 +67,15 @@
                     const whatsappCell = document.createElement('td');
                     const whatsappLink = document.createElement('a');
                     whatsappLink.href = transaction.whatsapp_link;
-                    whatsappLink.textContent = whatsaplink + '&text=' + transaction.msg.replace(' ','%20');
+                    whatsappLink.textContent = whatsaplink 
                     whatsappCell.appendChild(whatsappLink);
                     row.appendChild(whatsappCell);
-                   
+
+
+                    const msgCell = document.createElement('td');
+                    msgCell.textContent = transaction.msg;
+                    row.appendChild(msgCell);
+
                     tableBody.appendChild(row);
                 });
             }
