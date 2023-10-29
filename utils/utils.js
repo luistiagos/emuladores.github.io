@@ -71,3 +71,28 @@ function efetuarPagamento(email, telefone, sid) {
         });
       }); 
 }
+
+function efetuarPagamento2(email, telefone, sid) {
+  // Montar a URL do serviço REST com os parâmetros do formulário
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMPLink2?ids=' + encodeURIComponent(sid) + '&email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone);
+
+    fetch(urlServico)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(data) {
+        // Obter a URL retornada pelo serviço
+        //hideSpinner();
+        var urlRetornada = data;        
+        console.log(urlRetornada);
+        window.location.href = urlRetornada;
+      })
+      .catch(function(error) {
+        logError('utils.js', 'efetuarPagamento', error);
+        hideSpinner();
+        console.log(error);
+        sleep(2000).then(()=>{
+          efetuarPagamento(email, telefone, sid);
+        });
+      }); 
+}
