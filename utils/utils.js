@@ -16,6 +16,16 @@ function validaEmail(inputEmail) {
         alert('Email obrigatório');
         return false;
     }
+
+     // Regular expression for a valid email address
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        inputEmail.classList.add('invalid');
+        inputEmail.nextElementSibling.textContent = 'Email inválido';
+        alert('Email inválido');
+        return false;
+    }
+
     inputEmail.classList.remove('invalid');
     inputEmail.nextElementSibling.textContent = 'Email';
     return true;
