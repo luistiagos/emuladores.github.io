@@ -9,7 +9,7 @@ function hideSpinner() {
     document.getElementById("spinner").style.display = "none";
 }
 function validaEmail(inputEmail) {
-    var email = inputEmail.value;
+    var email = inputEmail.value.trim();
     if (email.length == 0) {
         inputEmail.classList.add('invalid');
         inputEmail.nextElementSibling.textContent = 'Email obrigatório';
