@@ -68,7 +68,7 @@
   function finalizarPagamento(sid) {
     var email = document.getElementById('email').value;
     var telefone = document.getElementById('fone').value;
-    efetuarPagamento2(email, telefone, sid);
+    efetuarPagamento(email, telefone, sid);
   }
 
   function pagar1() {
@@ -87,23 +87,9 @@
     let checkSwitch = document.getElementById('checkSwitch').checked;
     let checkXbox360 = document.getElementById('checkXbox360').checked;
 
-    //let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
-    //((checkSaturn) ? '1' : '0') + ((checkXbox360) ? '1' : '0');
+    let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
+    ((checkSaturn) ? '1' : '0') + ((checkXbox360) ? '1' : '0');
 
-    let sid = '2';
-    if (checkSwitch) {
-      sid += ';9';
-    }
-    if (checkXbox) {
-      sid += ';10';
-    }
-    if (checkSaturn) {
-      sid += ';11';
-    }
-    if (checkXbox360) {
-      sid += ';6';
-    }
-    
     finalizarPagamento(sid);
   }
 
@@ -165,11 +151,20 @@
                       </p>
                       <br/>
                       <div style="text-align: center;" class="bee-text-content">
-											  <img style="width: 80%;" src="../images/299por30.webp" alt="Image">
-											</div>
+																									<img style="width: 80%;" src="../images/6x DE.png" alt="Image">
+																								</div>
+                      <!--div class="bee-col bee-col-3 bee-col-w4">
+																																						<span dir="ltr" style="word-break: break-word; font-size: 16px; line-height: 200%;">
+																																								<a style="text-decoration: none;" target="_blank" href="mailto:contato@digitalstoregames.com?subject=52emuladores">
+																																									<img src="../images/mail.png" style="width: 30px;height: 30px"/>
+																																									<strong>Entrega imediata por e-mail. Preencha seus dados:</strong>
+																																								</a>		
+																																						</span>
+																																					</div-->
                       <br/>
                     </div>
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
+                      <b>Atenção, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
                       <div class="input">
                         <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
                         <label class="label selected">Email:*</label>
@@ -201,8 +196,8 @@
                               <input id="checkXbox360" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
                               <!---->
                               <span class="font-bold">
-                                <b class="text-red-600 underline">Emulador Xbox 360 com mais de 3000 jogos</b> <br/> 
-                                🔵 Emulador de Xbox 360 para PC, Notebook ou Xbox 360 (Desbloqueios RGH e JTAG) - Com mais de 3000 Jogos <br/> 
+                                <b class="text-red-600 underline">Plataforma Xbox 360 com mais de 3000 jogos</b> <br/> 
+                                🔵 Plataforma de Xbox 360 para PC, Notebook ou Xbox 360 (Desbloqueios RGH e JTAG) - Com mais de 3000 Jogos <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
                                 Apenas R$ 30,00 Adicionais.
                               </span>
@@ -220,8 +215,8 @@
                               <input id="checkXbox" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
                               <!---->
                               <span class="font-bold">
-                                <b class="text-red-600 underline">Emulador Xbox Classico com 878 jogos</b> <br/> 
-                                🔵 Emulador de Xbox Classico para PC e Notebook - Com 878 Jogos <br/> 
+                                <b class="text-red-600 underline">Plataforma Xbox Classico com 878 jogos</b> <br/> 
+                                🔵 Plataforma de Xbox Classico para PC e Notebook - Com 878 Jogos <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
                                 Apenas R$ 20,00 Adicionais.
                               </span>
@@ -237,7 +232,7 @@
                             </div>
                             <div class="bump-title sm-bump-title flex flex-1 bg-white p-4 px-2 pl-1 rounded items-center shadow-lg">
                               <input id="checkSwitch" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
-                              <!---->
+                             
                               <span class="font-bold">
                                 <b class="text-red-600 underline">Emulador Nintendo Switch com mais de 14000 jogos</b> <br/> 
                                 🔵 Emulador de Nintendo Switch para PC e Notebook - Com 14393 Jogos <br/> 
@@ -260,7 +255,7 @@
                               <input id="checkSaturn" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
                               <!---->
                               <span class="font-bold">
-                                <b class="text-red-600 underline">Emulador de Sega Saturn com todos os jogos:</b> <br/> 
+                                <b class="text-red-600 underline">Plataforma de Sega Saturn com todos os jogos:</b> <br/> 
                                 🔵 Sega Saturn - Todos os Jogos já Lançados <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
                                 Apenas R$ 10,00 Adicionais.
@@ -295,13 +290,13 @@
                       </span>
                       <span>
               																													
-                        <div class="bee-col bee-col-1 bee-col-w4">
+                        <!-- div class="bee-col bee-col-1 bee-col-w4">
                           <span class="bee-col bee-col-1 bee-col-w12" style="text-align: center;">
                             <span>
                               <img width="100%" class="lazy" src="../images/banner_pagseguro_550x.jpg" alt="Seguro">
                             </span>			
                           </span>
-                        </div>
+                        </div -->
                       </span>
   </div>
   <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
