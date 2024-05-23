@@ -57,10 +57,10 @@ function efetuarPagamento(email, telefone, sid) {
     var fbc = getCookie('_fbc');
     
     if (fbp) {
-        urlServico += '&fbp=' + getCookie('_fbp');
+        urlServico += '&fbp=' + encodeURIComponent(getCookie('_fbp'));
     }
     if (fbc) {
-        urlServico += '&fbc=' + getCookie('_fbc');
+        urlServico += '&fbc=' +encodeURIComponent(getCookie('_fbc'));
     }
 
     fetch(urlServico).then(function(response) {
