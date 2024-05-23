@@ -1,13 +1,22 @@
+function getCookie(name) {
+    let value = "; " + document.cookie;
+    let parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
 function logError(file, method, message) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/logErr?file=' + file + '&method=' + method + '&message=' + message;
     fetch(urlServico);
 }
+
 function showSpinner() {
     document.getElementById("spinner").style.display = "flex";
 }
+
 function hideSpinner() {
     document.getElementById("spinner").style.display = "none";
 }
+
 function validaEmail(inputEmail) {
     var email = inputEmail.value.trim();
     if (email.length == 0) {
@@ -30,17 +39,21 @@ function validaEmail(inputEmail) {
     inputEmail.nextElementSibling.textContent = 'Email';
     return true;
 }
+
 function formataTelefone(inputTelefone) {
     var telefone = inputTelefone.value;
     telefone = telefone.replace(/\D/g, '');
     telefone = telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
     inputTelefone.value = telefone;
 }
+
 function sleep(time) {
     return new Promise((resolve)=>setTimeout(resolve, time));
 }
+
 function efetuarPagamento(email, telefone, sid) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone) + '&sid=' + encodeURIComponent(sid);
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone) + '&sid=' + encodeURIComponent(sid) + 
+    '&fbp=' + getCookie('_fbp') + '&fbc=' + getCookie('_fbc');
     fetch(urlServico).then(function(response) {
         return response.text();
     }).then(function(data) {
@@ -57,6 +70,7 @@ function efetuarPagamento(email, telefone, sid) {
         );
     });
 }
+
 function efetuarPagamento2(email, telefone, sid) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMPLink2?ids=' + encodeURIComponent(sid) + '&email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone);
     fetch(urlServico).then(function(response) {
