@@ -52,17 +52,20 @@ function sleep(time) {
 }
 
 function efetuarPagamento(email, telefone, sid) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone) + '&sid=' + encodeURIComponent(sid);
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
     
+    if (telefone) {
+        urlServico += '&telefone=' + encodeURIComponent(telefone);
+    }
     if (fbp) {
-        urlServico += '&fbp=' + encodeURIComponent(getCookie('_fbp'));
+        urlServico += '&fbp=' + encodeURIComponent(fbp);
     }
     if (fbc) {
-        urlServico += '&fbc=' +encodeURIComponent(getCookie('_fbc'));
+        urlServico += '&fbc=' +encodeURIComponent(fbc);
     }
-
+    
     fetch(urlServico).then(function(response) {
         return response.text();
     }).then(function(data) {
