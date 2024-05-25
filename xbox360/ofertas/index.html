@@ -79,7 +79,7 @@
     let checkNintendo = document.getElementById('checkNintendo').checked;
     let checkOutros = document.getElementById('checkOutros').checked;
     let checkPsx = document.getElementById('checkSony').checked;
-    let checkSwitch = document.getElementById('checkSwitch').checked;
+    let checkSwitch = false; //document.getElementById('checkSwitch').checked;
 
     let sid = '6' +  ((checkPsx) ? '1' : '0') + ((checkNintendo) ? '1' : '0') + ((checkOutros) ? '1' : '0') + 
     '0' + ((checkSwitch) ? '1' : '0');
@@ -210,7 +210,7 @@
                               <input id="checkNintendo" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
                               <!---->
                               <span class="font-bold">
-                                <b class="text-red-600 underline">11 Plataformas da Nintendo com todos os jogos:</b> <br/> 
+                                <b class="text-red-600 underline">11 Plataformas Diversas com todos os jogos:</b> <br/> 
                                 🔵 Super Nintendo - Todos os Jogos já Lançados <br/> 
                                 🔵 Nintendo 64 - Todos os Jogos já Lançados <br/>
                                 🔵 Nintendo WII - Todos os Jogos já Lançados <br/> 
@@ -227,7 +227,7 @@
                               </span>
                             </div>
                           </div>
-                          <div class="p-2 flex flex-wrap w-full bg-gray-100">
+                          <!-- div class="p-2 flex flex-wrap w-full bg-gray-100">
                             <div class="flex w-10 items-center">
                               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
                                 <g>
@@ -248,7 +248,7 @@
                                 Apenas R$ 30,00 Adicionais.
                               </span>
                             </div>
-                          </div>
+                          </div -->
                           <div class="p-2 flex flex-wrap w-full bg-gray-100">
                             <div class="flex w-10 items-center">
                               <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve" class="w-10 h-10 text-red-600">
