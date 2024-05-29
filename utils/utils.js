@@ -1,7 +1,15 @@
 function getCookie(name) {
-    let value = "; " + document.cookie;
-    let parts = value.split("; " + name + "=");
-    if (parts.length === 2) return parts.pop().split(";").shift();
+    try {
+        if (document && document.cookie) {
+            let value = "; " + document.cookie;
+            let parts = value.split("; " + name + "=");
+            if (parts.length === 2) return parts.pop().split(";").shift();
+        }
+      } catch (error) {
+        console.log(error);
+        logError('utils.js', 'getCookie', error);
+      }
+    return undefined;
 }
 
 function logError(file, method, message) {
