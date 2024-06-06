@@ -60,6 +60,22 @@ function sleep(time) {
 }
 
 function efetuarPagamento(email, telefone, sid) {
+    try {
+        efetuarPagamento1(email, telefone, sid);
+    } catch (error) {
+        try {
+            logError('utils.js', 'efetuarPagamento', error);
+        } catch(error) {
+            console.log(error);
+        }
+
+        setTimeout(() => {
+            efetuarPagamento2(email, sid)
+        }, 500);
+    }
+}
+
+function efetuarPagamento1(email, telefone, sid) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
@@ -84,34 +100,28 @@ function efetuarPagamento(email, telefone, sid) {
         logError('utils.js', 'efetuarPagamento', error);
         hideSpinner();
         console.log(error);
-        sleep(2000).then(()=>{
+        sleep(500).then(()=>{
             efetuarPagamento(email, telefone, sid);
-        }
-        );
+        });
     });
 }
 
-function efetuarPagamento2(email, telefone, sid) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMPLink2?ids=' + encodeURIComponent(sid) + '&email=' + encodeURIComponent(email) + '&telefone=' + encodeURIComponent(telefone);
+function efetuarPagamento2(email, sid) {
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
+    
     fetch(urlServico).then(function(response) {
         return response.text();
     }).then(function(data) {
         var urlRetornada = data;
         console.log(urlRetornada);
-        if (urlRetornada == 'emailinvalido') {
-            alert('Email inválido, favor verificar o seu endereço de email.');
-            hideSpinner();
-            return;
-        }
         window.location.href = urlRetornada;
     }).catch(function(error) {
         logError('utils.js', 'efetuarPagamento', error);
         hideSpinner();
         console.log(error);
-        sleep(2000).then(()=>{
-            efetuarPagamento(email, telefone, sid);
-        }
-        );
+        sleep(500).then(()=>{
+            efetuarPagamento2(email, telefone, sid);
+        });
     });
 }
 
