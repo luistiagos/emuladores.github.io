@@ -71,7 +71,7 @@ function efetuarPagamento(email, telefone, sid) {
         urlServico += '&fbp=' + encodeURIComponent(fbp);
     }
     if (fbc) {
-        urlServico += '&fbc=' +encodeURIComponent(fbc);
+        urlServico += '&fbc=' + fbc;
     }
     
     fetch(urlServico).then(function(response) {
