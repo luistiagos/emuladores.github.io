@@ -68,14 +68,14 @@ function efetuarPagamento(email, telefone, sid) {
         } catch(error) {
             console.log(error);
         }
-
+    
         setTimeout(() => {
-            efetuarPagamento2(email, sid)
+            efetuarPagamento(email, telefone, sid);
         }, 500);
     }
 }
 
-function efetuarPagamento1(email, telefone, sid) {
+async function efetuarPagamento1(email, telefone, sid) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
@@ -89,40 +89,78 @@ function efetuarPagamento1(email, telefone, sid) {
     if (fbc) {
         urlServico += '&fbc=' + fbc;
     }
-    
-    fetch(urlServico).then(function(response) {
-        return response.text();
-    }).then(function(data) {
-        var urlRetornada = data;
-        console.log(urlRetornada);
-        window.location.href = urlRetornada;
-    }).catch(function(error) {
-        logError('utils.js', 'efetuarPagamento', error);
+
+    const response = await fetch(urlServico);
+    const data = await response.text();
+    const returnedUrl = data;
+    console.log(returnedUrl);
+
+    if (!tryRedirect(returnedUrl)) {
+        doLinkConfirmacao(returnedUrl);
+    } else {
         hideSpinner();
-        console.log(error);
-        sleep(500).then(()=>{
-            efetuarPagamento(email, telefone, sid);
-        });
-    });
+    }
 }
 
-function efetuarPagamento2(email, sid) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
-    
-    fetch(urlServico).then(function(response) {
-        return response.text();
-    }).then(function(data) {
-        var urlRetornada = data;
-        console.log(urlRetornada);
-        window.location.href = urlRetornada;
-    }).catch(function(error) {
-        logError('utils.js', 'efetuarPagamento', error);
-        hideSpinner();
-        console.log(error);
-        sleep(500).then(()=>{
-            efetuarPagamento2(email, telefone, sid);
-        });
-    });
+function tryRedirect(url) {
+    try {
+        window.location.href = url;
+        return true;
+    } catch (e) {
+        console.log("window.location.href failed, trying window.location.assign", e);
+        try {
+            window.location.assign(url);
+            return true;
+        } catch (e) {
+            console.log("window.location.assign failed, trying window.location.replace", e);
+            try {
+                window.location.replace(url);
+                return true;
+            } catch (e) {
+                console.log("window.location.replace failed, trying window.open", e);
+                try {
+                    var newTab = window.open(url, '_blank');
+                    if (!newTab || newTab.closed || typeof newTab.closed == 'undefined') {
+                        throw new Error("Pop-up blocked");
+                    }
+                    return true;
+                } catch (e) {
+                    console.log("window.open failed, trying form submission", e);
+                    try {
+                        // Create and submit a form dynamically
+                        var form = document.createElement('form');
+                        form.method = 'GET';
+                        form.action = url;
+                        document.body.appendChild(form);
+                        form.submit();
+                        return true;
+                    } catch (e) {
+                        console.log("Form submission failed", e);
+                        try {
+                            var fallbackLink = document.createElement('a');
+                            fallbackLink.href = url;
+                            fallbackLink.target = 'blank';
+                            fallbackLink.style.display = 'none'; // Hide the link
+                            document.body.appendChild(fallbackLink);
+                            // Programmatically click the link
+                            fallbackLink.click();
+                            return true;
+                        } catch (e) {
+                            console.log("Click link failed", e);
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+    }
 }
+
+function doLinkConfirmacao(url) {
+    document.getElementById("inner_spinner").style.display = "none";
+    document.getElementById("linkConfirmacao").innerHTML = 
+    '<a href="' + url + '" class="w-full button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;">Confirmar</a>';
+    document.getElementById("linkConfirmacao").style.display = "block";
+  }
 
 
