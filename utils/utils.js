@@ -17,6 +17,14 @@ function logError(file, method, message) {
     fetch(urlServico);
 }
 
+function showSpinnerLoader() {
+    document.getElementById("spinner-loader").style.display = "flex";
+}
+
+function hideSpinnerLoader() {
+    document.getElementById("spinner-loader").style.display = "none";
+}
+
 function showSpinner() {
     document.getElementById("spinner").style.display = "flex";
 }
