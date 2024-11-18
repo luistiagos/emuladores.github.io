@@ -35,7 +35,7 @@
   let links = [];
 
   function load() {
-    hideSpinnerLoader();    
+    //hideSpinnerLoader();    
     links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
     links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
     links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
@@ -116,22 +116,6 @@
 
 </head>
 <body onload="load()">
-
-  <div id="spinner-loader" class="modal">
-    <div class="modal-content">
-      <b>Carregando...</b>
-      <br/>
-      <br/>
-      <div style="text-align: center;">
-        <div id="inner_spinner" class="loadingio-spinner-spinner-htrbegfqb4n">
-          <div class="ldio-vys3jira1sn">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          </div>
-        </div>
-    </div>
-    </div>
-  </div>
-
   <div id="spinner" class="modal" style="display: none;">
     <div class="modal-content">
       <b>Redirecionando Para o Mercado Pago.</b>

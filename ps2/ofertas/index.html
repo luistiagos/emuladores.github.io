@@ -19,7 +19,7 @@
   let links = [];
 
   function load() {
-    hideSpinnerLoader();  
+    //hideSpinnerLoader();  
     fetch('links.csv')
       .then(response => response.text())
       .then(data => {
@@ -95,21 +95,6 @@
 
 </head>
 <body onload="load()">
-  <div id="spinner-loader" class="modal">
-    <div class="modal-content">
-      <b>Carregando...</b>
-      <br/>
-      <br/>
-      <div style="text-align: center;">
-        <div id="inner_spinner" class="loadingio-spinner-spinner-htrbegfqb4n">
-          <div class="ldio-vys3jira1sn">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-          </div>
-        </div>
-    </div>
-    </div>
-  </div>
-
   <div id="spinner" class="modal" style="display: none;">
     <div class="modal-content">
       <b>Redirecionando Para o Mercado Pago.</b>
