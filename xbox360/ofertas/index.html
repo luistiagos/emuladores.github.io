@@ -38,7 +38,6 @@
   let links = [];
 
   function load() {
-    //hideSpinnerLoader();   
     fetch('links.csv')
       .then(response => response.text())
       .then(data => {
