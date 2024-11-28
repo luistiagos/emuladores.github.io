@@ -67,9 +67,9 @@ function sleep(time) {
     return new Promise((resolve)=>setTimeout(resolve, time));
 }
 
-function efetuarPagamento(email, telefone, sid) {
+function efetuarPagamento(email, telefone, sid, cupom=undefined) {
     try {
-        efetuarPagamento1(email, telefone, sid);
+        efetuarPagamento1(email, telefone, sid, cupom);
     } catch (error) {
         try {
             logError('utils.js', 'efetuarPagamento', error);
@@ -78,12 +78,26 @@ function efetuarPagamento(email, telefone, sid) {
         }
     
         setTimeout(() => {
-            efetuarPagamento(email, telefone, sid);
+            efetuarPagamento(email, telefone, sid, cupom);
         }, 500);
     }
 }
 
-async function efetuarPagamento1(email, telefone, sid) {
+async function getCupomDiscount(cupom, productid=undefined) {
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/cupom?cupom=' + encodeURIComponent(cupom);
+    if (productid) {
+        urlServico += '&productid=' + productid; 
+    }
+    const response = await fetch(urlServico);
+    if (response.status == 200) {
+        const data = await response.json();
+        return (!!data) ? parseFloat(data) : 0.0;
+    }
+    
+    return 0.0;
+}
+
+async function efetuarPagamento1(email, telefone, sid, cupom=undefined) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
@@ -97,11 +111,13 @@ async function efetuarPagamento1(email, telefone, sid) {
     if (fbc) {
         urlServico += '&fbc=' + fbc;
     }
+    if (cupom) {
+        urlServico += '&cupom=' + encodeURIComponent(cupom)
+    }
 
     const response = await fetch(urlServico);
     const data = await response.text();
     const returnedUrl = data;
-    console.log(returnedUrl);
 
     if (!tryRedirect(returnedUrl)) {
         doLinkConfirmacao(returnedUrl);
