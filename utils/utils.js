@@ -84,7 +84,7 @@ function efetuarPagamento(email, telefone, sid, cupom=undefined) {
 }
 
 async function getCupomDiscount(cupom, productid=undefined) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/cupom?cupom=' + encodeURIComponent(cupom);
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/cupom?cupom=' + encodeURIComponent(cupom.toUpperCase());
     if (productid) {
         urlServico += '&productid=' + productid; 
     }
