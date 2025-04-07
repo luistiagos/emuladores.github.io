@@ -1,191 +1,146 @@
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-<meta data-n-head="ssr" charset="utf-8">
-<meta data-n-head="ssr" name="robots" content="noindex">
-<meta data-n-head="ssr" name="googlebot" content="noindex">
-<meta data-n-head="ssr" name="viewport" content="width=device-width, initial-scale=1">
-<meta data-n-head="ssr" data-hid="description" name="description" content="">
-<meta name="viewport" content="width=device-width">
-<title>Recuperar Acesso!</title>
-<link rel="stylesheet" href="style.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
-<link rel="stylesheet" href="style.css">
-<link rel="stylesheet" href="../../shared-style.css">
-<script src="../../utils/utils.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
-  table {
-      width: 100%;
-      border: 2px solid #dddddd;
-      border-collapse: collapse;
-  }
-  th, td {
-      border: 1px solid #dddddd;
-      padding: 10px;
-  }
-  th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-      text-align: left;
-  }
-  a {
-      text-decoration: underline;
-      color: blue;
-  }
-  .email-icon {
-    color: blue;
-  }
-  .email-icon:hover {
-    cursor: pointer;
-  }
-
-.container {
-  display: flex;
-  align-items: center;
-  height: 50vh; 
-}
-</style>
-
-<script>
-
-  function validarEmail() {
-    var inputEmail = document.getElementById('email');
-    return validaEmail(inputEmail);    
-  }
-
-  function enviarEmail(email, productid) {
-    fetch(`https://digitalstoregames.pythonanywhere.com/manualdeliver?productId=${productid}&email=${email}`).then(response => {
-      if (!response.ok) {
-        throw new Error('Erro ao consultar dados.');
-      }
-      return response.json();
-      }).then(data => {
-          console.log(data);
-          alert("Email enviado com sucesso!");
-      }).catch(error => {
-          console.error('Erro:', error);
-      });
-  }
-
-  function consultarDados() {
-    var inputEmail = document.getElementById('email');
-    if (validaEmail(inputEmail)) {
-      email = inputEmail.value;
-      fetch(`https://digitalstoregames.pythonanywhere.com/list_products_by_email?email=${email}`).then(response => {
-        if (!response.ok) {
-          exibirGrade([], email);
-        }
-        return response.json();
-      }).then(data => {
-          console.log(data);
-          exibirGrade(data, email);
-      }).catch(error => {
-          exibirGrade([], email);
-          console.error('Erro:', error);
-      });
-    }
-  }
-  
-  function exibirGrade(data, email) {
-      const gridContainer = document.getElementById('grid-container');
-      gridContainer.innerHTML = "";
-
-      if (!data || data.length == 0) {
-        gridContainer.innerHTML = '<b>Email não encontrado. Por favor entre em contato com o nosso suporte pelo Whatsap: <a href="https://wa.me/5541996260115">(41)996260115</a></b>';
-        return;
-      }
-
-      const table = document.createElement('table');
-
-      // Cabeçalho da tabela
-      const thead = document.createElement('thead');
-      const headerRow = document.createElement('tr');
-      const headers = ['Pacote', '#'];
-
-      headers.forEach(headerText => {
-        const th = document.createElement('th');
-        th.textContent = headerText;
-        headerRow.appendChild(th);
-      });
-
-      thead.appendChild(headerRow);
-      table.appendChild(thead);
-
-       // Corpo da tabela
-       const tbody = document.createElement('tbody');
-            data.forEach(item => {
-                const row = document.createElement('tr');
-                let td = document.createElement('td');
-
-                const link = document.createElement('a');
-                link.setAttribute('href', item[2]);
-                link.setAttribute('target', '_blank');
-                link.textContent = item[1];
-
-                td.appendChild(link);
-                row.appendChild(td);
-
-                // Coluna do ícone de e-mail
-                const emailTd = document.createElement('td');
-                const emailIcon = document.createElement('i');
-                emailIcon.className = 'fas fa-envelope email-icon'; // Adicionando classe para o ícone de envelope
-                emailIcon.addEventListener('click', () => enviarEmail(email.trim(), ('' + item[0]).trim()));
-                emailIcon.style.color = 'blue'; // Definindo a cor do ícone
-                emailTd.appendChild(emailIcon);
-                row.appendChild(emailTd);
-              
-                tbody.appendChild(row);
-            });
-
-      table.appendChild(tbody);
-      gridContainer.appendChild(table);
-  }
-
-</script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Recuperar Acesso!</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="recuperar-acesso.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body>
-   <div style="display:block;text-align: center;background-color:#5271ff">
-        <img src="../../images/digitalstoregames.webp" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
-    </div>
-  <div id="__layout" style="padding-left: 5%; padding-right: 5%;">
-    <div>
-      <!---->
-      <div>
-        <div>
-          <div class="main md:m-0 sm:mx-2 sm:p-2 relative" style="padding-top: 5px;">
-            <div class="content mx-auto" style="max-width:1000px;">
-              <div class="w-full flex flex-col md:flex-row container">
-                <div class="flex flex-col md:w-7/10 checkout-colum-max checkout-mx-auto">
-                  <div class="sm:p-2">
-                    <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
-                      <b>Para obter o seu acesso, digite o e-mail cadastrado antes da compra:</b>
-                      <div class="input">
-                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
-                        <label class="label selected">Email:*</label>
-                      </div>
-                    </div>
-                    <div class="text-black bg-white rounded-md py-4 px-3 md:px-6 mb-4 sm:mb-0 sm:border sm:shadow w-full">
-                        <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
-                          <a href="javascript:consultarDados()" class="w-full button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;">Consultar</a>
-                        </div>
-                    </div>
-                    <br/><br/>
-                    <div id="grid-container">
-                    </div>
-                   </div>
-                  </div>
-                </div>
-              </div>
-          </div>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+<header class="bg-primary text-white text-center py-4 shadow-sm">
+  <img src="../../images/digitalstoregames.webp" alt="Logo Digital Store Games" class="img-fluid" style="max-height: 44px;">
+</header>
+
+<main class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-body p-4">
+          <h2 class="text-center text-dark mb-4">Recuperar Acesso</h2>
+          <p class="text-center text-muted">Digite o e-mail cadastrado no momento da compra para recuperar seu acesso:</p>
+          <form onsubmit="event.preventDefault(); consultarDados();">
+            <div class="mb-3">
+              <label for="email" class="form-label">Email:*</label>
+              <input type="email" id="email" name="email" class="form-control form-control-lg" onblur="validarEmail()" required placeholder="exemplo@dominio.com">
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary btn-lg">Consultar</button>
+            </div>
+          </form>
+          <div id="grid-container" class="mt-4"></div>
         </div>
       </div>
     </div>
   </div>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <div style="padding-left: 5%; padding-right: 5%;" class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
-      <small>2023 – Todos os Direitos Reservados  Digital Store Games</small> 
-  </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">	
+</main>
+
+<footer class="bg-primary text-white text-center py-3 mt-auto">
+  <small>&copy; 2023 Digital Store Games – Todos os Direitos Reservados</small>
+</footer>
+
+<script>
+  function validarEmail() {
+    const input = document.getElementById("email");
+    const email = input.value.trim();
+    const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+    const isValid = regex.test(email);
+
+    const existingAlert = document.getElementById("email-alert");
+    if (existingAlert) existingAlert.remove();
+
+    if (!isValid) {
+      const alert = document.createElement("div");
+      alert.className = "alert alert-danger mt-2";
+      alert.id = "email-alert";
+      alert.textContent = "Digite um e-mail válido!";
+      input.insertAdjacentElement("afterend", alert);
+      return false;
+    }
+
+    return true;
+  }
+
+  function enviarEmail(email, productid) {
+    fetch(`https://digitalstoregames.pythonanywhere.com/manualdeliver?productId=${productid}&email=${email}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Erro ao consultar dados.');
+        return response.json();
+      })
+      .then(() => alert("Email enviado com sucesso!"))
+      .catch(error => console.error('Erro:', error));
+  }
+
+  function consultarDados() {
+    if (validarEmail()) {
+      const email = document.getElementById('email').value;
+      fetch(`https://digitalstoregames.pythonanywhere.com/list_products_by_email?email=${email}`)
+        .then(response => {
+          if (!response.ok) return [];
+          return response.json();
+        })
+        .then(data => exibirGrade(data, email))
+        .catch(() => exibirGrade([], email));
+    }
+  }
+
+  function exibirGrade(data, email) {
+    const gridContainer = document.getElementById('grid-container');
+    gridContainer.innerHTML = "";
+
+    if (!data || data.length === 0) {
+      gridContainer.innerHTML = '<div class="alert alert-warning">Email n\u00e3o encontrado. Por favor entre em contato com o nosso suporte pelo WhatsApp: <a href="https://wa.me/5541996260115" class="alert-link">(41) 99626-0115</a></div>';
+      return;
+    }
+
+    const table = document.createElement('table');
+    table.className = 'table table-striped table-hover align-middle';
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th>Pacote</th><th>Acesso</th><th>Email</th></tr>';
+    table.appendChild(thead);
+
+    const tbody = document.createElement('tbody');
+    data.forEach(item => {
+      const row = document.createElement('tr');
+
+      const pacoteTd = document.createElement('td');
+      const link = document.createElement('a');
+      link.href = item[2];
+      link.target = '_blank';
+      link.textContent = item[1];
+      pacoteTd.appendChild(link);
+      row.appendChild(pacoteTd);
+
+      const accessTd = document.createElement('td');
+      const accessLink = document.createElement('a');
+      accessLink.href = item[2];
+      accessLink.target = '_blank';
+      const accessIcon = document.createElement('i');
+      accessIcon.className = 'fas fa-unlock-alt text-success fs-5';
+      accessIcon.style.cursor = 'pointer';
+      accessLink.appendChild(accessIcon);
+      accessTd.appendChild(accessLink);
+      row.appendChild(accessTd);
+
+      const emailTd = document.createElement('td');
+      const emailIcon = document.createElement('i');
+      emailIcon.className = 'fas fa-envelope text-primary fs-5';
+      emailIcon.style.cursor = 'pointer';
+      emailIcon.onclick = () => enviarEmail(email.trim(), ('' + item[0]).trim());
+      emailTd.appendChild(emailIcon);
+      row.appendChild(emailTd);
+
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    gridContainer.appendChild(table);
+  }
+</script>
+<script src="../../utils/utils.js"></script>
 </body>
 </html>
