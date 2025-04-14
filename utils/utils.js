@@ -98,7 +98,8 @@ async function getCupomDiscount(cupom, productid=undefined) {
 }
 
 async function efetuarPagamento1(email, telefone, sid, cupom=undefined) {
-    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid);
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink2?email=' + encodeURIComponent(email) + '&sid=' + encodeURIComponent(sid) + 
+    '&test=true';
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
     
