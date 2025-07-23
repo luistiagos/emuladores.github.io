@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="utf-8">
+    <title>Lista de Jogos</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        body { padding: 1rem; }
+        table { font-size: 0.95rem; }
+        td, th { vertical-align: middle !important; }
+        .table td a { text-decoration: none; }
+        .title-col { min-width: 100px; }
+        .size-col { white-space: nowrap; }
+        .download-col { width: 50px; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <h1 id="title" class="h4 mb-3 text-center text-md-start"><!-- preenchido via JS --></h1>
+
+    <!-- Campo de busca -->
+    <div class="row mb-3 justify-content-center">
+        <div class="col-12 col-md-6">
+            <input id="searchInput" class="form-control" type="text"
+                   placeholder="Buscar…" autocomplete="off">
+        </div>
+    </div>
+
+    <!-- Indicador de carregamento -->
+    <div id="loading" class="text-center my-4" style="display:none;">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Carregando…</span>
+        </div>
+    </div>
+
+    <!-- Tabela responsiva -->
+    <div class="table-responsive" style="max-height: 70vh;">
+        <b class="h4 mb-3 text-center text-md-start">Clique no nome do jogo ou no icone de download para baixar.</b><br/>
+		<table class="table table-striped table-sm">
+            <thead class="table-light">
+            <tr>
+                <th class="title-col" >Título</th> 
+                <th class="size-col">Tamanho</th>
+                <th class="download-col">Download</i></th>
+            </tr>
+            </thead>
+            <tbody id="tableBody"><!-- preenchido via JS --></tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script>
+$(function () {
+    const apiBase = "https://emuladores.pythonanywhere.com/api/rom/list"; 
+    const qp      = new URLSearchParams(window.location.search);
+    const p1      = qp.get("system") || "";        
+    const p2      = qp.get("source_id") || "";
+    const url     = `${apiBase}?system=${encodeURIComponent(p1)}&source_id=${encodeURIComponent(p2)}`;
+
+    let games = [];
+    $("#searchInput").prop("disabled", true);
+    $("#loading").show();
+
+    $.getJSON(url)
+      .done(function (data) {
+          games = (data || []).map(g => ({
+              title: g.path.split("/").pop(),
+              link: g.link,
+              size: g.size || ""
+          }));
+		  
+		  if (data[0]?.console) {
+			renderTitle(data[0]?.console);
+		  } 
+          renderTable(games);
+      })
+      .fail(function (_, textStatus, errorThrown) {
+          console.error("Erro ao obter dados:", textStatus, errorThrown);
+          $("#tableBody").html(
+              `<tr><td class="text-danger" colspan="3">Falha ao carregar a lista.</td></tr>`
+          );
+      })
+      .always(function () {
+          $("#loading").hide();
+          $("#searchInput").prop("disabled", false).focus();
+      });
+
+    function renderTable(list) {
+        const rows = list.map(g => {
+            const safeTitle = escapeHtml(g.title);
+            const safeLink  = g.link ? escapeHtml(g.link) : "#";
+            const size      = escapeHtml(g.size || "");
+            return `
+                <tr>
+                    <td><a href="${safeLink}" referrerpolicy="no-referrer">${safeTitle}</a></td>
+                    <td>${size}</td>
+                    <td class="text-center">
+                        <a href="${safeLink}" referrerpolicy="no-referrer" title="Download">
+                            <i class="bi bi-download fs-1"></i>
+                        </a>
+                    </td>
+                </tr>`;
+        }).join("");
+
+        $("#tableBody").html(
+            rows || '<tr><td class="text-muted" colspan="3">Nenhum jogo encontrado.</td></tr>'
+        );
+    }
+
+	function renderTitle(p1) {
+		const systemName = p1 + " - Biblioteca de Jogos";
+		$("#title").text(`${systemName}`);
+	}	
+
+    $("#searchInput").on("input", function () {
+        const term = this.value.trim().toLowerCase();
+        renderTable(games.filter(g =>
+            g.title.toLowerCase().includes(term)
+        ));
+    });
+
+    function escapeHtml(text) {
+        return $("<div>").text(text).html();
+    }
+});
+</script>
+</body>
+</html>
