@@ -12,6 +12,27 @@
 <link rel="stylesheet" href="../../shared-style.css">
 <script src="../../utils/utils.js"></script>
 
+
+<style>
+  .float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#25d366;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+  font-size:30px;
+	box-shadow: 2px 2px 3px #999;
+  z-index:100;
+}
+
+.my-float{
+	margin-top:16px;
+}
+</style>
 <script>
 
 
@@ -78,72 +99,66 @@
   }
 
 </script>
-
-<!-- Hotjar Tracking Code for ps2 checkout -->
+<!-- Hotjar Tracking Code for xbox 360 checkout -->
 <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:3633239,hjsv:6};
+        h._hjSettings={hjid:3638970,hjsv:6};
         a=o.getElementsByTagName('head')[0];
         r=o.createElement('script');r.async=1;
         r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
 </script>
-
 </head>
 <body onload="load()">
-  <div id="spinner" class="modal" style="display: none;">
-    <div class="modal-content">
-      <b>Redirecionando Para o Mercado Pago.</b>
-      <br/>
-      <br/>
-      <div style="text-align: center;">
-        <div id="linkConfirmacao" class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4" style="display: none;">  
-        </div>
-        <div id="inner_spinner" class="loadingio-spinner-spinner-htrbegfqb4n">
-          <div class="ldio-vys3jira1sn">
-            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+   <div id="spinner" class="modal" style="display: none;">
+      <div class="modal-content">
+        <b>Redirecionando Para o Mercado Pago.</b>
+        <br/>
+        <br/>
+        <div style="text-align: center;">
+          <div id="linkConfirmacao" class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4" style="display: none;">  
           </div>
-        </div>
-    </div>
-    </div>
+          <div id="inner_spinner" class="loadingio-spinner-spinner-htrbegfqb4n">
+            <div class="ldio-vys3jira1sn">
+              <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+            </div>
+          </div>
+      </div>
+      </div>
   </div>
-   <div style="display:block;text-align: center;background-color:#5271ff">
-        <img src="../../images/digitalstoregames.webp" alt="Image" style="width: 100%; max-width: 169px;max-height: 44px;"/>
+   <div style="width: 100%;display:block;text-align: center;background-color:#5271ff">
+        <img src="../images/digitalstoregames.png" alt="Image" style="width: 100%; max-width: 150px;"/>
     </div>
-  <div id="__layout">
+  <div id="__layout" style="width: 100%; padding: 5px;">
     <div>
       <!---->
       <div>
         <div>
-          <div class="main md:m-0 sm:mx-2 sm:p-2 relative" style="padding-top: 5px;">
-            <div class="content mx-auto" style="max-width:1000px;">
+          <div class="main md:m-0 sm:mx-2 sm:p-2 relative" style="padding-top: 5px;width: 100%;">
+            <div class="content mx-auto" style="width:100%;">
               <div class="w-full flex flex-col md:flex-row">
                 <div class="flex flex-col md:w-7/10 checkout-colum-max checkout-mx-auto">
                   <div class="sm:p-2">
                     <div style="display:block;text-align: center;">
-                      <img src="../../images/mercadopago.png" alt="Mercado Pago - Compra Garantida" style="width: 100%;"/>
+                      <img src="../images/mercadopago.png" alt="Image" style="width: 100%;padding-top: 0px;padding-bottom: 0px;"/>
                       <br/>
                     </div>
                     <!---->
-                    <div>
-                      <p>
-                        <strong>
-                          <font color="#990000">Atenção</font>
-                        </strong>, não saia da página e nem recarregue a mesma, pois não temos como garantir o mesmo preço. 
+                    <div style="align-content: center;">
+                      <!-- p>
+                        <strong><font color="red">Atenção</font></strong>, não saia da página e nem recarregue a mesma, pois não temos como garantir o mesmo preço. 
                       </p>
-                      <!--p>
-                        <b>Aproveite 90% de desconto</b>, de R$ 299,00 por apenas <b>6x de 5,68 ou R$ 30,00 a vista.</b>
+                      <p>
+                        <b>Aproveite 90% de desconto</b>, de R$ 499,00 por apenas <b>9x 6,41 ou R$ 49,00 a vista.</b>
                         Promoção por Tempo Limitado. <b>Preço promocional garantido somente neste momento.</b>
-                      </p -->
-                      <br/>
-                     <div style="text-align: center;" class="bee-text-content">
-																									<img style="width: 80%;" src="../images/199por25.webp" alt="Image">
-																								</div>
+                      </p>
+                      <br/-->
+											  <img src="../images/199por25.png" style="align-content: center;" alt="Image">                              
                     </div>
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
-                      <b>Atenção, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
+                      <b><font color="#990000">Atenção</font>, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
                       <div class="input">
                         <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
                         <label class="label selected">Email:*</label>
@@ -297,34 +312,24 @@
                   </div>
                 </div>
               </div>
+            
           </div>
         </div>
       </div>
     </div>
   </div>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
+    <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
                       <span >
-                          <img width="100%" src="../../images/mercadopagogarantia.png" style="max-width: 338px;" alt="Imagedigitalstoregames">
-                      </span>
-                      <span>
-              																													
-                        <!-- div class="bee-col bee-col-1 bee-col-w4">
-                          <span class="bee-col bee-col-1 bee-col-w12" style="text-align: center;">
-                            <span>
-                              <img width="100%" class="lazy" src="../../images/banner_pagseguro_550x.webp" alt="Seguro">
-                            </span>			
-                          </span>
-                        </div -->
+                          <img width="100%" src="../images/mercadopagogarantia.jpg" style="max-width: 338px;" alt="Imagedigitalstoregames">
                       </span>
   </div>
     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
       <small>2023 – Todos os Direitos Reservados  Digital Store Games</small> 
   </div>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">	
-<!-- BOTÃO WHATSAPP -->
-<a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria de mais informações sobre o produto 52 Emuladores Configurados com 36237 jogos" class="float" target="_blank">
-<i class="fa fa-whatsapp my-float"></i>
-</a>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">	
+  <!-- BOTÃO WHATSAPP -->
+  <a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria de mais informações sobre a Plataforma Playstation 2" class="float" target="_blank">
+    <i class="fa fa-whatsapp my-float"></i>
+  </a>
 </body>
 </html>
