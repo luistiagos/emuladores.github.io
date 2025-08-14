@@ -187,3 +187,31 @@ function doLinkConfirmacao(url) {
     document.getElementById("linkConfirmacao").style.display = "block";
 }
 
+function createCustomer(storeid, email, telefone, cupom) {
+    try {
+        var urlServico = 'https://digitalstoregames.pythonanywhere.com/manageTransaction?email=' + encodeURIComponent(email) +
+        '&storeid=' + storeid;
+
+        var fbp = getCookie('_fbp');
+        var fbc = getCookie('_fbc');
+
+        if (telefone) {
+            urlServico += '&telefone=' + encodeURIComponent(telefone);
+        }
+        if (fbp) {
+            urlServico += '&fbp=' + encodeURIComponent(fbp);
+        }
+        if (fbc) {
+            urlServico += '&fbc=' + fbc;
+        }
+        if (cupom) {
+            urlServico += '&cupom=' + encodeURIComponent(cupom)
+        }
+
+        fetch(urlServico);
+    } catch (error) {
+        console.log(error);
+        logError('utils.js', 'createCustomer', error);
+    }
+}
+
