@@ -83,6 +83,22 @@ function efetuarPagamento(email, telefone, sid, cupom=undefined) {
     }
 }
 
+function efetuarPagamentoTest(storeid, email, telefone, sid, cupom=undefined) {
+    try {
+        createMLlink_test(storeid, email, telefone, sid, cupom);
+    } catch (error) {
+        try {
+            logError('utils.js', 'efetuarPagamento', error);
+        } catch(error) {
+            console.log(error);
+        }
+    
+        setTimeout(() => {
+            efetuarPagamentoTest(storeid, email, telefone, sid, cupom);
+        }, 500);
+    }
+}
+
 async function getCupomDiscount(cupom, productid=undefined) {
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/cupom?cupom=' + encodeURIComponent(cupom.toUpperCase());
     if (productid) {
@@ -95,6 +111,41 @@ async function getCupomDiscount(cupom, productid=undefined) {
     }
     
     return 0.0;
+}
+
+async function createMLlink_test(storeid, email, telefone, sid, cupom=undefined) {
+    var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink_test?storeid=' + storeid;
+    var fbp = getCookie('_fbp');
+    var fbc = getCookie('_fbc');
+    
+    if (email) {
+        urlServico += '&email=' + encodeURIComponent(email);
+    }
+    if (sid) {
+        urlServico += '&sid=' + encodeURIComponent(sid);
+    }
+    if (telefone) {
+        urlServico += '&telefone=' + encodeURIComponent(telefone);
+    }
+    if (fbp) {
+        urlServico += '&fbp=' + encodeURIComponent(fbp);
+    }
+    if (fbc) {
+        urlServico += '&fbc=' + fbc;
+    }
+    if (cupom) {
+        urlServico += '&cupom=' + encodeURIComponent(cupom)
+    }
+
+    const response = await fetch(urlServico);
+    const data = await response.text();
+    const returnedUrl = data;
+
+    if (!tryRedirect(returnedUrl)) {
+        doLinkConfirmacao(returnedUrl);
+    } else {
+        hideSpinner();
+    }
 }
 
 async function efetuarPagamento1(email, telefone, sid, cupom=undefined) {
@@ -187,16 +238,22 @@ function doLinkConfirmacao(url) {
     document.getElementById("linkConfirmacao").style.display = "block";
 }
 
-function createCustomer(storeid, email, telefone, cupom) {
+function savelead(storeid, status=undefined, email=undefined, telefone=undefined) {
+    var fbp = getCookie('_fbp');
+    var fbc = getCookie('_fbc');
+    
+    //if (!(email || telefone || fbp || fbc)) {
+    //    return;
+    //}
+
     try {
-        var urlServico = 'https://digitalstoregames.pythonanywhere.com/manageTransaction?email=' + encodeURIComponent(email) +
-        '&storeid=' + storeid;
+        var urlServico = 'https://digitalstoregames.pythonanywhere.com/savelead?storeid=' + storeid;
 
-        var fbp = getCookie('_fbp');
-        var fbc = getCookie('_fbc');
-
+        if (email) {
+            urlServico += '&email=' + encodeURIComponent(email);
+        }
         if (telefone) {
-            urlServico += '&telefone=' + encodeURIComponent(telefone);
+            urlServico += '&phone=' + encodeURIComponent(telefone);
         }
         if (fbp) {
             urlServico += '&fbp=' + encodeURIComponent(fbp);
@@ -204,8 +261,8 @@ function createCustomer(storeid, email, telefone, cupom) {
         if (fbc) {
             urlServico += '&fbc=' + fbc;
         }
-        if (cupom) {
-            urlServico += '&cupom=' + encodeURIComponent(cupom)
+        if (status) {
+            urlServico += '&status=' + status;
         }
 
         fetch(urlServico);

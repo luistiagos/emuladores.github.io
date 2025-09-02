@@ -32,10 +32,13 @@
 <script src="../../utils/utils.js"></script>
 <script>
 
+  const STOREID = 20000;
   let links = [];
 
   function load() {
-    //hideSpinnerLoader();    
+    savelead(STOREID, 'AddToCart');
+    //hideSpinnerLoader();
+    /*    
     links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
     links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
     links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
@@ -52,6 +55,7 @@
     links['21101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-c7a2421d-9e4c-49fb-9e5c-2e266a8d0198';
     links['21011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-02466810-6a92-4852-bb20-92c59eff3561';
     links['21001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-9fafc932-7fd9-435c-8cfd-c3609dc6298e';
+    */
   }
   
 
@@ -68,7 +72,7 @@
   function finalizarPagamento(sid) {
     var email = document.getElementById('email').value;
     var telefone = document.getElementById('fone').value;
-    efetuarPagamento(email, telefone, sid);
+    efetuarPagamentoTest(STOREID, email, telefone, sid);
   }
 
   function pagar1() {
@@ -105,9 +109,7 @@
     if (validarEmail()) {
       var email = document.getElementById('email').value;
       var telefone = document.getElementById('fone').value;
-      var cupom = '';
-      var storeid = 20000;
-      createCustomer(storeid, email, telefone, cupom);
+      savelead(STOREID, 'Lead', email, telefone);
     }
   }
 
@@ -172,14 +174,6 @@
                       <div style="text-align: center;" class="bee-text-content">
 																									<img style="width: 80%;" src="../images/6x DE.png" alt="Image">
 																								</div>
-                      <!--div class="bee-col bee-col-3 bee-col-w4">
-																																						<span dir="ltr" style="word-break: break-word; font-size: 16px; line-height: 200%;">
-																																								<a style="text-decoration: none;" target="_blank" href="mailto:contato@digitalstoregames.com?subject=52emuladores">
-																																									<img src="../images/mail.png" style="width: 30px;height: 30px"/>
-																																									<strong>Entrega imediata por e-mail. Preencha seus dados:</strong>
-																																								</a>		
-																																						</span>
-																																					</div-->
                       <br/>
                     </div>
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
