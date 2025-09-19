@@ -10,35 +10,126 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="../../shared-style.css">
 <style>
-  .float{
-	position:fixed;
-	width:60px;
-	height:60px;
-	bottom:40px;
-	right:40px;
-	background-color:#25d366;
-	color:#FFF;
-	border-radius:50px;
-	text-align:center;
-  font-size:30px;
-	box-shadow: 2px 2px 3px #999;
-  z-index:100;
+.image-container {
+  position: relative;
+  display: inline-block;
 }
 
-.my-float{
-	margin-top:16px;
+.image-container img {
+  display: block;
+  width: 100%; /* Adjust the image size as needed */
 }
+
+.image-container::before,
+.image-container::after {
+  content: '';
+  position: absolute;
+  width: 50%; /* Make the line span 25% of the image width */
+  height: 25px; /* Thickness of the "X" lines */
+  background: red;
+  top: 50%; /* Center vertically */
+  left: 40%; /* Center horizontally */
+  transform-origin: center;
+  opacity: 0.7;
+}
+
+.image-container::before {
+  transform: translate(-50%, -50%) rotate(45deg); /* First diagonal line */
+}
+
+.image-container::after {
+  transform: translate(-50%, -50%) rotate(-45deg); /* Second diagonal line */
+}
+
+/* General container styling */
+.price-container {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* Original price with a strikethrough */
+.original-price {
+  font-size: 1.8rem; /* Increased font size */
+  font-weight: bold;
+  margin: 0;
+}
+
+.strike {
+  text-decoration: line-through;
+  color: red;
+  font-weight: bold;
+}
+
+/* Installments text */
+.installments {
+  font-size: 2rem; /* Increased font size */
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+/* Current price styling */
+.current-price {
+  font-size: 3rem; /* Increased font size */
+  font-weight: bold;
+  color: black;
+  margin: 10px 0;
+}
+
+/* Current price styling */
+.current-price-cupom {
+  font-size: 3rem; /* Increased font size */
+  font-weight: bold;
+  color: black;
+  margin: 10px 0;
+}
+
+/* Payment options text */
+.payment-options {
+  font-size: 1.5rem; /* Increased font size */
+  color: black;
+  margin: 5px 0;
+  font-weight: bold; /* Bold text */
+}
+
+/* Payment options text */
+.payment-options-cupom {
+  font-size: 1.5rem; /* Increased font size */
+  color: black;
+  margin: 5px 0;
+  font-weight: bold; /* Bold text */
+}
+
+.sticky-div {
+            position: fixed;
+            bottom: 20px; /* Stick to the bottom */
+            left: 20px; /* Stick to the right */
+            z-index: 1000; /* Ensure it stays on top of other elements */
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            font-size: 1rem; /* Responsive font size */
+        }
+
+        @media (max-width: 600px) {
+            .sticky-div {
+                bottom: 10px; /* Adjust for smaller screens */
+                left: 10px;
+                padding: 8px 16px;
+                font-size: 0.9rem; /* Slightly smaller text */
+            }
+		}
+
 </style>
 <script src="../../utils/utils.js"></script>
 <script>
 
-  const STOREID = 20000;
   let links = [];
 
   function load() {
-    savelead(STOREID, 'AddToCart');
-    //hideSpinnerLoader();
-    /*    
+    //hideSpinnerLoader();    
     links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
     links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
     links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
@@ -55,7 +146,6 @@
     links['21101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-c7a2421d-9e4c-49fb-9e5c-2e266a8d0198';
     links['21011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-02466810-6a92-4852-bb20-92c59eff3561';
     links['21001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-9fafc932-7fd9-435c-8cfd-c3609dc6298e';
-    */
   }
   
 
@@ -69,10 +159,10 @@
     formataTelefone(inputTelefone);
   }
 
-  function finalizarPagamento(sid) {
+  function finalizarPagamento(sid, cupom=undefined) {
     var email = document.getElementById('email').value;
     var telefone = document.getElementById('fone').value;
-    efetuarPagamentoTest(STOREID, email, telefone, sid);
+    efetuarPagamento(email, telefone, sid, cupom);
   }
 
   function pagar1() {
@@ -94,7 +184,69 @@
     let sid = '2' +  ((checkSwitch) ? '1' : '0') + ((checkXbox) ? '1' : '0') + 
     ((checkSaturn) ? '1' : '0') + ((checkXbox360) ? '1' : '0');
 
-    finalizarPagamento(sid);
+    let cupom = sessionStorage.getItem('CUPOM');
+
+    finalizarPagamento(sid, cupom);
+  }
+
+  function showApplyCupomBtn(str) {
+    if (str.trim().length > 0) {
+      document.getElementById("applyCupomBtn").style = "display:inline";
+    }
+    else {
+      sessionStorage.removeItem('CUPOM');
+      document.getElementById("applyCupomBtn").style = "display:none";
+    }
+  }
+
+  function changeToApplyCupom() {
+    document.getElementById('current-price-cupom').style = "display:block";
+    document.getElementById('current-price').style = "display:none";
+    document.getElementById('payment-options-cupom').style = "display:block";
+    document.getElementById('payment-options').style = "display:none";
+    document.getElementById('adicional-xbox360-cupom').style = "display:block";
+    document.getElementById('adicional-xbox360').style = "display:none";
+    document.getElementById('adicional-ssaturn-cupom').style = "display:block";
+    document.getElementById('adicional-ssaturn').style = "display:none";
+    document.getElementById('adicional-switch-cupom').style = "display:block";
+    document.getElementById('adicional-switch').style = "display:none";
+    document.getElementById('adicional-xbox-cupom').style = "display:block";
+    document.getElementById('adicional-xbox').style = "display:none";
+  }
+
+  function changeToUnApplyCupom() {
+    document.getElementById('current-price-cupom').style = "display:none";
+    document.getElementById('current-price').style = "display:block";
+    document.getElementById('payment-options-cupom').style = "display:none";
+    document.getElementById('payment-options').style = "display:block";
+    document.getElementById('adicional-xbox360-cupom').style = "display:none";
+    document.getElementById('adicional-xbox360').style = "display:block";
+    document.getElementById('adicional-ssaturn-cupom').style = "display:none";
+    document.getElementById('adicional-ssaturn').style = "display:block";
+    document.getElementById('adicional-switch-cupom').style = "display:none";
+    document.getElementById('adicional-switch').style = "display:block";
+    document.getElementById('adicional-xbox-cupom').style = "display:none";
+    document.getElementById('adicional-xbox').style = "display:block";
+  }
+
+  function applyCupom() {
+    cupom = document.getElementById('cupom').value;
+    if (cupom) {
+      getCupomDiscount(cupom, undefined).then((r) => {
+        if (r) {
+          sessionStorage.setItem('CUPOM', cupom);
+          changeToApplyCupom();
+        } else {
+          alert('Cupom não encontrado.');
+          sessionStorage.removeItem('CUPOM');
+          changeToUnApplyCupom();
+        }
+      });
+    } else {
+      changeToUnApplyCupom();
+      sessionStorage.removeItem('CUPOM');
+      alert('Cupom não preenchido.');
+    }
   }
 
   function pagar() {
@@ -105,13 +257,6 @@
     }
   }
 
-  function onChange() {
-    if (validarEmail()) {
-      var email = document.getElementById('email').value;
-      var telefone = document.getElementById('fone').value;
-      savelead(STOREID, 'Lead', email, telefone);
-    }
-  }
 
 </script>
 
@@ -129,6 +274,9 @@
 
 </head>
 <body onload="load()">
+  <div class="sticky-div" id="stickyDiv">
+		<span><img style="max-width: 100%; max-height: 100%;" src="../images/blackfriday50.png" alt="Blackfriday"></span>
+	</div>
   <div id="spinner" class="modal" style="display: none;">
     <div class="modal-content">
       <b>Redirecionando Para o Mercado Pago.</b>
@@ -161,8 +309,7 @@
                 <div class="flex flex-col md:w-7/10 checkout-colum-max checkout-mx-auto">
                   <div class="sm:p-2">
                     <div style="display:block;text-align: center;">
-                       <img src="../../images/mercadopago.png" alt="Mercado Pago - Compra Garantida" style="width: 100%;"/>
-                      <br/>
+                      <img src="../../images/mercadopago.webp" alt="Image" style="max-width: 300px;"/>
                       <br/>
                     </div>
                     <!---->
@@ -171,20 +318,40 @@
                         <strong><font color="red">Atenção</font></strong>, não saia da página e nem recarregue a mesma, pois não temos como garantir o mesmo preço. 
                       </p>
                       <br/>
-                      <div style="text-align: center;" class="bee-text-content">
-																									<img style="width: 80%;" src="../images/6x DE.png" alt="Image">
-																								</div>
+                      <div class="price-container">
+                        <p class="original-price">
+                          DE <span class="strike">R$ 299,00</span> POR APENAS
+                        </p>
+                        <p class="installments">7 x DE</p>
+                        <p id="current-price" class="current-price">R$ 6,39</p>
+                        <p id="current-price-cupom" class="current-price-cupom" style="display: none;"><span class="strike">R$ 6,39</span> por R$ 3,20</p>
+                        <p id="payment-options-cupom" class="payment-options-cupom" style="display: none;">
+                          <strong>No Cartão ou <span class="strike">R$ 39,00</span> por R$ 19,50 à vista.</strong>
+                        </p>
+                        <p id="payment-options" class="payment-options">
+                          <strong>No Cartão ou R$ 39,00 à vista.</strong>
+                        </p>
+                      </div>
                       <br/>
                     </div>
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
                       <b>Atenção, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
                       <div class="input">
-                        <input type="text" id="email" onblur="validarEmail()" onchange="onChange()" autocomplete="off" required name="email" class="input-field">
+                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
                         <label class="label selected">Email:*</label>
                       </div>
                       <div class="input">
-                        <input type="text" id="fone" oninput="formatarTelefone()" onchange="onChange()" autocomplete="off" required name="fone" class="input-field">
+                        <input type="text" id="fone" oninput="formatarTelefone()" autocomplete="off" required name="fone" class="input-field">
                         <label class="label selected">Celular com DDD:</label>
+                      </div>
+                      <div class="input">
+                        <input type="text" id="cupom" autocomplete="off" name="cupom" class="input-field" onkeyup="showApplyCupomBtn(this.value)" onkeydown="showApplyCupomBtn(this.value)">
+                        <label class="label selected">Cupom:</label>
+                      </div>
+                      <div class="input" id="applyCupomBtn" style="display: none;">
+                        <button onclick="applyCupom()" class="button hover:opacity-75 next-button font-bold p-4 text-white text-base rounded text-center uppercase" style="background-color: #5271ff;width:100%;">
+                          Aplicar Cupom
+                        </button>
                       </div>
                     </div>
 
@@ -212,7 +379,8 @@
                                 <b class="text-red-600 underline">Plataforma Xbox 360 com mais de 3000 jogos</b> <br/> 
                                 🔵 Plataforma de Xbox 360 para PC, Notebook ou Xbox 360 (Desbloqueios RGH e JTAG) - Com mais de 3000 Jogos <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
-                                Apenas R$ 30,00 Adicionais.
+                                <span id="adicional-xbox360">Apenas R$ 30,00 Adicionais.</span>
+                                <span id="adicional-xbox360-cupom" style="display: none;">Apenas <spam class="strike">R$ 30,00</spam> por R$ 15,00 Adicionais.</span>
                               </span>
                             </div>
                           </div>
@@ -231,7 +399,8 @@
                                 <b class="text-red-600 underline">Plataforma Xbox Classico com 878 jogos</b> <br/> 
                                 🔵 Plataforma de Xbox Classico para PC e Notebook - Com 878 Jogos <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
-                                Apenas R$ 20,00 Adicionais.
+                                <span id="adicional-xbox">Apenas R$ 20,00 Adicionais.</span>
+                                <span id="adicional-xbox-cupom" style="display: none;">Apenas <spam class="strike">R$ 20,00</spam> por R$ 10,00 Adicionais.</span>
                               </span>
                             </div>
                           </div>
@@ -247,12 +416,13 @@
                               <input id="checkSwitch" type="checkbox" class="form-checkbox border-gray-600 h-5 w-5 transition duration-150 ease-in-out mr-2" value="AQEUMku" style="color: rgb(36, 126, 243);">
                              
                               <span class="font-bold">
-                                <b class="text-red-600 underline">Plataforma Nintendo Switch com mais de 2655 jogos</b> <br/> 
-                                🔵 Plataforma de Nintendo Switch para PC e Notebook - Com 2655 Jogos <br/> 
-                                🔵 Mais DLCs <br/>
-                                🔵 Mais Atualizações <br/>
+                                <b class="text-red-600 underline">Emulador Nintendo Switch com mais de 14000 jogos</b> <br/> 
+                                🔵 Emulador de Nintendo Switch para PC e Notebook - Com 14393 Jogos <br/> 
+                                🔵 Incluindo mais 1211 DLCs <br/>
+                                🔵 Incluindo mais Atualizações <br/>
                                 <strong>Acesso Vitalício</strong> <br/>
-                                Apenas R$ 30,00 Adicionais.
+                                <span id="adicional-switch">Apenas R$ 30,00 Adicionais.</span>
+                                <span id="adicional-switch-cupom" style="display: none;">Apenas <spam class="strike">R$ 30,00</spam> por R$ 15,00 Adicionais.</span>
                               </span>
                             </div>
                           </div>
@@ -271,7 +441,8 @@
                                 <b class="text-red-600 underline">Plataforma de Sega Saturn com todos os jogos:</b> <br/> 
                                 🔵 Sega Saturn - Todos os Jogos já Lançados <br/> 
                                 <strong>Acesso Vitalício</strong> <br/>
-                                Apenas R$ 10,00 Adicionais.
+                                <span id="adicional-ssaturn">Apenas R$ 10,00 Adicionais.</span>
+                                <span id="adicional-ssaturn-cupom" style="display: none;">Apenas <spam class="strike">R$ 10,00</spam> por R$ 5,00 Adicionais.</span>
                               </span>
                             </div>
                           </div>
@@ -300,16 +471,6 @@
   <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
                       <span >
                           <img width="100%" src="../images/mercadopagogarantia.jpg" style="max-width: 338px;" alt="Imagedigitalstoregames">
-                      </span>
-                      <span>
-              																													
-                        <!-- div class="bee-col bee-col-1 bee-col-w4">
-                          <span class="bee-col bee-col-1 bee-col-w12" style="text-align: center;">
-                            <span>
-                              <img width="100%" class="lazy" src="../images/banner_pagseguro_550x.jpg" alt="Seguro">
-                            </span>			
-                          </span>
-                        </div -->
                       </span>
   </div>
   <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
