@@ -241,10 +241,6 @@ function doLinkConfirmacao(url) {
 function savelead(storeid, status=undefined, email=undefined, telefone=undefined) {
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
-    
-    //if (!(email || telefone || fbp || fbc)) {
-    //    return;
-    //}
 
     try {
         var urlServico = 'https://digitalstoregames.pythonanywhere.com/savelead?storeid=' + storeid;

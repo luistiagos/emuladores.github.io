@@ -36,8 +36,10 @@
 <script>
   
   let links = [];
+  const STOREID = 600000;
 
   function load() {
+    savelead(STOREID, 'AddToCart');
     fetch('links.csv')
       .then(response => response.text())
       .then(data => {

@@ -7,6 +7,7 @@
 	<meta name="application-name" content="Sistema Retro Xbox 360 Com mais de 3000 jogos">
 	<title>Sistema Retro Xbox 360 Com mais de 3000 Jogos.</title>
 	<meta name="viewport" content="width=device-width">
+	<script src="../utils/utils.js"></script>
 	<style>.bee-row,
 	.bee-row-content {
 		position: relative
@@ -536,7 +537,10 @@
 	}
 </style>
 
-<script src="../utils/pixel.js"></script>
+<script>
+	const STOREID = 600000;
+	savelead(STOREID, 'PageView');
+</script>
 
 <!-- Hotjar Tracking Code for xbox360 -->
 <script>
