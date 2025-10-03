@@ -7,7 +7,10 @@
 	<meta name="application-name" content="Sistema Retro PS2 Com Todos Os Jogos Já Lançados (4650 Jogos)">
 	<title>Sistema Retro PS2 Com Todos Os Jogos Já Lançados (4650 Jogos).</title>
 	<meta name="viewport" content="width=device-width">
-	<style>.bee-row,
+	<script src="../utils/utils.js"></script>
+	<style>
+	
+	.bee-row,
 	.bee-row-content {
 		position: relative
 	}
@@ -517,7 +520,10 @@
 	}
 </style>
 
-<script src="../utils/pixel.js"></script>
+<script>
+	const STOREID = 300000;
+	savelead(STOREID, 'PageView');
+</script>
 
 <!-- Hotjar Tracking Code for ps2 -->
 <script>
@@ -543,7 +549,6 @@
 	'https://connect.facebook.net/en_US/fbevents.js');
 	fbq('init', '2120259218170665');
 	fbq('track', 'PageView');
-	fbPixelRequest('PageView', 300000);
 	</script>
 	<noscript><img height="1" width="1" style="display:none"
 	src="https://www.facebook.com/tr?id=2120259218170665&ev=PageView&noscript=1"

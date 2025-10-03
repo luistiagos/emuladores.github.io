@@ -9,6 +9,7 @@
 <title>Ofertas</title>
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="../../shared-style.css">
+<script src="../../utils/utils.js"></script>
 <style>
   .float{
 	position:fixed;
@@ -29,13 +30,15 @@
 	margin-top:16px;
 }
 </style>
-<script src="../../utils/utils.js"></script>
+
 <script>
 
   let links = [];
 
   function load() {
-    //hideSpinnerLoader();    
+    const STOREID = 20000;
+	  savelead(STOREID, 'Lead');
+
     links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
     links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
     links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';

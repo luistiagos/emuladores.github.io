@@ -7,6 +7,7 @@
 	<meta name="application-name" content="Sistema Retro PS2 Com Todos Os Jogos Já Lançados (4650 Jogos)">
 	<title>Sistema Retro PS2 Com Todos Os Jogos Já Lançados (4650 Jogos).</title>
 	<meta name="viewport" content="width=device-width">
+	<script src="../utils/pixel.js"></script>
 	<style>.bee-row,
 	.bee-row-content {
 		position: relative
@@ -517,7 +518,10 @@
 	}
 </style>
 
-<script src="../utils/pixel.js"></script>
+<script>
+	const STOREID = 300000;
+	savelead(STOREID, 'PageView');
+</script>
 
 <!-- Hotjar Tracking Code for ps2 -->
 <script>
