@@ -33,31 +33,12 @@
 
 <script>
 
-  let links = [];
+  const STOREID = 20000;
 
   function load() {
-    const STOREID = 20000;
-	  savelead(STOREID, 'Lead');
-
-    links['20000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-afdd31f2-10ef-42b8-868b-15e2b59b85ed';
-    links['20110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-35aad2c1-8116-4b57-819b-e92f26e09f2a';
-    links['20100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-67380681-2508-4a46-8bf5-9e18cc417067';
-    links['20010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-65fecf55-2760-498e-93cd-2eb1a1f3e659';
-    links['21110'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-4f81f297-ccc9-4d9e-a79c-841fe6ee6e60';
-    links['21100'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d609fd56-fdb1-4b4b-a770-06d2bc461ae4';
-    links['21010'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d21861b2-8601-42d7-a90d-bdd94a45f16f';
-    links['21000'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-b59025a6-3b1c-47d3-9668-3a5e369ff2a3';
-    links['20001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-d64035f1-ebab-4e7f-bdf6-e100b968b0b1';
-    links['20111'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-8cff4eeb-cba5-43dd-a05e-02147e1a675d';
-    links['20101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-3be634fe-a00b-44a9-bb0d-0eca050aa34d';
-    links['20011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-aa626641-9571-418e-ab4b-d9b186b109e4';
-    links['21111'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-1c7bd3a9-29c4-4e7b-be08-b20c7d3a3241';
-    links['21101'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-c7a2421d-9e4c-49fb-9e5c-2e266a8d0198';
-    links['21011'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-02466810-6a92-4852-bb20-92c59eff3561';
-    links['21001'] = 'https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=1250513859-9fafc932-7fd9-435c-8cfd-c3609dc6298e';
+	  savelead(STOREID, 'AddToCart');
   }
   
-
   function validarEmail() {
     var inputEmail = document.getElementById('email');
     return validaEmail(inputEmail);    
@@ -78,10 +59,6 @@
     if (!validarEmail()) {
       return;
     } 
-    
-    if (undefined == links || !links || !links.length || links.length == 0) {
-      load();
-    } 
 
     showSpinner();
 
@@ -100,7 +77,7 @@
     try {
       pagar1();
     } catch (error) {
-      finalizarPagamento('20000');
+      finalizarPagamento('' + STOREID);
     }
   }
 </script>
