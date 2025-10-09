@@ -38,21 +38,34 @@
   function load() {
 	  savelead(STOREID, 'AddToCart');
   }
-  
+
   function validarEmail() {
     var inputEmail = document.getElementById('email');
     return validaEmail(inputEmail);    
   }
 
-   function formatarTelefone() {
+  function formatarTelefone() {
     var inputTelefone = document.getElementById('fone');
     formataTelefone(inputTelefone);
+  }
+  
+  function onInputEmail() {
+    if (validarEmail()) {
+      savelead(STOREID, 'Lead', document.getElementById('email').value, 
+        document.getElementById('fone').value);
+    }
+  }
+
+  function onInputTelefone() {
+    formatarTelefone();
+    savelead(STOREID, 'Lead', document.getElementById('email').value, 
+      document.getElementById('fone').value);
   }
 
   function finalizarPagamento(sid) {
     var email = document.getElementById('email').value;
     var telefone = document.getElementById('fone').value;
-    efetuarPagamento(email, telefone, sid);
+    efetuarPagamentoTest(STOREID, email, telefone, sid)
   }
 
   function pagar1() {
@@ -123,10 +136,10 @@
       <div>
         <div>
           <div class="main md:m-0 sm:mx-2 sm:p-2 relative" style="padding-top: 5px;">
-            <div class="content mx-auto" style="max-width:1000px;">
+            <div class="content mx-auto" style="max-width:1000px; padding: 0 15px;">
               <div class="w-full flex flex-col md:flex-row">
                 <div class="flex flex-col md:w-7/10 checkout-colum-max checkout-mx-auto">
-                  <div class="sm:p-2">
+                  <div class="sm:p-2" style="padding: 15px;">
                     <div style="display:block;text-align: center;">
                        <img src="../../images/mercadopago.png" alt="Mercado Pago - Compra Garantida" style="width: 100%;"/>
                       <br/>
@@ -141,24 +154,16 @@
                       <div style="text-align: center;" class="bee-text-content">
 																									<img style="width: 80%;" src="../images/6x DE.png" alt="Image">
 																								</div>
-                      <!--div class="bee-col bee-col-3 bee-col-w4">
-																																						<span dir="ltr" style="word-break: break-word; font-size: 16px; line-height: 200%;">
-																																								<a style="text-decoration: none;" target="_blank" href="mailto:contato@digitalstoregames.com?subject=52emuladores">
-																																									<img src="../images/mail.png" style="width: 30px;height: 30px"/>
-																																									<strong>Entrega imediata por e-mail. Preencha seus dados:</strong>
-																																								</a>		
-																																						</span>
-																																					</div-->
                       <br/>
                     </div>
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
                       <b>Atenção, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
                       <div class="input">
-                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
+                        <input type="text" id="email" onblur="onInputEmail()" autocomplete="off" required name="email" class="input-field">
                         <label class="label selected">Email:*</label>
                       </div>
                       <div class="input">
-                        <input type="text" id="fone" oninput="formatarTelefone()" autocomplete="off" required name="fone" class="input-field">
+                        <input type="text" id="fone" oninput="onInputTelefone()" autocomplete="off" required name="fone" class="input-field">
                         <label class="label selected">Celular com DDD:</label>
                       </div>
                     </div>
