@@ -63,7 +63,7 @@
   function finalizarPagamento(sid) {
     var email = document.getElementById('email').value;
     var telefone = document.getElementById('fone').value;
-    efetuarPagamento(email, telefone, sid);
+    efetuarPagamentoTest(STOREID, email, telefone, sid)
   }
 
   function pagar1() { 
@@ -95,6 +95,19 @@
     } catch (error) {
       finalizarPagamento('600000');
     }
+  }
+
+  function onInputEmail() {
+    if (validarEmail()) {
+      savelead(STOREID, 'Lead', document.getElementById('email').value, 
+        document.getElementById('fone').value);
+    }
+  }
+
+  function onInputTelefone() {
+    formatarTelefone();
+    savelead(STOREID, 'Lead', document.getElementById('email').value, 
+      document.getElementById('fone').value);
   }
   
 </script>
@@ -165,11 +178,11 @@
                     <div class="flex flex-wrap w-full md:mb-2 justify-center items-center mt-4">
                       <b><strong><font color="red">Atenção</font></strong>, certifique-se que o email está correto, pois o acesso será enviado para ele:</b>
                       <div class="input">
-                        <input type="text" id="email" onblur="validarEmail()" autocomplete="off" required name="email" class="input-field">
+                        <input type="text" id="email" onblur="onInputEmail()" autocomplete="off" required name="email" class="input-field">
                         <label class="label selected">Email:*</label>
                       </div>
                       <div class="input">
-                        <input type="text" id="fone" oninput="formatarTelefone()" autocomplete="off" required name="fone" class="input-field">
+                        <input type="text" id="fone" onblur="onInputTelefone()" autocomplete="off" required name="fone" class="input-field">
                         <label class="label selected">Celular com DDD:</label>
                       </div>
                     </div>
