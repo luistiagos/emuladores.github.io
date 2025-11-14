@@ -1,3 +1,15 @@
+function isValidPhone(phone) {
+  if (!phone) return false;
+
+  const trimmed = phone.trim();
+
+  // Mesmo padrão que usamos no MySQL:
+  // (DD) 9XXXX-XXXX
+  const regex = /^\([0-9]{2}\) [0-9]{5}-[0-9]{4}$/;
+
+  return regex.test(trimmed);
+}
+
 function getCookie(name) {
     try {
         if (document && document.cookie) {
@@ -246,9 +258,12 @@ function savelead(storeid, status=undefined, email=undefined, telefone=undefined
         var urlServico = 'https://digitalstoregames.pythonanywhere.com/savelead?storeid=' + storeid;
 
         if (email) {
-            urlServico += '&email=' + encodeURIComponent(email);
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (emailRegex.test(email)) {
+                urlServico += '&email=' + encodeURIComponent(email);
+            }
         }
-        if (telefone) {
+        if (telefone && isValidPhone(telefone)) {
             urlServico += '&phone=' + encodeURIComponent(telefone);
         }
         if (fbp) {
