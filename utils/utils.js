@@ -71,7 +71,7 @@ function validaEmail(inputEmail) {
 function formataTelefone(inputTelefone) {
     var telefone = inputTelefone.value;
     telefone = telefone.replace(/\D/g, '');
-    telefone = telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+    telefone = telefone.replace(/^(?:55)?(\d{2})(\d{4,5})(\d{4})$/,'($1) $2-$3');
     inputTelefone.value = telefone;
 }
 
