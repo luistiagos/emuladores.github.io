@@ -96,6 +96,7 @@ function efetuarPagamento(email, telefone, sid, cupom=undefined) {
 }
 
 function efetuarPagamentoTest(storeid, email, telefone, sid, cupom=undefined) {
+    console.log('efetuarPagamentoTest called with storeid:', sid);
     try {
         createMLlink_test(storeid, email, telefone, sid, cupom);
     } catch (error) {
@@ -126,6 +127,7 @@ async function getCupomDiscount(cupom, productid=undefined) {
 }
 
 async function createMLlink_test(storeid, email, telefone, sid, cupom=undefined) {
+    console.log('createMLlink_test called with storeid:', sid);
     var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink_test?storeid=' + storeid;
     var fbp = getCookie('_fbp');
     var fbc = getCookie('_fbc');
@@ -149,6 +151,7 @@ async function createMLlink_test(storeid, email, telefone, sid, cupom=undefined)
         urlServico += '&cupom=' + encodeURIComponent(cupom)
     }
 
+    console.log('Fetching URL:', urlServico);
     const response = await fetch(urlServico);
     const data = await response.text();
     const returnedUrl = data;
