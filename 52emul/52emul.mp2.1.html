@@ -32,6 +32,8 @@
 		const STOREID = 20000;
 		savelead(STOREID, 'PageView');
 	</script>
+	<!-- Social Proof Notifications -->
+	<script src="checkout/js/notifications.js" defer></script>
 	<script>
 		(function (h, o, t, j, a, r) {
 			h.hj = h.hj || function () { (h.hj.q = h.hj.q || []).push(arguments) };
@@ -64,8 +66,21 @@
 </head>
 
 <body>
-	</a>
-	</div>
+	<!-- Navigation -->
+	<nav class="navbar">
+		<div class="container nav-content">
+			<a href="#" class="logo-custom">
+				<i class="fas fa-gamepad logo-icon-brand"></i>
+				<div class="logo-label">
+					DIGITAL STORE <span>GAMES</span>
+				</div>
+			</a>
+			<div class="nav-actions">
+				<a href="../recuperaracesso/login.html" target="_blank" class="btn btn-outline btn-customer">
+					<i class="fas fa-user-check" style="margin-right: 8px;"></i> JÁ SOU CLIENTE
+				</a>
+			</div>
+		</div>
 	</nav>
 
 	<!-- Hero Section -->
@@ -786,7 +801,7 @@
 	</section>
 
 	<!-- Guarantee Section -->
-	<section class="guarantee-section">
+	<!-- section class="guarantee-section">
 		<div class="container flex-center column">
 			<div class="guarantee-seal-wrapper">
 				<img src="images/guaranteebadge.webp" class="guarantee-seal" alt="Garantia 30 Dias"
@@ -797,14 +812,14 @@
 				<p class="guarantee-text">
 					Temos tanta confiança no nosso produto que assumimos todo o risco.<br>
 					Teste à vontade. Se não for o que você esperava, é só pedir seu dinheiro de volta.<br>
-					<strong>Devolvemos 100% do seu valor. Sem perguntas.</strong>
+					<strong>Devolvemos 100% do seu valor.</strong>
 				</p>
 				<a href="./checkout" class="btn btn-primary btn-pulse" target="_blank">
 					QUERO TESTAR SEM RISCOS
 				</a>
 			</div>
 		</div>
-	</section>
+	</section -->
 
 	<!-- FAQ Section -->
 	<section class="section-pad" style="background: var(--bg-card);">
@@ -885,9 +900,50 @@
 			<div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; flex-wrap: wrap;">
 				<a href="mailto:contato@digitalstoregames.com"><i class="fas fa-envelope"></i> Suporte Email</a>
 				<a href="https://wa.me/5541996260115"><i class="fab fa-whatsapp"></i> Whatsapp</a>
+				<a href="https://www.facebook.com/profile.php?id=100085725639739" target="_blank"><i
+						class="fab fa-facebook"></i> Facebook</a>
 			</div>
+
+			<!-- Trust Badges -->
+			<div class="trust-badges"
+				style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px; align-items: center;">
+				<a href="https://www.siteconfiavel.com.br/site/digitalstoregames-com" target="_blank"
+					rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/siteconfiavel.png" class="trust-seal" alt="Site Confiável"
+						loading="lazy">
+				</a>
+				<a href="https://transparencyreport.google.com/safe-browsing/search?url=https:%2F%2Femulators.digitalstoregames.com%2F52emul%2F&hl=pt_BR"
+					target="_blank" rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/googlesiteseguro.png" class="trust-seal"
+						alt="Google Site Seguro" loading="lazy">
+				</a>
+				<a href="https://www.websiteplanet.com/pt-br/webtools/ssl-checker/?url=digitalstoregames.com"
+					target="_blank" rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/ssl.png" class="trust-seal" alt="SSL Seguro" loading="lazy">
+				</a>
+				<a href="https://safeweb.norton.com/report?url=https:%2F%2Femulators.digitalstoregames.com%2F52emul%2F"
+					target="_blank" rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/norton.png" class="trust-seal" alt="Norton Secured"
+						loading="lazy">
+				</a>
+				<a href="https://www.eset.com/pt/casa/link-checker/" target="_blank" rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/logo-eset.png" class="trust-seal" alt="ESET Antivirus"
+						loading="lazy">
+				</a>
+				<a href="https://www.mercadopago.com.br/ajuda/23185" target="_blank" rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/mercadopagogarantia.png" class="trust-seal"
+						alt="Mercado Pago Garantia" loading="lazy">
+				</a>
+				<a href="https://www.urlvoid.com/scan/emulators.digitalstoregames.com/" target="_blank"
+					rel="noopener noreferrer">
+					<img src="checkout/images/trust-seals/urlvoid.png" class="trust-seal" alt="URLVoid" loading="lazy">
+				</a>
+			</div>
+		</div>
+		<div style="margin-top: 20px; display: flex; justify-content: center; align-items: center;">
 			<p style="color: var(--text-muted); font-size: 0.9rem;">&copy; 2025 Digital Store Games. Todos os direitos
-				reservados.</p>
+				reservados.
+			</p>
 		</div>
 	</footer>
 

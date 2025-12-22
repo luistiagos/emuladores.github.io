@@ -152,6 +152,19 @@ ul {
 	transition: transform 0.3s, border-color 0.3s;
 }
 
+.btn-customer {
+	padding: 10px 25px;
+	font-size: 14px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: var(--text-muted);
+}
+
+.btn-customer:hover {
+	border-color: var(--primary);
+	color: white;
+	background: rgba(255, 0, 85, 0.1);
+}
+
 .card:hover {
 	transform: translateY(-5px);
 	border-color: var(--primary);
@@ -300,6 +313,54 @@ ul {
 	color: var(--accent);
 	text-transform: uppercase;
 	font-weight: 600;
+}
+
+/* --- Logo Custom --- */
+.logo-custom {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	text-decoration: none;
+	position: relative;
+}
+
+/* Brand Icon */
+.logo-icon-brand {
+	font-size: 2.2rem;
+	background: linear-gradient(135deg, #00f2ea 0%, #ff0055 100%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	filter: drop-shadow(0 0 10px rgba(0, 242, 234, 0.5));
+	transform: rotate(-10deg);
+	transition: transform 0.3s ease;
+}
+
+.logo-custom:hover .logo-icon-brand {
+	transform: rotate(0deg) scale(1.1);
+}
+
+/* Text */
+.logo-label {
+	display: flex;
+	flex-direction: column;
+	font-family: 'Rajdhani', sans-serif;
+	line-height: 0.85;
+	color: #fff;
+	font-size: 1.25rem;
+	font-weight: 600;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.logo-label span {
+	font-weight: 800;
+	font-size: 1.5rem;
+	letter-spacing: 2px;
+	background: linear-gradient(90deg, #fff, #a0a0b0);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /* --- Hero --- */
@@ -1339,4 +1400,101 @@ footer {
 
 .flex-center.column {
 	flex-direction: column;
+}
+/* --- Social Proof Notifications --- */
+.notification-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #ffffff;
+    border-left: 5px solid #22c55e;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 300px;
+    max-width: 350px;
+    z-index: 9999;
+    transform: translateX(-120%);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+    font-family: 'Outfit', sans-serif;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.notification-toast.show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.notification-icon {
+    width: 45px;
+    height: 45px;
+    background: #f0fdf4;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #22c55e;
+}
+
+.notification-content {
+    flex: 1;
+}
+
+.notification-title {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: #0f172a;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.notification-message {
+    font-size: 0.8rem;
+    color: #64748b;
+    line-height: 1.4;
+}
+
+.notification-time {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+.notification-check {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 768px) {
+    .notification-toast {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(100px);
+        width: 90%;
+        min-width: auto;
+    }
+
+    .notification-toast.show {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* --- Trust Badges --- */
+.trust-seal {
+    height: 40px;
+    width: auto;
+    opacity: 0.7;
+    transition: all 0.3s;
+    filter: grayscale(100%);
+}
+.trust-seal:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+    transform: scale(1.1);
 }
