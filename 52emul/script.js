@@ -95,3 +95,29 @@ var gamesSwiper2 = new Swiper(".gamesSwiper2", {
         },
     },
 });
+
+
+// Smart Hide Floating Elements (WhatsApp & Notifications)
+const ctaObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+        } else {
+            entry.target.classList.remove('is-visible');
+        }
+    });
+
+    // Check if ANY CTA is visible
+    const anyVisible = document.querySelectorAll('.btn-pulse.is-visible').length > 0;
+    if (anyVisible) {
+        document.body.classList.add('hide-floating-elements');
+    } else {
+        document.body.classList.remove('hide-floating-elements');
+    }
+}, { threshold: 0 }); // Trigger as soon as one pixel is visible
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.btn-pulse').forEach(btn => {
+        ctaObserver.observe(btn);
+    });
+});
