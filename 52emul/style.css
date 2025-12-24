@@ -1469,9 +1469,9 @@ footer {
 .trust-seal {
 	height: 40px;
 	width: auto;
-	opacity: 0.7;
+	opacity: 1;
 	transition: all 0.3s;
-	filter: grayscale(100%);
+	filter: none;
 }
 
 .trust-seal:hover {

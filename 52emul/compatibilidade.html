@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Compatibilidade - 52 Emuladores</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        :root {
+            --success: #00ff88;
+            --danger: #ff3366;
+            --text-muted: #8b9bb4;
+            --bg-table-header: #0f1623;
+            --bg-table-row: #162032;
+            --bg-table-row-hover: #1c2840;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            padding-bottom: 50px;
+        }
+
+        .back-nav {
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .back-btn {
+            color: var(--text-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary);
+        }
+
+        .header-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .header-section h1 {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 2.5rem;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+            color: #ffffff;
+        }
+
+        .header-section p {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .table-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-x: auto;
+            padding: 0 20px;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Custom Scrollbar */
+        .table-wrapper::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #0f1623;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: var(--primary-dark);
+            border-radius: 5px;
+        }
+
+        .compat-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        .compat-table th,
+        .compat-table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .compat-table th {
+            background-color: var(--bg-table-header);
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .compat-table th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 20;
+            background-color: var(--bg-table-header);
+            text-align: left;
+            min-width: 200px;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .compat-table tr {
+            background-color: var(--bg-table-row);
+            transition: background 0.2s;
+        }
+
+        .compat-table tr:hover {
+            background-color: var(--bg-table-row-hover);
+        }
+
+        .compat-table td:first-child {
+            position: sticky;
+            left: 0;
+            background-color: inherit;
+            /* Inherits row color */
+            font-weight: 600;
+            text-align: left;
+            color: #fff;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+            z-index: 5;
+        }
+
+        .status-icon {
+            font-size: 1.2rem;
+        }
+
+        .status-yes {
+            color: var(--success);
+        }
+
+        .status-no {
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .requirements-box {
+            max-width: 800px;
+            margin: 40px auto;
+            background: rgba(255, 51, 102, 0.1);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .requirements-box h3 {
+            color: var(--danger);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .header-section h1 {
+                font-size: 1.8rem;
+            }
+
+            .compat-table th,
+            .compat-table td {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="back-nav">
+        <div class="container">
+            <a href="52emul.mp2.1.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Voltar para a Loja
+            </a>
+        </div>
+    </nav>
+
+    <div class="header-section">
+        <div class="container">
+            <h1>Tabela de Compatibilidade</h1>
+            <p>Verifique abaixo se o console desejado roda no seu dispositivo de preferência.</p>
+        </div>
+    </div>
+
+    <!-- Requirements Alert -->
+    <div class="container">
+
+    </div>
+
+    <div class="table-wrapper">
+        <table class="compat-table" id="compatTable">
+            <thead>
+                <tr>
+                    <th>Plataforma (Console)</th>
+                    <!-- Headers will be injected via JS -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be injected via JS -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="../utils/utils.js"></script>
+    <script>
+        // Data from the Excel conversion
+        const compatData = [
+            { "PLATAFORMA": "Super Nintendo", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Nintendo 64", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Nintendo", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Nintendo WII", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": null, "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Nintendo 3DS", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Game Boy ", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Game Boy Color", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Game Boy Advance", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Nintendo DS", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Gamecube", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Mega Drive", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Dreamcast", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Sega Master System", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Sega 32X", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Mame", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Neogeopocket color", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Atari 2600", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Atari 5200", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Atari 7800", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "TurboGrafx", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "ZX Spectrum", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Panasonic 3DO Interactive Multiplayer", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "WIIU", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": null, "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Playstation 1", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Playstation 2", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Playstation 3", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": null, "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Xbox Classico", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Xbox 360", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": "X", "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "Switch", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": null, "TVBOX": null, "SMARTV ANDROID": null, "STEAM DECK": null, "GAMESTICKS": null, "XBOX ONE \/ SERIES (Modo Desenvolvedor)": null, "XBOX 360 (rgh\/jtag)": null, "PS2": null, "PS3 (Desbloqueado)": null, "Raspberry Pi": null, "PSP (Desbloqueado)": null },
+            { "PLATAFORMA": "PSP", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": null, "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "PC Engine", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Neo Geo", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Capcom", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Taito", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Sega", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Sega SG-1000", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Game Gear", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Cave", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "CPS1", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "CPS2", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "CPS3", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Coleco Vision", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Data East", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Galaxian", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "MSX", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Irem Arcade Classics", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Kaneko", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Konami", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Pac Man", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "PGM", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Psikyo", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Seta", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Technos", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Toaplan", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Misc. pre 90", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" },
+            { "PLATAFORMA": "Misc. pos 90", "PC \/ NOTEBOOK": "X", "CELULAR \/ TABLET": "X", "TVBOX": "X", "SMARTV ANDROID": "X", "STEAM DECK": "X", "GAMESTICKS": "X", "XBOX ONE \/ SERIES (Modo Desenvolvedor)": "X", "XBOX 360 (rgh\/jtag)": "X", "PS2": "X", "PS3 (Desbloqueado)": "X", "Raspberry Pi": "X", "PSP (Desbloqueado)": "X" }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const table = document.getElementById('compatTable');
+            const thead = table.querySelector('thead tr');
+            const tbody = table.querySelector('tbody');
+            const reqText = document.getElementById('req-text');
+
+            // Find the special requirements row
+            const reqRow = compatData.find(row => row.PLATAFORMA && row.PLATAFORMA.includes("Configurações"));
+            if (reqRow) {
+                reqText.textContent = reqRow.PLATAFORMA;
+            }
+
+            // Filter out empty rows and the requirements row for the table
+            const tableRows = compatData.filter(row =>
+                row.PLATAFORMA &&
+                !row.PLATAFORMA.includes("Configurações")
+            );
+
+            if (tableRows.length === 0) return;
+
+            // Get headers (Devices) - skip 'PLATAFORMA'
+            const devices = Object.keys(tableRows[0]).filter(key => key !== 'PLATAFORMA');
+
+            // Render Headers
+            devices.forEach(device => {
+                const th = document.createElement('th');
+                th.textContent = device;
+                thead.appendChild(th);
+            });
+
+            // Render Body
+            tableRows.forEach(row => {
+                const tr = document.createElement('tr');
+
+                // Platform Name
+                const tdName = document.createElement('td');
+                tdName.textContent = row.PLATAFORMA;
+                tr.appendChild(tdName);
+
+                // Compatibility Cells
+                devices.forEach(device => {
+                    const td = document.createElement('td');
+                    const isCompatible = row[device] === 'X';
+
+                    if (isCompatible) {
+                        td.innerHTML = '<i class="fas fa-check-circle status-icon status-yes"></i>';
+                    } else {
+                        td.innerHTML = '<i class="fas fa-times status-icon status-no"></i>';
+                    }
+
+                    tr.appendChild(td);
+                });
+
+                tbody.appendChild(tr);
+            });
+        });
+    </script>
+</body>
+
+</html>
