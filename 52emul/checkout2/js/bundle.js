@@ -1,6 +1,5 @@
 // Product configuration and pricing
 const STOREID = 20000;
-let currentDiscount = 0; // 0 to 100
 const BASE = {
   id: 'principal-52emul',
   name: '52 Emuladores + 100.000 jogos',
@@ -268,11 +267,6 @@ function efetuarPagamento(storeid, email, telefone, sid, cupom = undefined) {
 }
 
 async function getCupomDiscount(cupom, productid = undefined) {
-  // Client-side override for specific campaign
-  if (cupom && cupom.toUpperCase() === 'DESCONTO2026') {
-    return 60.0; // 60% discount
-  }
-
   var urlServico = 'https://digitalstoregames.pythonanywhere.com/cupom?cupom=' + encodeURIComponent(cupom.toUpperCase());
   if (productid) {
     urlServico += '&productid=' + productid;
@@ -804,37 +798,6 @@ function startRotation() {
 
   const sat = document.getElementById('satBadge');
   if (sat) sat.textContent = `-${formatPct(20, 10)}%`;
-
-  // Cupom listener
-  const btnApply = document.querySelector('.btn-apply');
-  if (btnApply) {
-    btnApply.addEventListener('click', async () => {
-      const input = document.getElementById('cupom');
-      const code = input.value.trim();
-      if (!code) return;
-
-      btnApply.textContent = '...';
-      btnApply.disabled = true;
-
-      try {
-        const disc = await getCupomDiscount(code);
-        if (disc > 0) {
-          currentDiscount = disc;
-          alert(`Cupom ${code.toUpperCase()} aplicado com sucesso! ${disc}% de desconto.`);
-        } else {
-          currentDiscount = 0;
-          alert('Cupom inválido ou expirado.');
-        }
-        renderSummary();
-      } catch (e) {
-        console.error(e);
-        alert('Erro ao validar cupom.');
-      } finally {
-        btnApply.textContent = 'Aplicar';
-        btnApply.disabled = false;
-      }
-    });
-  }
 })();
 
 // Initialize the page
