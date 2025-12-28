@@ -474,32 +474,10 @@ function renderSummary() {
   show(banner, true);
   document.getElementById('savingsValue') && (document.getElementById('savingsValue').textContent = fmt(totalEconomy));
 
-  // Apply discount if exists
-  if (currentDiscount > 0) {
-    const discountValue = (total * currentDiscount) / 100;
-    const finalTotal = total - discountValue;
-    const finalEconomy = totalEconomy + discountValue;
+  /* Discount logic removed */
 
-    document.getElementById('totalVlr').innerHTML = `<span style="text-decoration: line-through; font-size: 0.8em; color: #999;">${fmt(total)}</span> <br> ${fmt(finalTotal)}`;
-    document.getElementById('totalEconomy').textContent = `(Economia ${fmt(finalEconomy)})`;
-    document.getElementById('savingsValue') && (document.getElementById('savingsValue').textContent = fmt(finalEconomy));
+  // Show discount notification if not already present
 
-    // Show discount notification if not already present
-    let discAlert = document.getElementById('discAlert');
-    if (!discAlert) {
-      discAlert = document.createElement('div');
-      discAlert.id = 'discAlert';
-      discAlert.className = 'savings-banner';
-      discAlert.style.backgroundColor = '#d1fae5';
-      discAlert.style.color = '#065f46';
-      discAlert.style.marginTop = '10px';
-      discAlert.innerHTML = `🔥 Cupom <strong>DESCONTO2026</strong> aplicado! 60% de desconto extra.`;
-      summary.appendChild(discAlert);
-    }
-  } else {
-    const discAlert = document.getElementById('discAlert');
-    if (discAlert) discAlert.remove();
-  }
 
   updateBumpVisuals();
 }

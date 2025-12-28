@@ -50,27 +50,40 @@ function showNotification() {
   document.getElementById('notif-name').textContent = person.name;
   document.getElementById('notif-prod').textContent = product;
 
-  toast.classList.add('show');
+  // Use requestAnimationFrame to ensure style changes happen in the next frame
+  requestAnimationFrame(() => {
+    toast.classList.add('show');
+  });
 
   // Hide after 5 seconds
   setTimeout(() => {
-    toast.classList.remove('show');
+    requestAnimationFrame(() => {
+      toast.classList.remove('show');
+    });
   }, 5000);
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize - Defer execution to avoid TBT/INP impact
+const startNotifications = () => {
   createNotification();
 
-  // Initial delay
+  // Initial delay after creation
   setTimeout(() => {
     showNotification();
 
-    // Loop
-    // Random interval between 15 and 45 seconds
+    // Loop - Random interval between 15 and 45 seconds
     setInterval(() => {
       const randomDelay = Math.random() * (45000 - 15000) + 15000;
       setTimeout(showNotification, randomDelay);
     }, 20000);
-  }, 10000); // Start 10 seconds after load
-});
+  }, 12000); // 12 seconds after start
+};
+
+// Start well after page load
+if (document.readyState === 'complete') {
+  setTimeout(startNotifications, 5000);
+} else {
+  window.addEventListener('load', () => {
+    setTimeout(startNotifications, 5000);
+  });
+}

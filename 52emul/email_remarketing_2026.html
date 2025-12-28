@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sua Segunda Chance: 60% OFF Liberado! 🔓</title>
+    <style>
+        /* Reset and Base Styles */
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+            display: block;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            height: 100% !important;
+            background-color: #0f1623;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #d1d5db;
+        }
+
+        /* Container Styles */
+        .wrapper {
+            width: 100%;
+            table-layout: fixed;
+            background-color: #0f1623;
+            padding: 40px 0;
+        }
+
+        .main-table {
+            background-color: #1a202c;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            border-spacing: 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2d3748;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #111827 0%, #1f2937 100%);
+            padding: 40px 20px;
+            text-align: center;
+            border-bottom: 2px solid #00ff88;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .header-title {
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: 800;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Content */
+        .content {
+            padding: 40px 30px;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 20px;
+            margin-top: 0;
+            font-weight: 700;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        /* Offer Box */
+        .offer-box {
+            background: linear-gradient(180deg, rgba(0, 255, 136, 0.05) 0%, rgba(0, 255, 136, 0.01) 100%);
+            border: 1px dashed #00ff88;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .old-price {
+            font-size: 16px;
+            color: #9ca3af;
+            text-decoration: line-through;
+            margin-bottom: 5px;
+        }
+
+        .new-price {
+            font-size: 42px;
+            color: #ffffff;
+            font-weight: 800;
+            margin: 10px 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .coupon-container {
+            background-color: #000;
+            border: 2px solid #00ff88;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px auto;
+            max-width: 280px;
+            position: relative;
+        }
+
+        .coupon-label {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #00ff88;
+            color: #000;
+            font-size: 12px;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+
+        .coupon-code {
+            font-family: 'Courier New', monospace;
+            font-size: 24px;
+            font-weight: bold;
+            color: #00ff88;
+            letter-spacing: 2px;
+            margin: 0;
+        }
+
+        /* CTA Button */
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            background: #00ff88;
+            background: linear-gradient(90deg, #00ff88 0%, #00d474 100%);
+            color: #0f1623;
+            font-size: 18px;
+            font-weight: 800;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 50px;
+            display: inline-block;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
+            transition: transform 0.2s;
+        }
+
+        /* Hover simulation handled by client usually, but good to have */
+        .btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 255, 136, 0.6);
+        }
+
+        /* Features List */
+        .features-list {
+            list-style: none;
+            padding: 0;
+            margin: 30px 0;
+        }
+
+        .features-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid #2d3748;
+            color: #e5e7eb;
+            font-size: 15px;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check {
+            color: #00ff88;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Urgent Banner */
+        .urgent-footer {
+            background-color: #ff4757;
+            padding: 15px;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: #6b7280;
+            font-size: 12px;
+            background-color: #0f1623;
+        }
+
+        .footer a {
+            color: #9ca3af;
+            text-decoration: underline;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <center>
+            <table class="main-table">
+                <!-- Header -->
+                <tr>
+                    <td class="header">
+                        <!-- Fallback text if image doesn't load, looking for '52 Emuladores' branding -->
+                        <img src="https://emuladores.github.io/52emul/images/52Emuladores.png" alt="52 Emuladores"
+                            width="180" style="margin: 0 auto; display: block;">
+                        <h1 class="header-title" style="margin-top: 20px;">Você Esqueceu Algo Incrível... 🕹️</h1>
+                    </td>
+                </tr>
+
+                <!-- Content -->
+                <tr>
+                    <td class="content">
+                        <h2>Olá, Gamer! 👋</h2>
+                        <p>
+                            Nós vimos que você deu uma olhadinha no <strong>Pack 52 Emuladores</strong> recentemente,
+                            mas acabou deixando para depois.
+                        </p>
+                        <p>
+                            Talvez a vida tenha ficado corrida, ou talvez você estivesse esperando um sinal. Bem,
+                            <strong>ESTE É O SINAL</strong>.
+                        </p>
+                        <p>
+                            Não queremos que o preço seja a barreira entre você e as melhores memórias da sua infância.
+                            Por isso, tomamos uma decisão radical.
+                        </p>
+                        <p>
+                            Liberamos um cupom de <strong>REMARKETING SECRETO</strong> válido apenas para visitantes
+                            recentes (sim, apenas para você e um pequeno grupo).
+                        </p>
+
+                        <!-- Offer Section -->
+                        <div class="offer-box">
+                            <p
+                                style="margin: 0; font-size: 14px; text-transform: uppercase; color: #a0aec0; letter-spacing: 1px;">
+                                Sua Oferta Exclusiva</p>
+                            <div class="old-price">De R$ 39,90 por</div>
+                            <div class="new-price">R$ 15,96</div>
+                            <p style="color: #ff4757; font-weight: bold; font-size: 14px; margin-top: 5px;">(60% DE
+                                DESCONTO APLICADO)</p>
+
+                            <div class="coupon-container">
+                                <span class="coupon-label">USE O CUPOM</span>
+                                <p class="coupon-code">DESCONTO2026</p>
+                            </div>
+
+                            <p style="font-size: 13px; color: #a0aec0; margin-top: 15px;">
+                                *O desconto de 60% será aplicado automaticamente no checkout sobre o valor do produto
+                                principal e <strong>TODOS</strong> os itens adicionais que você escolher!
+                            </p>
+                        </div>
+
+                        <!-- Benefits Recap -->
+                        <p style="text-align: center; font-weight: bold; color: #fff; margin-bottom: 20px;">
+                            O que você vai destravar hoje por menos do preço de um lanche:
+                        </p>
+                        <ul class="features-list">
+                            <li><span class="check">✓</span> <strong>52 Consoles Configurados</strong> (Atari ao
+                                PS3/Switch)</li>
+                            <li><span class="check">✓</span> <strong>+100.000 Jogos</strong> Prontos para Jogar</li>
+                            <li><span class="check">✓</span> <strong>Acesso Vitalício</strong> (Sem mensalidades)</li>
+                            <li><span class="check">✓</span> <strong>Downloads Imediatos</strong> e de Alta Velocidade
+                            </li>
+                            <li><span class="check">✓</span> <strong>Garantia de 30 Dias</strong> ou seu dinheiro de
+                                volta</li>
+                        </ul>
+
+                        <!-- Call To Action -->
+                        <div class="btn-container">
+                            <a href="https://digitalstoregames.com/checkout?coupon=DESCONTO2026" class="btn">
+                                RESGATAR MEU DESCONTO AGORA
+                            </a>
+                            <p style="font-size: 12px; color: #6b7280; margin-top: 15px;">
+                                ⚠️ Atenção: Este cupom é rastreado e pode expirar a qualquer momento.
+                            </p>
+                        </div>
+
+                        <!-- Urgency/FOMO Text -->
+                        <div
+                            style="background: rgba(255, 71, 87, 0.1); border-left: 3px solid #ff4757; padding: 15px; margin-top: 30px;">
+                            <p style="margin: 0; font-size: 14px; color: #ffcccb;">
+                                <strong>Pense bem:</strong> Daqui a 6 meses, você vai desejar ter aproveitado essa
+                                chance de reviver seus jogos favoritos por um preço tão simbólico. Não deixe essa
+                                oportunidade passar!
+                            </p>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Serious Footer Banner -->
+                <tr>
+                    <td class="urgent-footer">
+                        ⏰ OFERTA VÁLIDA ENQUANTO DURAREM OS CUPONS
+                    </td>
+                </tr>
+
+                <!-- Footer -->
+                <tr>
+                    <td class="footer">
+                        <p>© 2024 Digital Store Games. Todos os direitos reservados.</p>
+                        <p>Você recebeu este email porque visitou nossa loja recentemente e demonstrou interesse.</p>
+                        <div style="margin-top: 15px;">
+                            <a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a> | <a
+                                href="#">Descadastrar</a>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </div>
+
+</body>
+
+</html>
