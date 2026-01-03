@@ -221,7 +221,162 @@
 
     <!-- Requirements Alert -->
     <div class="container">
+        <!-- Requirements Grid Styling -->
+        <style>
+            .req-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 20px;
+                margin-bottom: 50px;
+            }
 
+            .req-card {
+                background: linear-gradient(135deg, rgba(22, 32, 50, 0.9), rgba(15, 22, 35, 0.95));
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                border-radius: 12px;
+                padding: 25px;
+                transition: transform 0.3s, box-shadow 0.3s;
+            }
+
+            .req-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+                border-color: var(--primary);
+            }
+
+            .req-icon {
+                font-size: 2.5rem;
+                color: var(--primary);
+                margin-bottom: 15px;
+            }
+
+            .req-title {
+                font-size: 1.5rem;
+                color: #fff;
+                margin-bottom: 15px;
+                font-family: 'Rajdhani', sans-serif;
+                font-weight: 700;
+            }
+
+            .req-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                text-align: left;
+            }
+
+            .req-list li {
+                padding: 8px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                color: var(--text-muted);
+                font-size: 0.9rem;
+            }
+
+            .req-list li strong {
+                color: #fff;
+                display: block;
+                margin-bottom: 3px;
+            }
+
+            .badge-rec {
+                background-color: rgba(0, 255, 136, 0.15);
+                color: var(--success);
+                padding: 2px 8px;
+                border-radius: 4px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+        </style>
+
+        <h2 style="text-align: center; color: #fff; margin-bottom: 30px; font-family: 'Rajdhani', sans-serif;">
+            <i class="fas fa-microchip" style="color: var(--danger); margin-right: 10px;"></i> Requisitos do Sistema
+        </h2>
+
+        <div class="req-grid">
+            <!-- PC / Notebook -->
+            <div class="req-card">
+                <div class="text-center">
+                    <div class="req-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3 class="req-title">PC & Notebook</h3>
+                </div>
+                <ul class="req-list">
+                    <li>
+                        <strong><span class="badge-rec">Mínimo (Roda 90% dos consoles)</span></strong>
+                        Processador Core 2 Duo ou Athlon 64 X2<br>
+                        2GB de Memória RAM<br>
+                        Vídeo Integrado Básico
+                    </li>
+                    <li>
+                        <strong><span class="badge-rec"
+                                style="color: var(--primary); background: rgba(0, 195, 255, 0.15);">Recomendado (Wii U /
+                                PS3)</span></strong>
+                        Core i5 (4ª Gen) ou Ryzen 3<br>
+                        8GB de Memória RAM<br>
+                        Placa de Vídeo GTX 750Ti ou similar
+                    </li>
+                    <li>
+                        <strong>Espaço em Disco:</strong><br>
+                        Download sob demanda (não precisa baixar tudo).
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile Android -->
+            <div class="req-card">
+                <div class="text-center">
+                    <div class="req-icon"><i class="fab fa-android"></i></div>
+                    <h3 class="req-title">Celular & Tablet</h3>
+                </div>
+                <ul class="req-list">
+                    <li>
+                        <strong><span class="badge-rec">Mínimo (Atari, SNES, GBA, PS1)</span></strong>
+                        Android 9.0 ou superior<br>
+                        Processador Snapdragon 660 (ou similar)<br>
+                        3GB de Memória RAM
+                    </li>
+                    <li>
+                        <strong><span class="badge-rec"
+                                style="color: var(--primary); background: rgba(0, 195, 255, 0.15);">Recomendado (PS2 /
+                                GC / 3DS)</span></strong>
+                        Android 11 ou superior<br>
+                        Snapdragon 855 / Dimensity 1200 ou superior<br>
+                        6GB+ de Memória RAM
+                    </li>
+                    <li>
+                        <em>*iOS (iPhone/iPad) não é compatível nativamente.</em>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- TV Box / Smart TV -->
+            <div class="req-card">
+                <div class="text-center">
+                    <div class="req-icon"><i class="fas fa-tv"></i></div>
+                    <h3 class="req-title">TV Box & Smart TV</h3>
+                </div>
+                <ul class="req-list">
+                    <li>
+                        <strong><span class="badge-rec">Atenção:</span></strong>
+                        Smart TVs Samsung (Tizen) e LG (WebOS) <strong>não rodam</strong> nativamente. Necessário TV
+                        Box.
+                    </li>
+                    <li>
+                        <strong><span class="badge-rec">TV Sticks Básicos</span></strong>
+                        Rodam bem: Atari, SNES, Mega Drive.<br>
+                        <em>Pode engasgar em N64/PS1.</em>
+                    </li>
+                    <li>
+                        <strong><span class="badge-rec"
+                                style="color: var(--primary); background: rgba(0, 195, 255, 0.15);">TV Box
+                                Recomendada</span></strong>
+                        Processador Amlogic S905x3 ou S905x4<br>
+                        4GB de Memória RAM<br>
+                        (Roda N64, Dreamcast, PSP e a maioria de PS1).
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div class="table-wrapper">

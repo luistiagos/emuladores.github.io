@@ -439,33 +439,53 @@ function renderSummary() {
 
   body.innerHTML = '';
   const tr0 = document.createElement('tr');
+
+  // Calculate Base Price with Discount
+  let basePrice = BASE.price;
+  if (currentCouponDiscount > 0) {
+    basePrice = basePrice * (1 - currentCouponDiscount / 100);
+  }
+
+  // Calculate Economy for Base (Original - New Price)
+  let baseEconomy = BASE.original_price - basePrice;
+
   tr0.innerHTML = `<td>
       ${BASE.name}
+      ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}% OFF</span>` : ''}
       <div class="summary-small">
         <span class="summary-strike">de ${fmt(BASE.original_price)}</span>
-        → por <span class="summary-price">${fmt(BASE.price)}</span>
-        <span class="economy">• Economia ${fmt(BASE.economy)}</span>
+        → por <span class="summary-price">${fmt(basePrice)}</span>
+        <span class="economy">• Economia ${fmt(baseEconomy)}</span>
       </div>
     </td>
-    <td style="text-align:right">${fmt(BASE.price)}</td>`;
+    <td style="text-align:right">${fmt(basePrice)}</td>`;
   body.appendChild(tr0);
 
-  let total = BASE.price;
-  let totalEconomy = BASE.economy;
+  let total = basePrice;
+  let totalEconomy = baseEconomy;
 
   getSelected().forEach(a => {
-    total += a.price;
-    totalEconomy += a.economy || 0;
+    // Calculate Addon Price with Discount
+    let addonPrice = a.price;
+    if (currentCouponDiscount > 0) {
+      addonPrice = addonPrice * (1 - currentCouponDiscount / 100);
+    }
+    let addonEconomy = a.original_price - addonPrice;
+
+    total += addonPrice;
+    totalEconomy += addonEconomy;
+
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>
         ${a.name}
+        ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}%</span>` : ''}
         <div class="summary-small">
           <span class="summary-strike">de ${fmt(a.original_price)}</span>
-          → por <span class="summary-price">${fmt(a.price)}</span>
-          <span class="economy">• Economia ${fmt(a.economy || 0)}</span>
+          → por <span class="summary-price">${fmt(addonPrice)}</span>
+          <span class="economy">• Economia ${fmt(addonEconomy)}</span>
         </div>
       </td>
-      <td style="text-align:right">${fmt(a.price)}</td>`;
+      <td style="text-align:right">${fmt(addonPrice)}</td>`;
     body.appendChild(tr);
   });
 
@@ -474,13 +494,70 @@ function renderSummary() {
   show(banner, true);
   document.getElementById('savingsValue') && (document.getElementById('savingsValue').textContent = fmt(totalEconomy));
 
-  /* Discount logic removed */
-
-  // Show discount notification if not already present
-
-
   updateBumpVisuals();
 }
+
+// Coupon Logic
+let currentCouponDiscount = 0;
+
+async function applyCoupon() {
+  const input = document.getElementById('cupom');
+  const code = input.value.trim();
+  const btn = document.querySelector('.btn-apply');
+
+  if (!code) return;
+
+  if (btn) {
+    btn.textContent = 'Verificando...';
+    btn.disabled = true;
+  }
+
+  try {
+    const discount = await getCupomDiscount(code);
+
+    if (discount > 0) {
+      currentCouponDiscount = discount * 100;
+      // Show success feedback
+      if (btn) {
+        btn.textContent = 'Aplicado!';
+        btn.style.backgroundColor = '#22c55e';
+        setTimeout(() => {
+          btn.textContent = 'Aplicar';
+          btn.style.backgroundColor = '';
+          btn.disabled = false;
+        }, 2000);
+      }
+      renderSummary();
+    } else {
+      currentCouponDiscount = 0;
+      // Show error feedback
+      if (btn) {
+        btn.textContent = 'Inválido';
+        btn.style.backgroundColor = '#ef4444';
+        setTimeout(() => {
+          btn.textContent = 'Aplicar';
+          btn.style.backgroundColor = '';
+          btn.disabled = false;
+        }, 2000);
+      }
+      renderSummary(); // Reset if previously valid
+    }
+  } catch (e) {
+    console.error(e);
+    if (btn) {
+      btn.textContent = 'Erro';
+      btn.disabled = false;
+    }
+  }
+}
+
+// Add Click Handler for Coupon Button
+document.addEventListener('DOMContentLoaded', () => {
+  const btnApply = document.querySelector('.btn-apply');
+  if (btnApply) {
+    btnApply.addEventListener('click', applyCoupon);
+  }
+});
 
 function updateBumpVisuals() {
   Object.keys(ADDONS).forEach(key => {

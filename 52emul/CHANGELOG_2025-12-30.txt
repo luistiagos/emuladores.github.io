@@ -1,0 +1,33 @@
+ALTERAÇÕES REALIZADAS - 30/12/2025
+=========================================
+
+1. REFINAMENTO "COMO FUNCIONA"
+   - Ícones alterados para VERDE (#28C76F) para transmitir positividade/facilidade.
+   - Textos reescritos com foco em conversão e quebra de objeções:
+     * Passo 1: Ênfase no acesso imediato e vitalício.
+     * Passo 2: Ênfase no "Download Sob Demanda" (não precisa baixar tudo).
+     * Passo 3: Ênfase na facilidade ("Zero Configuração").
+
+2. WALL OF GAMES (CARROSSEL TRIPLO)
+   - Adicionado 3º Carrossel de Jogos.
+   - Redistribuição de ~66 imagens de jogos entre os 3 carrosséis.
+   - Configuração de "lazy loading" para todas as imagens (performance).
+   - Ajuste de direção e velocidade para criar efeito de "Muro de Jogos" dinâmico.
+   - Correção de imagens quebradas (removidas 2 imagens inexistentes).
+
+3. CORREÇÕES DE LAYOUT (MOBILE/RESPONSIVO)
+   - Botão "CRIAR NOVAS MEMÓRIAS" (Sessão Emocional):
+     * Redução de tamanho e padding para caber em telas Android (Xiaomi Mi, etc).
+   - Botão "COMPRA GARANTIDA" (Rodapé):
+     * Redução de tamanho para evitar quebra de layout no mobile.
+   - Grade de Compatibilidade (Sobreposição):
+     * Adicionado espaçador físico de 60px para impedir que os cards (PS3/Smart TV) ficassem por cima do título "Requisitos" no Galaxy S12.
+   - Lista de Consoles (Mobile):
+     * Forçado layout de 2 Colunas (antes era 1 coluna) para melhorar a visualização da variedade de consoles em telas pequenas.
+
+4. REORGANIZAÇÃO DE SEÇÕES
+   - Seção "Como Funciona" movida para logo abaixo do Carrossel de Jogos (fluxo lógico: Desejo -> Explicação -> Compra).
+   - Refinamento nos textos de requisitos (Smart TV com aviso vermelho para Samsung/LG, verde para Android).
+
+5. FLUXO GERAL
+   - Melhoria na hierarquia visual e espaçamentos gerais para dispositivos móveis.
