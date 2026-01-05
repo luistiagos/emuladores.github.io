@@ -1,0 +1,80 @@
+/* FAQ accordion component */
+.faq {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card)
+}
+
+.faq h3 {
+  margin: 0;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 1rem;
+  font-weight: 800
+}
+
+.faq-item {
+  border-top: 1px solid var(--border)
+}
+
+.faq-item:first-of-type {
+  border-top: 0
+}
+
+.faq-q {
+  width: 100%;
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--card);
+  border: 0;
+  font-weight: 700;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: .975rem;
+  color: var(--text);
+}
+
+.faq-q:hover {
+  background: var(--border)
+}
+
+.faq-a {
+  display: none;
+  padding: 0 14px 12px 14px;
+  color: var(--muted);
+  font-size: .9375rem
+}
+
+.faq-q .icon {
+  transition: transform .2s ease
+}
+
+.faq-item.open .faq-a {
+  display: block
+}
+
+.faq-item.open .faq-q .icon {
+  transform: rotate(180deg)
+}
+
+@media (max-width: 640px) {
+  .faq h3 {
+    font-size: .9375rem;
+    padding: 10px 12px
+  }
+
+  .faq-q {
+    padding: 14px 12px;
+    font-size: .9375rem
+  }
+
+  .faq-a {
+    padding: 0 12px 14px 12px;
+    font-size: .875rem;
+    line-height: 1.6
+  }
+}

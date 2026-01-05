@@ -1,0 +1,53 @@
+/* Pricing and product display */
+.muted {
+  color: var(--muted)
+}
+
+#avistaVlr {
+  color: #fff;
+  font-weight: 700;
+}
+
+.price {
+  font-size: 2.125rem;
+  font-weight: 800;
+  margin: 2px 0
+}
+
+.strike {
+  color: #fff;
+  text-decoration: line-through;
+  text-decoration-color: red;
+  font-weight: bold;
+}
+
+@media (max-width: 480px) {
+  .price {
+    font-size: 1.75rem
+  }
+
+  .muted {
+    font-size: .9375rem
+  }
+}
+
+.economy {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: .9375rem
+}
+
+.summary-small {
+  font-size: .875rem;
+  color: var(--muted)
+}
+
+.summary-strike {
+  color: var(--muted);
+  text-decoration: line-through
+}
+
+.summary-price {
+  color: var(--text);
+  font-weight: 800
+}

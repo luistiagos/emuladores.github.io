@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="pt-BR" data-accent="green">
+
+<head>
+  <meta charset="utf-8">
+  <title>Checkout seguro — Digital Store Games</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="//api.whatsapp.com">
+  <link rel="dns-prefetch" href="//i.pravatar.cc">
+  <link rel="preconnect" href="https://i.pravatar.cc" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS Files -->
+  <link rel="stylesheet" href="css/bundle.css">
+
+
+</head>
+
+<body>
+  <a class="sr-only" href="#checkoutForm">Pular para o formulário</a>
+
+  <div class="wrap">
+    <header>
+      <a href="#" class="logo-custom" style="text-decoration: none;">
+        <i class="fas fa-gamepad logo-icon-brand"></i>
+        <div class="logo-label">
+          DIGITAL STORE <span>GAMES</span>
+        </div>
+      </a>
+      <div class="header-secure">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+          <path
+            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z" />
+        </svg>
+        <span>Ambiente Seguro</span>
+      </div>
+    </header>
+
+    <div class="layout">
+      <section class="card">
+        <div class="muted">VALOR TOTAL (COM BÔNUS): <span class="strike" style="color: #e74c3c;">R$ 199,00</span></div>
+        <div class="price" id="headlinePrice">5 × 5,35</div>
+        <div class="muted">No Cartão ou <span id="avistaVlr">R$ 25,00</span> à vista</div>
+
+        <div class="order-card">
+          <img class="order-thumb" src="../images/logo2.webp" alt="Plataforma Playstation 2" loading="lazy">
+          <div class="order-info">
+            <h3>Plataforma Playstation 2 (Acesso Digital)</h3>
+            <ul>
+              <li>Acesso imediato</li>
+              <li>Todos os jogos de PS2</li>
+              <li>Acesso vitalício</li>
+              <li>Atualizações gratuitas</li>
+              <li>Tutorial passo a passo incluso</li>
+            </ul>
+          </div>
+        </div>
+
+        <form id="checkoutForm" novalidate autocomplete="on">
+          <div class="field">
+            <label class="label" for="nome">Nome</label>
+            <input class="input" id="nome" name="nome" type="text" placeholder="Seu nome" autocomplete="nome"
+              inputmode="nome" autocapitalize="off" autocorrect="off" spellcheck="false" autofocus enterkeyhint="next">
+            <div class="assist">Opcional</div>
+          </div>
+          <div class="field">
+            <label class="label" for="email">E-mail</label>
+            <input class="input" id="email" name="email" type="email" placeholder="voce@email.com" required
+              autocomplete="email" inputmode="email" aria-describedby="emailErr" autocapitalize="off" autocorrect="off"
+              spellcheck="false" autofocus enterkeyhint="next">
+            <div class="error" id="emailErr" role="alert">E-mail inválido. Ex.: nome@site.com</div>
+          </div>
+
+          <div class="field">
+            <label class="label" for="cel">Celular com DDD (opcional)</label>
+            <input class="input" id="cel" name="tel" type="tel" placeholder="(11) 99999-9999" autocomplete="tel"
+              inputmode="numeric" pattern="[\d\s\-\(\)]{8,}" enterkeyhint="done" maxlength="16">
+            <div class="error" id="celErr" role="alert">Celular inválido. Ex.: (11) 99999-9999</div>
+            <div class="assist">Opcional — usamos para suporte/entrega rápida via WhatsApp.</div>
+          </div>
+        </form>
+
+        <div class="bump-header">
+          <h2 class="bump-header-title">Aproveite também — extras adicionais com preço especial</h2>
+          <p class="bump-header-sub">Esta oferta expira ao sair desta página</p>
+        </div>
+
+        <div class="bump-stack">
+          <!-- BUMP 1: SONY -->
+          <div class="bump" id="bumpSony">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Sony (PS1, PSP, PS3)</div>
+              <span class="bump-badge" id="sonyBadge">-80%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 49,90</span> por <span class="bump-price">R$
+                  10,00</span> <span class="bump-economy">(Economia R$ 39,90)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpSony_check" onclick="updateAll()" aria-label="Adicionar Plataforma Sony">
+                <img class="bump-thumb clickable gallery" data-target="bumpSony_check" data-gallery="xbox"
+                  src="images/ps1ps3psp.webp" alt="Pacote Sony" loading="lazy">
+                <div>
+                  <div class="bump-sub">Todos os jogos já lançados de Playstation 1, PSP e Playstation 3. Acesso
+                    Vitalício.</div>
+                  <div class="bump-note">Não substitui o produto principal. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUMP 2: NINTENDO -->
+          <div class="bump" id="bumpNintendo">
+            <div class="bump-head">
+              <div class="bump-title">11 Plataformas Nintendo</div>
+              <span class="bump-badge" id="nintendoBadge">-75%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 59,90</span> por <span class="bump-price">R$
+                  15,00</span> <span class="bump-economy">(Economia R$ 44,90)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpNintendo_check" onclick="updateAll()"
+                  aria-label="Adicionar Plataformas Nintendo">
+                <img class="bump-thumb clickable gallery" data-target="bumpNintendo_check" data-gallery="switch"
+                  src="images/nintendocollection.webp" alt="Pacote Nintendo" loading="lazy">
+                <div>
+                  <div class="bump-sub">SNES, N64, Wii, WiiU, DS, 3DS, GameBoy, GBC, GBA, GameCube e mais. Todos os
+                    jogos.</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUMP 3: SWITCH -->
+          <div class="bump" id="bumpSwitch">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Nintendo Switch</div>
+              <span class="bump-badge" id="swBadge">-60%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 75,00</span> por <span class="bump-price">R$
+                  30,00</span> <span class="bump-economy">(Economia R$ 45,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpSwitch_check" onclick="updateAll()"
+                  aria-label="Adicionar Nintendo Switch">
+                <img class="bump-thumb clickable gallery" data-target="bumpSwitch_check" data-gallery="switch"
+                  src="images/switchbox.webp" alt="Pacote Switch" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma de Nintendo Switch para PC (+2655 jogos) + DLCs e Atualizações.</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUMP 4: XBOX CLASSIC -->
+          <div class="bump" id="bumpXbox">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Xbox Clássico</div>
+              <span class="bump-badge" id="xboxBadge">-70%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 67,00</span> por <span class="bump-price">R$
+                  20,00</span> <span class="bump-economy">(Economia R$ 47,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpXbox_check" onclick="updateAll()" aria-label="Adicionar Xbox Clássico">
+                <img class="bump-thumb clickable gallery" data-target="bumpXbox_check" data-gallery="xbox"
+                  src="images/xboxclassicbox.webp" alt="Pacote Xbox" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma de Xbox Clássico para PC. Com 878 jogos. Acesso Vitalício.</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BUMP 5: OUTROS -->
+          <div class="bump" id="bumpOutros">
+            <div class="bump-head">
+              <div class="bump-title">14 Plataformas Diversas</div>
+              <span class="bump-badge" id="outrosBadge">-75%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 39,90</span> por <span class="bump-price">R$
+                  10,00</span> <span class="bump-economy">(Economia R$ 29,90)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpOutros_check" onclick="updateAll()"
+                  aria-label="Adicionar Outras Plataformas">
+                <img class="bump-thumb clickable gallery" data-target="bumpOutros_check" data-gallery="saturn"
+                  src="images/saturnbox.webp" alt="Pacote Diversos" loading="lazy">
+                <div>
+                  <div class="bump-sub">Mega Drive, Saturn, Dreamcast, Master System, 32X, Arcade, Atari (2600, 5200,
+                    7800, Jaguar), e mais.</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="field">
+          <label class="label" for="cupom">Cupom de desconto (opcional)</label>
+          <div class="input-group">
+            <input class="input" id="cupom" name="cupom" type="text" placeholder="Cupom de desconto"
+              autocomplete="cupom" inputmode="text" enterkeyhint="done" maxlength="16">
+            <button type="button" class="btn-apply">Aplicar</button>
+          </div>
+          <div class="assist">Opcional — use um cupom de desconto para obter um desconto adicional.</div>
+        </div>
+        <div class="summary" id="summary" aria-live="polite">
+          <h3>Detalhes do pedido</h3>
+          <table class="summary-table" id="summaryTable">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th style="text-align:right">Preço</th>
+              </tr>
+            </thead>
+            <tbody id="summaryBody"></tbody>
+            <tfoot>
+              <tr>
+                <td>Total <span class="economy" id="totalEconomy">(Economia R$ 0,00)</span></td>
+                <td style="text-align:right" id="totalVlr">R$ 39,00</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div class="savings-banner" id="savingsBanner">🎉 <strong>Parabéns!</strong> Você está economizando <strong
+              id="savingsValue">R$ 0,00</strong> hoje.</div>
+        </div>
+
+        <div class="trust-bar" id="trustBar">
+          🔒 <strong>Checkout seguro</strong> — você paga no <strong>Mercado Pago</strong> (Pix, Cartão, Boleto). Dados
+          criptografados.
+        </div>
+
+        <div class="checkout-footer">
+          <div class="social-proof" aria-label="Clientes recentes">
+
+            <div class="social-copy">Mais de 12.000 clientes satisfeitos</div>
+          </div>
+
+          <div class="rating-row" aria-label="Avaliação média dos clientes">
+            <div class="stars" aria-hidden="true">
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 15l-5.878 3.09L5.5 11.545 1 7.91l6.061-.88L10 1l2.939 6.03L19 7.91l-4.5 3.636 1.378 6.545z" />
+              </svg>
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 15l-5.878 3.09L5.5 11.545 1 7.91l6.061-.88L10 1l2.939 6.03L19 7.91l-4.5 3.636 1.378 6.545z" />
+              </svg>
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 15l-5.878 3.09L5.5 11.545 1 7.91l6.061-.88L10 1l2.939 6.03L19 7.91l-4.5 3.636 1.378 6.545z" />
+              </svg>
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 15l-5.878 3.09L5.5 11.545 1 7.91l6.061-.88L10 1l2.939 6.03L19 7.91l-4.5 3.636 1.378 6.545z" />
+              </svg>
+              <svg viewBox="0 0 20 20">
+                <path
+                  d="M10 15l-5.878 3.09L5.5 11.545 1 7.91l6.061-.88L10 1l2.939 6.03L19 7.91l-4.5 3.636 1.378 6.545z" />
+              </svg>
+            </div>
+            <div><strong>4,8 / 5</strong> <span class="rating-muted">(12.854 usuários)</span></div>
+          </div>
+
+          <div class="trust-under-cta" aria-label="Formas de pagamento aceitas">
+            <span>Você paga no Mercado Pago:</span>
+            <img src="images/payment-methods/mercadopago.webp" alt="Mercado Pago" loading="lazy">
+            <img src="images/payment-methods/pix.svg" alt="Pix" loading="lazy">
+            <img src="images/payment-methods/visa.svg" alt="Visa" loading="lazy">
+            <img src="images/payment-methods/mastercard.webp" alt="Mastercard" loading="lazy">
+            <img src="images/payment-methods/elo.svg" alt="Elo" loading="lazy">
+            <img src="images/payment-methods/amex.svg" alt="American Express" loading="lazy">
+            <img src="images/payment-methods/diners-club.svg" alt="Diners Club" loading="lazy">
+            <img src="images/payment-methods/boleto.webp" alt="Boleto bancário" loading="lazy">
+          </div>
+        </div>
+
+        <div class="mobile-sticky-bar">
+          <div class="micro-guarantee" id="microGuarantee" aria-live="polite">
+            <span>⚡ Acesso imediato</span><span class="sep">•</span>
+            <span>✅ Garantia de 30 dias</span><span class="sep">•</span>
+            <span>💬 Suporte via WhatsApp</span>
+          </div>
+
+          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar()">
+            <img src="images/payment-methods/mercadopago.webp" alt="" class="mp-icon" width="40" height="40">
+            <span>Pagar com Mercado Pago</span>
+          </button>
+        </div>
+      </section>
+
+      <aside class="side">
+        <div class="tcard" id="tcard">
+          <h3 class="t-title">O que dizem nossos clientes</h3>
+          <div id="tlist"></div>
+          <div class="t-footer">Depoimentos verificados</div>
+        </div>
+
+        <div class="faq" id="checkoutFAQ" aria-label="Perguntas frequentes">
+          <h3>FAQ — antes de finalizar</h3>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Como recebo o acesso?</span><span
+                class="icon">▾</span></button>
+            <div class="faq-a">Logo após o pagamento, o acesso é enviado para o seu e-mail. A liberação é imediata.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Tem suporte, caso eu precise?</span><span
+                class="icon">▾</span></button>
+            <div class="faq-a">
+              Sim. Caso precise de ajuda, nosso suporte é diretamente pelo WhatsApp.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>E se eu não gostar?</span><span
+                class="icon">▾</span></button>
+            <div class="faq-a">Você tem 30 dias de garantia para solicitar reembolso sem burocracia.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>É seguro?</span><span class="icon">▾</span></button>
+            <div class="faq-a">Sim. O pagamento é processado pelo Mercado Pago.
+              Toda a compra é coberta pelo programa de <a href="https://www.mercadopago.com.br/ajuda/23185"
+                target="_blank" rel="noopener noreferrer">Compra Garantida do Mercado Pago</a>.
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Quanto tempo para receber o produto?</span><span
+                class="icon">▾</span></button>
+            <div class="faq-a">Depois que o pagamento for confirmado, o produto será enviado para o seu e-mail.
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <footer class="trust-footer">
+
+    <div class="footer-contacts"
+      style="margin-bottom: 20px; font-size: 0.8rem; opacity: 0.8; display: flex; justify-content: center; gap: 15px;">
+      <a href="mailto:contato@digitalstoregames.com" style="color: inherit; text-decoration: none;"><i
+          class="fas fa-envelope"></i> Email</a>
+      <a href="https://wa.me/5541996260115" target="_blank" style="color: inherit; text-decoration: none;"><i
+          class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="https://www.facebook.com/profile.php?id=100085725639739" target="_blank"
+        style="color: inherit; text-decoration: none;"><i class="fab fa-facebook"></i> Facebook</a>
+    </div>
+    <a href="https://www.siteconfiavel.com.br/site/digitalstoregames-com" target="_blank" rel="noopener noreferrer">
+      <img src="images/trust-seals/siteconfiavel.webp" class="trust-seal" alt="Site Confiável" loading="lazy">
+    </a>
+    <a href="https://www.websiteplanet.com/pt-br/webtools/ssl-checker/?url=digitalstoregames.com" target="_blank"
+      rel="noopener noreferrer">
+      <img src="images/trust-seals/ssl.webp" class="trust-seal" alt="SSL Seguro" loading="lazy">
+    </a>
+    <a href="https://www.mercadopago.com.br/ajuda/23185" target="_blank" rel="noopener noreferrer">
+      <img src="images/trust-seals/mercadopagogarantia.webp" class="trust-seal" alt="Mercado Pago Garantia"
+        loading="lazy">
+    </a>
+  </footer>
+
+  <div class="modal" id="modal">
+    <div class="modal-box">
+      <h3 id="modalTitle">Conteúdo do pacote</h3>
+      <div class="grid" id="gallery"></div>
+      <div class="close" id="closeModal">Fechar</div>
+    </div>
+  </div>
+
+  <div id="spinner-loader"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.9); z-index: 9999; justify-content: center; align-items: center; flex-direction: column;">
+    <div
+      style="border: 4px solid #f3f3f3; border-top: 4px solid #009EE3; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;">
+    </div>
+    <p style="margin-top: 15px; font-weight: 600; color: #333; font-family: 'Montserrat', sans-serif;">Processando seu
+      pagamento...</p>
+    <style>
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </div>
+
+  <a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20produto%2052%20Emuladores%20Configurados%20com%20100000%20jogos"
+    class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Fale conosco no WhatsApp">
+    <span class="whatsapp-tooltip">Precisa de ajuda?</span>
+    <svg class="whatsapp-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+    </svg>
+  </a>
+
+  <!-- JavaScript Files -->
+  <script src="js/notifications.js" defer></script>
+  <script src="js/bundle.js" defer></script>
+</body>
+
+</html>
