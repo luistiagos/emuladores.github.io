@@ -848,17 +848,20 @@ function startRotation() {
 
 // Initialize discount badges and run startup functions
 (function () {
-  const bx = document.getElementById('bxBadge');
-  if (bx) bx.textContent = `-${formatPct(48, 30)}%`;
+  const sony = document.getElementById('sonyBadge');
+  if (sony) sony.textContent = `-${formatPct(49.90, 10.00)}%`;
 
-  const cl = document.getElementById('clBadge');
-  if (cl) cl.textContent = `-${formatPct(67, 20)}%`;
+  const nin = document.getElementById('nintendoBadge');
+  if (nin) nin.textContent = `-${formatPct(59.90, 15.00)}%`;
 
   const sw = document.getElementById('swBadge');
-  if (sw) sw.textContent = `-${formatPct(75, 30)}%`;
+  if (sw) sw.textContent = `-${formatPct(75.00, 30.00)}%`;
 
-  const sat = document.getElementById('satBadge');
-  if (sat) sat.textContent = `-${formatPct(20, 10)}%`;
+  const xb = document.getElementById('xboxBadge');
+  if (xb) xb.textContent = `-${formatPct(67.00, 20.00)}%`;
+
+  const out = document.getElementById('outrosBadge');
+  if (out) out.textContent = `-${formatPct(39.90, 10.00)}%`;
 })();
 
 // Initialize the page

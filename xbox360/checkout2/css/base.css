@@ -1,0 +1,59 @@
+/* Base styles and CSS variables */
+:root {
+  --card: #1e293b;
+  --muted: #94a3b8;
+  --text: #f8fafc;
+  --border: #334155;
+  --primary: #22c55e;
+  --primaryText: #ffffff;
+  --ok: #4ade80;
+  --accent: #34d399;
+  --accent-soft: #064e3b;
+  --danger: #f87171;
+  --star: #fbbf24;
+  --bg: #0f172a;
+}
+
+html,
+body {
+  font-size: 16px
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Montserrat', system-ui, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: #2563eb
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.wrap {
+  max-width: 1180px;
+  margin: 24px auto;
+  padding: 0 16px
+}
+
+@media (max-width: 640px) {
+  .wrap {
+    margin: 12px auto;
+    padding: 0 12px
+  }
+}

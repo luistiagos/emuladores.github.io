@@ -1,0 +1,75 @@
+/* Order summary and totals */
+.summary {
+  margin-top: 16px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--card);
+}
+
+.summary h3 {
+  margin: 0;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: 1rem;
+  font-weight: 700
+}
+
+.summary-table {
+  width: 100%;
+  border-collapse: collapse
+}
+
+.summary-table th,
+.summary-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  font-size: .9375rem;
+  vertical-align: top
+}
+
+.summary-table th {
+  background: #f9fafb;
+  text-align: left;
+  color: #374151
+}
+
+.summary-table tfoot td {
+  font-weight: 900
+}
+
+@media (max-width: 640px) {
+
+  .summary-table th,
+  .summary-table td {
+    padding: 8px 10px;
+    font-size: .875rem
+  }
+
+  .summary h3 {
+    font-size: .9375rem;
+    padding: 10px 12px
+  }
+
+  .summary-small {
+    font-size: .8125rem
+  }
+
+  .savings-banner {
+    font-size: .9375rem;
+    padding: 10px
+  }
+}
+
+.savings-banner {
+  display: none;
+  margin-top: 10px;
+  padding: 12px;
+  border: 1px dashed #16a34a;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #065f46;
+  font-weight: 700;
+  text-align: center;
+  font-size: 1rem
+}

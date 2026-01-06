@@ -2,8 +2,8 @@
 const STOREID = 20000;
 const BASE = {
   id: 'principal-52emul',
-  name: '52 Emuladores + 100.000 jogos',
-  original_price: 100.00,
+  name: 'Plataforma Multijogos',
+  original_price: 197.90,
   price: 39.00
 };
 BASE.economy = BASE.original_price - BASE.price;
@@ -30,7 +30,7 @@ const ADDONS = {
   bumpSaturn_check: {
     id: 'saturn',
     name: 'Plataforma Sega Saturn',
-    original_price: 20.00,
+    original_price: 25.00,
     price: 10.00
   }
 };
