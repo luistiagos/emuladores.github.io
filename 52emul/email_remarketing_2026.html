@@ -66,8 +66,8 @@
 
         /* Header */
         .header {
-            background: #111827;
-            /* Dark header for contrast */
+            background: #f9f9f9;
+            /* Light gray background as requested */
             padding: 30px 20px;
             text-align: center;
             border-bottom: 4px solid #10b981;
@@ -113,14 +113,12 @@
 
         /* Offer Box */
         .offer-container {
-            background: linear-gradient(145deg, #1f2937 0%, #111827 100%);
+            background-color: #1f2937;
             border-radius: 12px;
             padding: 30px;
             text-align: center;
             color: white;
             margin: 30px 0;
-            position: relative;
-            overflow: hidden;
         }
 
         .offer-tag {
@@ -159,8 +157,6 @@
         }
 
         .step-item {
-            display: flex;
-            align-items: flex-start;
             margin-bottom: 20px;
         }
 
@@ -174,13 +170,10 @@
             width: 28px;
             height: 28px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             font-weight: bold;
             font-size: 14px;
-            margin-right: 15px;
-            flex-shrink: 0;
+            text-align: center;
+            line-height: 28px;
         }
 
         .step-text {
@@ -220,10 +213,7 @@
             transition: all 0.2s;
         }
 
-        .btn-main:hover {
-            transform: translateY(2px);
-            border-bottom-width: 2px;
-        }
+
 
         /* Footer */
         .footer {
@@ -265,9 +255,9 @@
                 <!-- Header Image -->
                 <tr>
                     <td class="header">
-                        <!-- Using absolute path for email client compatibility -->
-                        <img src="./checkout2/images/multigamesbox.webp" alt="Plataforma Multijogos - Acesso Vitalício"
-                            width="220" style="margin: 0 auto;">
+                        <!-- Switched to local high-res image for quality check. You will need to upload 'images/52Emuladores600.png' to your server and update this link for the final email. -->
+                        <img src="https://emulators.digitalstoregames.com/images/boxarts/plataformamultigames.jpeg"
+                            alt="Plataforma Multijogos - Acesso Vitalício" width="220" style="margin: 0 auto;">
                     </td>
                 </tr>
 
@@ -309,31 +299,64 @@
                                 economiza R$ 23,94 agora)</div>
 
                             <!-- Didactic Walkthrough Inside Offer -->
-                            <div
-                                style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; text-align: left;">
-                                <p
-                                    style="color: #fff; margin: 0 0 15px 0; font-weight: bold; font-size: 14px; text-align: center; text-transform: uppercase;">
-                                    👇 Truque para maximizar o desconto 👇</p>
-
-                                <div style="display: flex; margin-bottom: 12px; align-items: start;">
-                                    <span style="color: #10b981; font-weight: bold; margin-right: 10px;">1.</span>
-                                    <span style="font-size: 14px; color: #e5e7eb;">Clique no botão verde e vá para o
-                                        checkout.</span>
-                                </div>
-                                <div style="display: flex; margin-bottom: 12px; align-items: start;">
-                                    <span style="color: #10b981; font-weight: bold; margin-right: 10px;">2.</span>
-                                    <span style="font-size: 14px; color: #e5e7eb;"><strong>Importante:</strong> Marque
-                                        as caixinhas dos pacotes extras (Xbox, Switch, etc.) que você quer
-                                        adicionar.</span>
-                                </div>
-                                <div style="display: flex; align-items: start;">
-                                    <span style="color: #10b981; font-weight: bold; margin-right: 10px;">3.</span>
-                                    <span style="font-size: 14px; color: #e5e7eb;">Em "Cupom", digite <span
-                                            class="code-badge"
-                                            style="color:#ef4444; background:white;">DESCONTO2026</span> e aplique.
-                                        <strong>O preço TOTAL vai cair 60%.</strong></span>
-                                </div>
-                            </div>
+                            <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                                style="background: rgba(255,255,255,0.1); border-radius: 8px; padding: 20px;">
+                                <tr>
+                                    <td style="padding: 20px;">
+                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td
+                                                    style="color: #fff; padding-bottom: 15px; font-weight: bold; font-size: 14px; text-align: center; text-transform: uppercase;">
+                                                    👇 Truque para maximizar o desconto 👇
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 12px;">
+                                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td width="30" valign="top"
+                                                                style="color: #10b981; font-weight: bold;">1.</td>
+                                                            <td style="font-size: 14px; color: #e5e7eb;">Clique no
+                                                                botão verde e vá para o checkout.</td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding-bottom: 12px;">
+                                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td width="30" valign="top"
+                                                                style="color: #10b981; font-weight: bold;">2.</td>
+                                                            <td style="font-size: 14px; color: #e5e7eb;">
+                                                                <strong>Importante:</strong> Marque as caixinhas dos
+                                                                pacotes extras (Xbox, Switch, etc.) que você quer
+                                                                adicionar.
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                                        <tr>
+                                                            <td width="30" valign="top"
+                                                                style="color: #10b981; font-weight: bold;">3.</td>
+                                                            <td style="font-size: 14px; color: #e5e7eb;">Em "Cupom",
+                                                                digite <span
+                                                                    style="color:#ef4444; background:white; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-weight: bold;">DESCONTO2026</span>
+                                                                e aplique. <strong>O preço TOTAL vai cair
+                                                                    60%.</strong>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
 
                         <!-- CTA Section -->
