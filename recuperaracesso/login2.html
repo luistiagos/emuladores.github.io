@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Área - Digital Store Games</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Rajdhani:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Shared Styles -->
+    <link rel="stylesheet" href="../52emul/style.css">
+
+    <style>
+        /* Styles specific to Login Page override */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle at 50% 30%, #201025 0%, #0a0a12 70%);
+            padding: 20px;
+        }
+
+        /* --- Login/Card Styles --- */
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo-login {
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            color: white;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(255, 0, 85, 0.2);
+            background: rgba(255, 0, 85, 0.05);
+        }
+
+        .form-label {
+            display: block;
+            text-align: left;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* --- Member Area Styles --- */
+        #member-area {
+            width: 100%;
+            max-width: 1200px;
+            display: none;
+            /* Hidden by default */
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-member {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 16px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border-color: var(--primary);
+        }
+
+        .card-body {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            text-align: left;
+        }
+
+        .card-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: white;
+            line-height: 1.2;
+        }
+
+        .btn-access {
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.2s;
+            display: block;
+            margin-top: auto;
+            border: 1px solid transparent;
+        }
+
+        .btn-access:hover {
+            background: transparent;
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 0 15px rgba(255, 0, 85, 0.3);
+        }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-logout:hover {
+            background: rgba(255, 0, 0, 0.1);
+            color: #ff5555;
+            border-color: #ff5555;
+        }
+
+
+        .alert-custom {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        .alert-error {
+            background: rgba(255, 0, 85, 0.1);
+            border: 1px solid var(--primary);
+            color: #ff8fa3;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 480px) {
+            .btn-pulse {
+                padding: 12px 15px !important;
+                font-size: 0.95rem !important;
+                white-space: nowrap;
+            }
+
+            .login-card {
+                padding: 30px 20px;
+            }
+
+            .logo-login {
+                transform: scale(0.9);
+                margin-bottom: 30px;
+            }
+
+            h2.neon-text {
+                font-size: 1.5rem !important;
+            }
+
+            .header-member {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Logo (Visible on Login) -->
+    <div id="login-logo-container">
+        <a href="#" class="logo-custom logo-login">
+            <i class="fas fa-gamepad logo-icon-brand"></i>
+            <div class="logo-label">
+                DIGITAL STORE <span>GAMES</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- LOGIN SECTION -->
+    <section id="login-section" class="login-card">
+        <h2 class="neon-text" style="font-size: 2rem; margin-bottom: 10px;">Área do Cliente</h2>
+        <p style="color: var(--text-muted); margin-bottom: 40px; font-size: 1.1rem;">
+            Entre com seu e-mail para acessar seus produtos.
+        </p>
+
+        <!-- Form -->
+        <form onsubmit="event.preventDefault(); consultarDados();">
+            <div style="text-align: left;">
+                <label for="email" class="form-label">SEU E-MAIL</label>
+                <input type="email" id="email" class="form-control" placeholder="exemplo@email.com" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-pulse" style="width: 100%; border: none;">
+                ACESSAR <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
+            </button>
+        </form>
+
+        <div id="status-message"></div>
+    </section>
+
+    <!-- MEMBER AREA SECTION -->
+    <section id="member-area">
+        <!-- Header -->
+        <div class="header-member">
+            <div class="user-info">
+                <a href="#" class="logo-custom" style="margin:0; font-size: 1.2rem;">
+                    <i class="fas fa-gamepad logo-icon-brand" style="font-size: 1.5rem;"></i>
+                    <div class="logo-label">DIGITAL STORE <span>GAMES</span></div>
+                </a>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <span id="user-email-display" style="color: var(--text-muted); font-size: 0.9rem;"></span>
+                <button onclick="logout()" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i> Sair
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <h2 class="neon-text" style="margin-bottom: 30px; align-self: flex-start;">Seus Produtos</h2>
+
+        <div id="products-grid" class="products-grid">
+            <!-- Cards appended here -->
+        </div>
+
+        <div id="loading-spinner" style="display: none; margin-top: 50px;">
+            <i class="fas fa-circle-notch fa-spin fa-3x" style="color: var(--primary);"></i>
+        </div>
+    </section>
+
+
+    <!-- Logic -->
+    <script>
+        // Product configuration
+        const STOREID = 20000;
+
+        // API Base URL
+        const API_URL = "https://digitalstoregames.pythonanywhere.com";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const emailParam = urlParams.get('email');
+
+            // Check logic order: URL -> localStorage
+            if (emailParam) {
+                attemptLogin(emailParam);
+            } else {
+                const savedEmail = localStorage.getItem('last_email');
+                if (savedEmail) {
+                    attemptLogin(savedEmail);
+                }
+            }
+        });
+
+        function attemptLogin(email) {
+            // Fill email just in case needed later
+            document.getElementById('email').value = email;
+            consultarDados(email);
+        }
+
+        function showMessage(msg, type = 'error') {
+            const container = document.getElementById('status-message');
+            container.innerHTML = `<div class="alert-custom alert-${type}"><i class="fas fa-exclamation-circle"></i> ${msg}</div>`;
+            setTimeout(() => { container.innerHTML = ''; }, 5000);
+        }
+
+        function validarEmail(email) {
+            if (!email) {
+                const input = document.getElementById("email");
+                email = input.value.trim();
+            }
+            const regex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/; // Simple regex
+
+            if (!regex.test(email)) {
+                showMessage("Por favor, digite um e-mail válido.", "error");
+                return false;
+            }
+            return email;
+        }
+
+        function consultarDados(emailInput = null) {
+            let email = emailInput;
+
+            // If called from form submit, get value from input
+            if (!email) {
+                const input = document.getElementById('email');
+                email = input.value.trim();
+            }
+
+            if (!validarEmail(email)) return;
+
+            const loginSection = document.getElementById('login-section');
+            const loginLogo = document.getElementById('login-logo-container');
+            const memberArea = document.getElementById('member-area');
+            const submitBtn = document.querySelector('button[type="submit"]');
+
+            // UI Loading State (Login Form)
+            if (submitBtn) {
+                submitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> ACESSANDO...';
+                submitBtn.disabled = true;
+            }
+
+            // Updated Service Call: list_catalog_by_user with storeid and email
+            fetch(`${API_URL}/list_catalog_by_user?storeid=${STOREID}&email=${email}`)
+                .then(response => {
+                    if (!response.ok) return [];
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data || data.length === 0) {
+                        // Not found
+                        showMessage("Nenhum produto encontrado para este e-mail.", "error");
+                        // Reset UI
+                        if (submitBtn) {
+                            submitBtn.innerHTML = 'ACESSAR <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                            submitBtn.disabled = false;
+                        }
+                    } else {
+                        // Success -> Switch to Member Area
+                        localStorage.setItem('last_email', email);
+                        renderMemberArea(data, email);
+
+                        // Hide Login, Show Member
+                        loginSection.style.display = 'none';
+                        loginLogo.style.display = 'none';
+                        memberArea.style.display = 'flex';
+                    }
+                })
+                .catch(() => {
+                    showMessage("Erro de conexão. Tente novamente.", "error");
+                    if (submitBtn) {
+                        submitBtn.innerHTML = 'ACESSAR <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>';
+                        submitBtn.disabled = false;
+                    }
+                });
+        }
+
+        function renderMemberArea(data, email) {
+            const grid = document.getElementById('products-grid');
+            document.getElementById('user-email-display').textContent = email;
+            grid.innerHTML = "";
+
+            data.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'product-card';
+
+                let buttonHtml = '';
+
+                // Logic: 
+                // deliverlinks -> Purchased -> Access Button
+                // purchaselink -> Not Purchased -> Purchase Button
+
+                if (item.deliverlinks) {
+                    buttonHtml = `
+                        <a href="${item.deliverlinks}" target="_blank" class="btn-access">
+                            <i class="fas fa-play"></i> ACESSAR CONTEÚDO
+                        </a>`;
+                } else if (item.purchaselink) {
+                    buttonHtml = `
+                        <a href="${item.purchaselink}" target="_blank" class="btn-access" style="background-color: #10b981; border-color: #10b981;">
+                            <i class="fas fa-shopping-cart"></i> COMPRAR AGORA
+                        </a>`;
+                } else {
+                    buttonHtml = `<div class="btn-access" style="opacity: 0.5; cursor: not-allowed; background: #333; border-color: #444;">Indisponível</div>`;
+                }
+
+                // Fallback for name if API returns different key (assuming 'name' or 'product_name')
+                // Adjust property name based on actual API response if needed
+                const title = item.name || item.product_name || item.productname || 'Produto Digital';
+                const style = item.purchaselink && !item.deliverlinks ? 'border: 1px solid #10b981;' : ''; // Highlight purchasable items slightly? 
+
+                if (style) card.style.cssText = style;
+
+                card.innerHTML = `
+                    <div class="card-body">
+                        <div class="card-title">${title}</div>
+                        ${buttonHtml}
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function logout() {
+            localStorage.removeItem('last_email');
+
+            // Remove URL param without refresh
+            const url = new URL(window.location);
+            url.searchParams.delete('email');
+            window.history.pushState({}, '', url);
+
+            // Reload page to reset state cleanly
+            location.reload();
+        }
+    </script>
+</body>
+
+</html>
