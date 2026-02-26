@@ -92,97 +92,7 @@
         </div>
 
         <div class="bump-stack">
-          <div class="bump" id="bumpXbox360">
-            <div class="bump-head">
-              <div class="bump-title">Plataforma Xbox 360 com mais de 3.000 jogos</div>
-              <span class="bump-badge" id="bxBadge">-60%</span>
-            </div>
-            <div class="bump-body">
-              <div class="bump-hero"><span class="bump-strike">de R$ 48,00</span> por <span class="bump-price">R$
-                  30,00</span> <span class="bump-economy">(Economia R$ 28,00)</span></div>
-              <div class="bump-main">
-                <span class="bump-pointer" aria-hidden="true">➜</span>
-                <input type="checkbox" id="bumpXbox360_check" onclick="updateAll()"
-                  aria-label="Adicionar Xbox 360 +3.000 jogos">
-                <img class="bump-thumb clickable" data-target="bumpXbox360_check" src="images/xbox360.webp"
-                  alt="Pacote Xbox 360" loading="lazy">
-                <div>
-                  <div class="bump-sub">Plataforma Xbox 360 para PC, Notebook, Xbox 360 ou Xbox Series (via devmode) -
-                    Com mais de
-                    3.000 Jogos</div>
-                  <div class="bump-note">Não substitui o produto principal. Será adicionado ao seu pedido.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bump" id="bumpXboxClassico">
-            <div class="bump-head">
-              <div class="bump-title">Plataforma Xbox Clássico</div>
-              <span class="bump-badge" id="clBadge">-70%</span>
-            </div>
-            <div class="bump-body">
-              <div class="bump-hero"><span class="bump-strike">de R$ 67,00</span> por <span class="bump-price">R$
-                  20,00</span> <span class="bump-economy">(Economia R$ 47,00)</span></div>
-              <div class="bump-main">
-                <span class="bump-pointer" aria-hidden="true">➜</span>
-                <input type="checkbox" id="bumpXboxClassico_check" onclick="updateAll()"
-                  aria-label="Adicionar Xbox Clássico">
-                <img class="bump-thumb clickable" data-target="bumpXboxClassico_check" src="images/xboxclassicbox.webp"
-                  alt="Pacote Switch" loading="lazy">
-                <div>
-                  <div class="bump-sub">Plataforma de Xbox Clássico para PC e Notebook - Com todos os jogos -
-                    Acesso Vitalício
-                  </div>
-                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bump" id="bumpSwitch">
-            <div class="bump-head">
-              <div class="bump-title">Plataforma Nintendo Switch</div>
-              <span class="bump-badge" id="swBadge">-60%</span>
-            </div>
-            <div class="bump-body">
-              <div class="bump-hero"><span class="bump-strike">de R$ 75,00</span> por <span class="bump-price">R$
-                  30,00</span> <span class="bump-economy">(Economia R$ 45,00)</span></div>
-              <div class="bump-main">
-                <span class="bump-pointer" aria-hidden="true">➜</span>
-                <input type="checkbox" id="bumpSwitch_check" onclick="updateAll()"
-                  aria-label="Adicionar Nintendo Switch + DLCs">
-                <img class="bump-thumb clickable" data-target="bumpSwitch_check" src="images/switchbox.webp"
-                  alt="Pacote Switch" loading="lazy">
-                <div>
-                  <div class="bump-sub">Plataforma de Nintendo Switch para PC e Notebook - Acesso Vitalício</div>
-                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="bump" id="bumpSaturn">
-            <div class="bump-head">
-              <div class="bump-title">Plataforma Sega Saturn</div>
-              <span class="bump-badge" id="satBadge">-60%</span>
-            </div>
-            <div class="bump-body">
-              <div class="bump-hero"><span class="bump-strike">de R$ 25,00</span> por <span class="bump-price">R$
-                  10,00</span> <span class="bump-economy">(Economia R$ 15,00)</span></div>
-              <div class="bump-main">
-                <span class="bump-pointer" aria-hidden="true">➜</span>
-                <input type="checkbox" id="bumpSaturn_check" onclick="updateAll()" aria-label="Adicionar Sega Saturn">
-                <img class="bump-thumb clickable" data-target="bumpSaturn_check" src="images/saturnbox.webp"
-                  alt="Pacote Saturn" loading="lazy">
-                <div>
-                  <div class="bump-sub">Plataforma de Sega Saturn para PC e Notebook, Android e iOS, com todos os jogos
-                    - Acesso Vitalício</div>
-                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- Dynamic Bumps Loaded Here -->
         </div>
         <div class="field">
           <label class="label" for="cupom">Cupom de desconto (opcional)</label>
@@ -271,7 +181,7 @@
             <span>💬 Suporte via WhatsApp</span>
           </div>
 
-          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar()">
+          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar_v2()">
             <img src="images/payment-methods/mercadopago.webp" alt="" class="mp-icon" width="40" height="40">
             <span>Pagar com Mercado Pago</span>
           </button>

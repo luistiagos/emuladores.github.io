@@ -1,5 +1,6 @@
 // Product configuration and pricing
 const STOREID = 20000;
+const MAIN_PACKAGE_ID = 20000;
 const BASE = {
   id: 'principal-52emul',
   name: 'Plataforma Multijogos',
@@ -8,33 +9,9 @@ const BASE = {
 };
 BASE.economy = BASE.original_price - BASE.price;
 
-const ADDONS = {
-  bumpXbox360_check: {
-    id: 'xbox360',
-    name: 'Plataforma Xbox 360 (+3.000 jogos)',
-    original_price: 48.00,
-    price: 30.00
-  },
-  bumpXboxClassico_check: {
-    id: 'xbox_classic',
-    name: 'Plataforma Xbox Clássico',
-    original_price: 67.00,
-    price: 20.00
-  },
-  bumpSwitch_check: {
-    id: 'switch',
-    name: 'Plataforma Nintendo Switch',
-    original_price: 75.00,
-    price: 30.00
-  },
-  bumpSaturn_check: {
-    id: 'saturn',
-    name: 'Plataforma Sega Saturn',
-    original_price: 25.00,
-    price: 10.00
-  }
-};
-Object.values(ADDONS).forEach(a => a.economy = a.original_price - a.price);
+let ADDONS = {};
+// Old static ADDONS removed
+
 
 // Gallery images
 const GALLERIES = {
@@ -316,6 +293,159 @@ async function createMLlink(storeid, email, telefone, sid, cupom = undefined) {
   }
 }
 
+async function createMLlink_v2(storeid, email, telefone, sid, cupom = undefined) {
+  var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink_v2?storeid=' + storeid;
+  var fbp = getCookie('_fbp');
+  var fbc = getCookie('_fbc');
+
+  if (email) {
+    urlServico += '&email=' + encodeURIComponent(email);
+  }
+  if (sid) {
+    urlServico += '&sids=' + encodeURIComponent(sid);
+  }
+  if (telefone) {
+    urlServico += '&telefone=' + encodeURIComponent(telefone);
+  }
+  if (fbp) {
+    urlServico += '&fbp=' + encodeURIComponent(fbp);
+  }
+  if (fbc) {
+    urlServico += '&fbc=' + fbc;
+  }
+  if (cupom) {
+    urlServico += '&cupom=' + encodeURIComponent(cupom)
+  }
+
+  const response = await fetch(urlServico);
+  const data = await response.text();
+
+  // Check for JSON response (error or success object)
+  if (data.trim().startsWith('{')) {
+    try {
+      const json = JSON.parse(data);
+      if (json.error) {
+        alert('Erro ao processar pagamento: ' + json.error);
+        console.error('Payment API Error:', json);
+        return;
+      }
+      if (json.checkout_url) {
+        const returnedUrl = json.checkout_url;
+        if (!tryRedirect(returnedUrl)) {
+          doLinkConfirmacao(returnedUrl);
+        } else {
+          console.log("redirect success");
+        }
+        return;
+      }
+    } catch (e) {
+      // Not valid JSON, proceed as URL string fallback
+      console.warn('Failed to parse JSON response, treating as URL string', e);
+    }
+  }
+
+  // Fallback for plain text URL response
+  const returnedUrl = data;
+
+  if (!tryRedirect(returnedUrl)) {
+    doLinkConfirmacao(returnedUrl);
+  } else {
+    console.log("redirect failed");
+  }
+}
+
+async function fetchBumpOrders() {
+  const bumpStack = document.querySelector('.bump-stack');
+  if (!bumpStack) return;
+
+  // Show loader inside bump-stack or just ensure we don't show empty content
+  // We'll use a simple indicator or just render when ready
+  // For now let's show a small spinner in bump-stack if possible, or just wait.
+  // The user asked: "when call the service show a loader icon until the information appears"
+
+  bumpStack.innerHTML = '<div style="padding: 20px; text-align: center;"><div style="display: inline-block; width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #5271ff; border-radius: 50%; animation: spin 1s linear infinite;"></div><p style="margin-top:10px; font-size:0.9rem; color:#666;">Carregando ofertas...</p></div>';
+
+  try {
+    const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/extra`);
+    if (!response.ok) throw new Error('Failed to fetch bumps');
+    const data = await response.json();
+
+    // Clear ADDONS
+    ADDONS = {};
+
+    // Populate ADDONS
+    // API returns: [{ id, package_id, package_price, package_title, price, relprice, title, description, image, ... }, ...]
+    data.forEach(item => {
+      // Create a unique key for the checkbox
+      const key = `bump_${item.id}_check`;
+
+      ADDONS[key] = {
+        id: item.id, // internal id
+        package_id: item.package_id, // needed for payment
+        name: item.title,
+        original_price: item.relprice || 0, // 'relprice' seems to be the "original" higher price
+        price: item.price,
+        description: item.description,
+        image: item.image,
+        economy: (item.relprice || 0) - item.price
+      };
+    });
+
+    renderBumpItems();
+    renderSummary();
+
+  } catch (e) {
+    console.error('Error fetching bump orders:', e);
+    bumpStack.innerHTML = ''; // Hide loader if error
+  }
+}
+
+function renderBumpItems() {
+  const bumpStack = document.querySelector('.bump-stack');
+  if (!bumpStack) return;
+
+  bumpStack.innerHTML = ''; // Clear loader
+
+  Object.keys(ADDONS).forEach(key => {
+    const item = ADDONS[key];
+    const boxId = key.replace('_check', '');
+
+    // Calculate badge percentage if possible
+    let badgeText = '';
+    if (item.original_price > 0 && item.price < item.original_price) {
+      const pct = Math.round((1 - (item.price / item.original_price)) * 100);
+      badgeText = `-${pct}%`;
+    }
+
+    const html = `
+      <div class="bump" id="${boxId}">
+        <div class="bump-head">
+          <div class="bump-title">${item.name}</div>
+          ${badgeText ? `<span class="bump-badge">${badgeText}</span>` : ''}
+        </div>
+        <div class="bump-body">
+          <div class="bump-hero">
+            ${item.original_price > 0 ? `<span class="bump-strike">de ${fmt(item.original_price)}</span>` : ''}
+            por <span class="bump-price">${fmt(item.price)}</span>
+            ${item.economy > 0 ? `<span class="bump-economy">(Economia ${fmt(item.economy)})</span>` : ''}
+          </div>
+          <div class="bump-main">
+            <span class="bump-pointer" aria-hidden="true">➜</span>
+            <input type="checkbox" id="${key}" onclick="updateAll()" aria-label="Adicionar ${item.name}">
+            ${item.image ? `<img class="bump-thumb clickable" data-target="${key}" src="${item.image}" alt="${item.name}" loading="lazy">` : ''}
+            <div>
+              <div class="bump-sub">${item.description || ''}</div>
+              <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    bumpStack.insertAdjacentHTML('beforeend', html);
+  });
+}
+
 function tryRedirect(url) {
   try {
     window.location.href = url;
@@ -557,6 +687,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (btnApply) {
     btnApply.addEventListener('click', applyCoupon);
   }
+  // Fetch dynamic bumps
+  fetchBumpOrders();
 });
 
 function updateBumpVisuals() {
@@ -628,14 +760,12 @@ async function pagar() {
     return;
   }
 
+  // Deprecated V1 Logic kept for reference but pagavr2 is preferred
   const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked;
   const checkSaturn = document.getElementById('bumpSaturn_check')?.checked;
   const checkSwitch = document.getElementById('bumpSwitch_check')?.checked;
   const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked;
 
-  // Logic: '2' + switch + xbox_classic + saturn + xbox360
-  // Note: The logic requested was: '2' + checkSwitch + checkXbox + checkSaturn + checkXbox360
-  // Converting boolean to '1' or '0'
   const sid = '2' +
     ((checkSwitch) ? '1' : '0') +
     ((checkXbox) ? '1' : '0') +
@@ -651,6 +781,69 @@ async function pagar() {
     await createMLlink(STOREID, email, cel, sid, cupom);
   } catch (e) {
     console.error('Erro ao iniciar pagamento:', e);
+    alert('Erro ao iniciar pagamento: ' + e.message);
+  } finally {
+    if (btn) btn.disabled = false;
+    hideSpinnerLoader();
+  }
+}
+
+async function pagar_v2() {
+  const btn = document.getElementById('payBtn');
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
+  const email = emailEl.value.trim();
+
+  if (!validarEmail(email)) {
+    if (emailErr) {
+      emailErr.style.display = 'block';
+      emailErr.setAttribute('aria-hidden', 'false');
+    }
+    emailEl.classList.add('is-invalid');
+    emailEl.focus();
+    return;
+  }
+
+  const celEl = document.getElementById('cel');
+  const celErr = document.getElementById('celErr');
+  const cel = (celEl && celEl.value || '').trim();
+
+  if (celErr) celErr.style.display = 'none';
+  if (celEl) celEl.classList.remove('is-invalid');
+
+  if (cel && typeof isValidPhone === 'function' && !isValidPhone(cel)) {
+    if (celErr) {
+      celErr.style.display = 'block';
+      celErr.setAttribute('aria-hidden', 'false');
+    }
+    if (celEl) {
+      celEl.classList.add('is-invalid');
+      celEl.focus();
+    }
+    return;
+  }
+
+  // Collect selected package IDs
+  const cupom = document.getElementById('cupom')?.value || '';
+
+  let sidParts = [MAIN_PACKAGE_ID];
+  const selected = getSelected();
+  // selected returns array of ADDONS objects, each has .package_id
+  selected.forEach(item => {
+    if (item.package_id) {
+      sidParts.push(item.package_id);
+    }
+  });
+
+  const sid = sidParts.join(',');
+
+  if (btn) btn.disabled = true;
+  showSpinnerLoader();
+
+  try {
+    await createMLlink_v2(STOREID, email, cel, sid, cupom);
+  } catch (e) {
+    console.error('Erro ao iniciar pagamento V2:', e);
     alert('Erro ao iniciar pagamento: ' + e.message);
   } finally {
     if (btn) btn.disabled = false;
