@@ -4,8 +4,8 @@
 
 ## 1. Visão Geral do Produto
 *   **Nome do Produto**: Plataforma Multijogos Retro.
-*   **Promessa Principal**: Transforme seu equipamento em uma central de entretenimento com acesso imediato a mais de 100.000 jogos retro. Compatível com PC, Notebook, Celular Android, TV Box e mais.
-*   **Tipo de Produto**: Produto Digital (Software/Pack de Emulação).
+*   **Promessa Principal**: Transforme seu equipamento em uma central de entretenimento com acesso imediato a mais de 100.000 jogos retro. Compatível com PC, Notebook, Celular Android, TV Box, Xbox one/series e muito mais.
+*   **Tipo de Produto**: Produto Digital (Software/Pack de Emulação), acesso digital vitalício a nuvem.
 *   **Público-Alvo**: Gamers nostálgicos, pais, entusiastas de retro games.
 
 ---
@@ -60,8 +60,9 @@
     *   *Básicos/Antigos*: Atari, SNES, Mega Drive, PS1, **PS2**. (qualquer PC dos últimos 10 anos)
     *   *Intermediários*: Placa de vídeo dedicada recomendada para **PS3** e **Wii U**.
 *   **Celular & Tablet Android**:
-    *   *Básicos*: Atari, SNES, Mega Drive, PS1.
-    *   *Potentes*: PS2, GameCube, 3DS (linha S da Samsung, Xiaomi Pad, etc).
+    *   *Básicos*: Todos os consoles até a geração do PS1.
+    *   *Intermediários*: PS2, Wii.
+    *   *Potentes*: PS3, Wii U, Nintendo Switch.
 *   **TV Box**: Modelos 4K recentes com Android.
 *   **Smart TV**: Apenas Android Nativo (Sony, Philips, TCL, Toshiba). Samsung (Tizen) e LG (WebOS) **não** são compatíveis diretamente — usar TV Box.
 *   **Xbox One/Series**: Via Modo Desenvolvedor. Vídeo tutorial: https://www.youtube.com/watch?v=52yO1shEK8g&t=10s&pp=ygUgbW9kbyBkZXNlbnZvbHZlZG9yIHhib3ggc2VyaWVzIHM%3D
@@ -69,8 +70,7 @@
 *   **Gamestick (GD10, Lite 4k, Super Console X e similares)**: Roda até PS1/N64.
 *   **Raspberry Pi**: Roda até PS1/N64.
 *   **Anbernic**: Roda até PS2.
-*   **PS3 Desbloqueado**.
-
+*   **PS3 Desbloqueado** Roda até PS3
 ---
 
 ## 5. Suporte
@@ -84,9 +84,9 @@
 **PC/Notebook:** Tudo já vem pronto e configurado. Só baixar e jogar.
 
 **Celular/TV Box:** Baixe e instale o app incluso no produto. Depois baixe os jogos da Plataforma e jogue pelo app.
-
 **Smart TV Android:** Baixe o app e instale. Pode também usar pendrive/cartão de memória.
 **Smart TV não-Android:** Use PC/Notebook ou Celular e transmita para a TV via HDMI ou OTG.
+**Atenção:** Todos os apps para Android estão disponíveis para download na plataforma, não precisa baixar pelo google play.  
 
 **Xbox One/Series:** Ativar o **Modo Desenvolvedor** (permite instalar softwares externos).
 Tutorial: https://www.youtube.com/watch?v=52yO1shEK8g&t=10s&pp=ygUgbW9kbyBkZXNlbnZvbHZlZG9yIHhib3ggc2VyaWVzIHM%3D
