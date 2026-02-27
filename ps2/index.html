@@ -518,6 +518,24 @@
 			padding-top: 10px;
 			width: 100%
 		}
+		.float {
+			position: fixed;
+			width: 60px;
+			height: 60px;
+			bottom: 40px;
+			right: 40px;
+			background-color: #25d366;
+			color: #fff;
+			border-radius: 50px;
+			text-align: center;
+			font-size: 30px;
+			box-shadow: 2px 2px 3px #999;
+			z-index: 100
+		}
+
+		.my-float {
+			margin-top: 16px
+		}
 	</style>
 	<script>const STOREID = 300000;
 		savelead(STOREID, 'PageView');</script><!-- Hotjar Tracking Code for ps2 -->
@@ -526,7 +544,9 @@
 	<script>!function (e, t, n, a, c, o, f) { e.fbq || (c = e.fbq = function () { c.callMethod ? c.callMethod.apply(c, arguments) : c.queue.push(arguments) }, e._fbq || (e._fbq = c), c.push = c, c.loaded = !0, c.version = "2.0", c.queue = [], o = t.createElement(n), o.async = !0, o.src = a, f = t.getElementsByTagName(n)[0], f.parentNode.insertBefore(o, f)) }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js"), fbq("init", "2120259218170665"), fbq("track", "PageView"), fbPixelRequest("PageView", 3e5)</script>
 	<noscript><img height="1" width="1" style="display:none"
 			src="https://www.facebook.com/tr?id=2120259218170665&ev=PageView&noscript=1"></noscript><!-- End Meta Pixel Code -->
-</head>
+	<link rel="stylesheet"
+					href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	</head>
 
 <body cz-shortcut-listen="true">
 	<div class="bee-page-container">
@@ -1018,6 +1038,10 @@
 	}
 </script --><!-- Code injected by live-server -->
 		<script>"WebSocket" in window ? function () { function o() { for (var e = [].slice.call(document.getElementsByTagName("link")), o = document.getElementsByTagName("head")[0], r = 0; r < e.length; ++r) { var t = e[r], s = t.parentElement || o; s.removeChild(t); var a = t.rel; if (t.href && "string" != typeof a || 0 == a.length || "stylesheet" == a.toLowerCase()) { var n = t.href.replace(/(&|\?)_cacheOverride=\d+/, ""); t.href = n + (0 <= n.indexOf("?") ? "&" : "?") + "_cacheOverride=" + (new Date).valueOf() } s.appendChild(t) } } var e = "http:" === window.location.protocol ? "ws://" : "wss://", r = e + window.location.host + window.location.pathname + "/ws", t = new WebSocket(r); t.onmessage = function (e) { "reload" == e.data ? window.location.reload() : "refreshcss" == e.data && o() }, sessionStorage && !sessionStorage.getItem("IsThisFirstTime_Log_From_LiveServer") && (console.log("Live reload enabled."), sessionStorage.setItem("IsThisFirstTime_Log_From_LiveServer", !0)) }() : console.error("Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.")</script>
+			<!-- BOTÃO WHATSAPP --> <a
+					href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria de mais informações sobre o produto Sistema Playstation 2 com todos os jogos lançados."
+					class="float" target="_blank"><i class="fa fa-whatsapp my-float"></i>
+				</a>
 	</strong>
 </body>
 
