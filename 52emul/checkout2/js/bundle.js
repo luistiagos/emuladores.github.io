@@ -828,10 +828,11 @@ async function pagar_v2() {
 
   let sidParts = [MAIN_PACKAGE_ID];
   const selected = getSelected();
-  // selected returns array of ADDONS objects, each has .package_id
+  // selected returns array   of ADDONS objects, each has .package_id
   selected.forEach(item => {
-    if (item.package_id) {
-      sidParts.push(item.package_id);
+    const pid = item.package_id ?? item.id;
+    if (pid != null) {
+      sidParts.push(pid);
     }
   });
 
