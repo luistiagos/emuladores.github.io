@@ -36,14 +36,11 @@ async function pagar() {
     return;
   }
 
-  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked;
-  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked;
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked;
-  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked;
+  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
+  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
+  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
+  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
 
-  // Logic: '2' + switch + xbox_classic + saturn + xbox360
-  // Note: The logic requested was: '2' + checkSwitch + checkXbox + checkSaturn + checkXbox360
-  // Converting boolean to '1' or '0'
   const sid = '2' +
     ((checkSwitch) ? '1' : '0') +
     ((checkXbox) ? '1' : '0') +

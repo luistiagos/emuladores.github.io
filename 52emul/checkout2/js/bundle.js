@@ -148,6 +148,13 @@ function getSelected() {
   }, []);
 }
 
+function isAddonChecked(addonId) {
+  const key = Object.keys(ADDONS).find(k => ADDONS[k].id === addonId);
+  if (!key) return false;
+  const cb = document.getElementById(key);
+  return cb ? cb.checked : false;
+}
+
 function validarEmail(v) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 }
@@ -682,13 +689,51 @@ async function applyCoupon() {
 }
 
 // Add Click Handler for Coupon Button
+// Static ADDONS definition for index.html (non-dynamic pages)
+const STATIC_ADDONS = {
+  bumpXbox360_check: {
+    id: 'xbox360',
+    name: 'Plataforma Xbox 360 (+3.000 jogos)',
+    original_price: 48.00,
+    price: 30.00,
+    economy: 18.00
+  },
+  bumpXboxClassico_check: {
+    id: 'xbox_classic',
+    name: 'Plataforma Xbox Clássico',
+    original_price: 67.00,
+    price: 20.00,
+    economy: 47.00
+  },
+  bumpSwitch_check: {
+    id: 'switch',
+    name: 'Plataforma Nintendo Switch',
+    original_price: 75.00,
+    price: 30.00,
+    economy: 45.00
+  },
+  bumpSaturn_check: {
+    id: 'saturn',
+    name: 'Plataforma Sega Saturn',
+    original_price: 25.00,
+    price: 10.00,
+    economy: 15.00
+  }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
   const btnApply = document.querySelector('.btn-apply');
   if (btnApply) {
     btnApply.addEventListener('click', applyCoupon);
   }
-  // Fetch dynamic bumps
-  fetchBumpOrders();
+  // Only fetch dynamic bumps on pages that opt in (e.g. index2.html)
+  if (document.body.dataset.dynamicBumps === 'true') {
+    fetchBumpOrders();
+  } else {
+    // Populate ADDONS from static definitions for static pages (e.g. index.html)
+    ADDONS = Object.assign({}, STATIC_ADDONS);
+    renderSummary();
+  }
 });
 
 function updateBumpVisuals() {
@@ -760,11 +805,10 @@ async function pagar() {
     return;
   }
 
-  // Deprecated V1 Logic kept for reference but pagavr2 is preferred
-  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked;
-  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked;
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked;
-  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked;
+  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
+  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
+  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
+  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
 
   const sid = '2' +
     ((checkSwitch) ? '1' : '0') +
