@@ -304,16 +304,34 @@ async function createMLlink(storeid, email, telefone, sid, cupom = undefined) {
     urlServico += '&cupom=' + encodeURIComponent(cupom)
   }
 
-  const response = await fetch(urlServico);
-  const data = await response.text();
-  const returnedUrl = data;
+  const MAX_ATTEMPTS = 3;
+  const TIMEOUT_MS = 20000;
+  let lastError;
 
-  if (!tryRedirect(returnedUrl)) {
-    doLinkConfirmacao(returnedUrl);
-  } else {
-    //hideSpinner();
-    console.log("redirect failed");
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+    try {
+      const response = await fetch(urlServico, { signal: controller.signal });
+      clearTimeout(timer);
+      const data = await response.text();
+      if (!tryRedirect(data)) {
+        doLinkConfirmacao(data);
+      } else {
+        //hideSpinner();
+        console.log("redirect failed");
+      }
+      return;
+    } catch (e) {
+      clearTimeout(timer);
+      lastError = e;
+      console.warn(`createMLlink tentativa ${attempt} falhou:`, e);
+      if (attempt < MAX_ATTEMPTS) {
+        await new Promise(r => setTimeout(r, 2000 * attempt));
+      }
+    }
   }
+  throw lastError;
 }
 
 function tryRedirect(url) {
@@ -650,7 +668,7 @@ async function pagar() {
     await createMLlink(STOREID, email, cel, sid, cupom);
   } catch (e) {
     console.error('Erro ao iniciar pagamento:', e);
-    alert('Erro ao iniciar pagamento: ' + e.message);
+    alert('Erro ao processar pagamento. Verifique sua conexão e tente novamente. Se o problema persistir, entre em contato pelo WhatsApp.');
   } finally {
     if (btn) btn.disabled = false;
     hideSpinnerLoader();

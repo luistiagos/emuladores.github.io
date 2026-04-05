@@ -58,7 +58,7 @@ async function pagar() {
     await createMLlink(STOREID, email, cel, sid, cupom);
   } catch (e) {
     console.error('Erro ao iniciar pagamento:', e);
-    alert('Erro ao iniciar pagamento: ' + e.message);
+    alert('Erro ao processar pagamento. Verifique sua conexão e tente novamente. Se o problema persistir, entre em contato pelo WhatsApp.');
   } finally {
     if (btn) btn.disabled = false;
     hideSpinnerLoader();
