@@ -230,8 +230,17 @@ function getCookie(name) {
 }
 
 function logError(file, method, message) {
-  var urlServico = 'https://digitalstoregames.pythonanywhere.com/logErr?file=' + file + '&method=' + method + '&message=' + message;
-  fetch(urlServico);
+  var params = new URLSearchParams({
+    file: file,
+    method: method,
+    message: String(message),
+    user_agent: navigator.userAgent || '',
+    platform: navigator.platform || '',
+    screen: (screen.width || '') + 'x' + (screen.height || ''),
+    page_url: window.location.href || '',
+    project: 'emuladores.github.io'
+  });
+  fetch('https://digitalstoregames.pythonanywhere.com/logErr?' + params.toString());
 }
 
 function showSpinnerLoader() {
