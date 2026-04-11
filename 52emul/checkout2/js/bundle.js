@@ -1106,3 +1106,323 @@ function startRotation() {
 renderSummary();
 startRotation();
 savelead(STOREID, 'AddToCart');
+
+// ---------------------------------------------------------------------------
+// MP Public Key (required for CardPayment Brick).
+// Set your key from https://www.mercadopago.com.br/developers/pt/docs/credentials
+// ---------------------------------------------------------------------------
+const MP_PUBLIC_KEY = '';  // ← preencha com sua PUBLIC KEY do Mercado Pago
+
+const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
+
+// PIX payment state
+let _pixPollingInterval = null;
+let _currentPixCode = null;
+let _mpBricksController = null;
+
+/**
+ * Builds the comma-separated product IDs string for the current cart.
+ * Handles both:
+ *   - V2 (dynamic bumps fetched from API with numeric package_id)
+ *   - Legacy (static addon IDs encoded as 5-digit product ID)
+ */
+function getCurrentSids() {
+  const addonValues = Object.values(ADDONS);
+  const isV2Mode = addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number');
+
+  if (isV2Mode) {
+    const selected = getSelected();
+    const parts = [MAIN_PACKAGE_ID];
+    selected.forEach(item => {
+      if (typeof item.package_id === 'number') parts.push(item.package_id);
+    });
+    return parts.join(',');
+  }
+
+  // Legacy mode: binary-encoded product ID (e.g. '20000', '21001')
+  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
+  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
+  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
+  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
+  return '2' + (checkSwitch ? '1' : '0') + (checkXbox ? '1' : '0') + (checkSaturn ? '1' : '0') + (checkXbox360 ? '1' : '0');
+}
+
+/** Returns current cart total applying active coupon discount. */
+function getCartTotal() {
+  const selected = getSelected();
+  let total = BASE.price;
+  if (currentCouponDiscount > 0) total = total * (1 - currentCouponDiscount / 100);
+  selected.forEach(a => {
+    let p = a.price;
+    if (currentCouponDiscount > 0) p = p * (1 - currentCouponDiscount / 100);
+    total += p;
+  });
+  return Math.round(total * 100) / 100;
+}
+
+// ---------------------------------------------------------------------------
+// PIX payment
+// ---------------------------------------------------------------------------
+
+async function abrirPix() {
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if (!validarEmail(email)) {
+    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+    return;
+  }
+  if (emailErr) emailErr.style.display = 'none';
+  if (emailEl) emailEl.classList.remove('is-invalid');
+
+  const btn = document.getElementById('altPixBtn');
+  if (btn) btn.disabled = true;
+  showSpinnerLoader();
+
+  const cel = document.getElementById('cel')?.value?.trim() || '';
+  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const sids = getCurrentSids();
+  const fbp = getCookie('_fbp') || '';
+  const fbc = getCookie('_fbc') || '';
+
+  try {
+    const body = { sids, email, storeid: STOREID };
+    if (cel) body.telefone = cel;
+    if (cupom) body.cupom = cupom;
+    if (fbp) body.fbp = fbp;
+    if (fbc) body.fbc = fbc;
+
+    const resp = await fetch(`${BACKEND_URL}/create_pix_payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+
+    if (data.error) {
+      alert('Erro ao gerar PIX: ' + data.error);
+      return;
+    }
+
+    _currentPixCode = data.qr_code;
+    _mostrarPixModal(data.qr_code, data.qr_code_base64, data.amount);
+    _iniciarPollingPix(data.payment_id);
+
+  } catch (e) {
+    console.error('abrirPix error:', e);
+    alert('Erro ao gerar QR Code PIX. Verifique sua conexão e tente novamente.');
+  } finally {
+    if (btn) btn.disabled = false;
+    hideSpinnerLoader();
+  }
+}
+
+function _mostrarPixModal(qr_code, qr_code_base64, amount) {
+  const modal = document.getElementById('pixModal');
+  if (!modal) return;
+  const amtFmt = (amount || 0).toFixed(2).replace('.', ',');
+  const img = modal.querySelector('#pixQrImg');
+  if (img) {
+    if (qr_code_base64) {
+      img.src = `data:image/png;base64,${qr_code_base64}`;
+      img.style.display = 'block';
+    } else {
+      img.style.display = 'none';
+    }
+  }
+  modal.querySelector('#pixAmount').textContent = `R$ ${amtFmt}`;
+  const codeEl = modal.querySelector('#pixCodePreview');
+  if (codeEl) codeEl.textContent = qr_code.substring(0, 50) + '…';
+  modal.querySelector('#pixStatusMsg').innerHTML = 'Aguardando pagamento… <span class="pix-spinner"></span>';
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharPixModal() {
+  const modal = document.getElementById('pixModal');
+  if (modal) { modal.style.display = 'none'; document.body.style.overflow = ''; }
+  if (_pixPollingInterval) { clearInterval(_pixPollingInterval); _pixPollingInterval = null; }
+  _currentPixCode = null;
+}
+
+function copiarCodigoPix() {
+  if (!_currentPixCode) return;
+  navigator.clipboard.writeText(_currentPixCode).then(() => {
+    const btn = document.getElementById('btnCopiarPix');
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ Copiado!';
+      setTimeout(() => { btn.textContent = orig; }, 2500);
+    }
+  }).catch(() => {
+    // Clipboard API blocked — fallback
+    const ta = document.createElement('textarea');
+    ta.value = _currentPixCode;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    const btn = document.getElementById('btnCopiarPix');
+    if (btn) { const o = btn.textContent; btn.textContent = '✓ Copiado!'; setTimeout(() => { btn.textContent = o; }, 2500); }
+  });
+}
+
+function _iniciarPollingPix(paymentId) {
+  if (_pixPollingInterval) clearInterval(_pixPollingInterval);
+  _pixPollingInterval = setInterval(async () => {
+    try {
+      const r = await fetch(`${BACKEND_URL}/payment_status?payment_id=${encodeURIComponent(paymentId)}`);
+      const d = await r.json();
+      if (d.status === 'approved') {
+        clearInterval(_pixPollingInterval);
+        _pixPollingInterval = null;
+        const statusEl = document.getElementById('pixStatusMsg');
+        if (statusEl) statusEl.innerHTML = '<span style="color:#00b04a;font-weight:700">✅ Pagamento confirmado! Verifique seu e-mail.</span>';
+        setTimeout(() => { window.location.href = 'https://emulators.digitalstoregames.com/recuperaracesso/'; }, 3500);
+      } else if (['rejected', 'cancelled', 'expired'].includes(d.status)) {
+        clearInterval(_pixPollingInterval);
+        _pixPollingInterval = null;
+        const statusEl = document.getElementById('pixStatusMsg');
+        if (statusEl) statusEl.innerHTML = '<span style="color:#cc0000;font-weight:700">⚠️ PIX cancelado ou expirado. Feche e tente novamente.</span>';
+      }
+    } catch (_e) { /* silent — network hiccup, retry next tick */ }
+  }, 5000);
+}
+
+// ---------------------------------------------------------------------------
+// Card payment via MP CardPayment Brick
+// ---------------------------------------------------------------------------
+
+function abrirCartao() {
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if (!validarEmail(email)) {
+    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+    return;
+  }
+  if (emailErr) emailErr.style.display = 'none';
+  if (emailEl) emailEl.classList.remove('is-invalid');
+
+  const modal = document.getElementById('cardModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  _loadCardBrick(email);
+}
+
+function fecharCartaoModal() {
+  const modal = document.getElementById('cardModal');
+  if (modal) { modal.style.display = 'none'; document.body.style.overflow = ''; }
+  if (_mpBricksController) {
+    try { _mpBricksController.unmount(); } catch (_e) {}
+    _mpBricksController = null;
+  }
+}
+
+function _loadCardBrick(email) {
+  const container = document.getElementById('cardBrickInner');
+  if (!container) return;
+
+  if (!MP_PUBLIC_KEY) {
+    container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">Pagamento via cartão não configurado.<br>Use PIX ou Mercado Pago.</p>';
+    return;
+  }
+
+  container.innerHTML = '<div style="text-align:center;padding:20px;color:#666">A carregar formulário…</div>';
+
+  const amount = getCartTotal();
+
+  function _initBrick() {
+    try {
+      const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
+      const builder = mp.bricks();
+      builder.create('cardPayment', 'cardBrickInner', {
+        initialization: { amount, payer: { email } },
+        callbacks: {
+          onReady: () => {},
+          onSubmit: (cardData) => _processarCartao(cardData),
+          onError: (err) => {
+            console.error('CardBrick error:', err);
+            const el = document.getElementById('cardBrickInner');
+            if (el) el.innerHTML = '<p style="color:#c00;text-align:center;padding:10px">Erro no formulário. Tente novamente.</p>';
+          }
+        }
+      }).then(ctrl => { _mpBricksController = ctrl; });
+    } catch (e) {
+      console.error('_loadCardBrick init error:', e);
+      if (container) container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">Erro ao carregar formulário. Tente Mercado Pago ou PIX.</p>';
+    }
+  }
+
+  if (window.MercadoPago) {
+    _initBrick();
+  } else {
+    const script = document.createElement('script');
+    script.src = 'https://sdk.mercadopago.com/js/v2';
+    script.onload = _initBrick;
+    script.onerror = () => {
+      if (container) container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">Não foi possível carregar o formulário. Verifique sua conexão.</p>';
+    };
+    document.head.appendChild(script);
+  }
+}
+
+async function _processarCartao(cardData) {
+  showSpinnerLoader();
+  const cel = document.getElementById('cel')?.value?.trim() || '';
+  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const sids = getCurrentSids();
+  const fbp = getCookie('_fbp') || '';
+  const fbc = getCookie('_fbc') || '';
+
+  try {
+    const body = {
+      sids,
+      token: cardData.token,
+      installments: cardData.installments,
+      payment_method_id: cardData.payment_method_id,
+      email: cardData.payer?.email || document.getElementById('email')?.value?.trim(),
+      storeid: STOREID
+    };
+    if (cel) body.telefone = cel;
+    if (cupom) body.cupom = cupom;
+    if (fbp) body.fbp = fbp;
+    if (fbc) body.fbc = fbc;
+
+    const resp = await fetch(`${BACKEND_URL}/create_card_payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+
+    if (data.error) {
+      alert('Erro no pagamento: ' + data.error);
+      return;
+    }
+
+    if (data.status === 'approved') {
+      fecharCartaoModal();
+      const statusEl = document.getElementById('cardModalStatus');
+      if (statusEl) statusEl.innerHTML = '<p style="color:#00b04a;font-weight:700;text-align:center">✅ Pagamento aprovado! Verifique seu e-mail.</p>';
+      setTimeout(() => { window.location.href = 'https://emulators.digitalstoregames.com/recuperaracesso/'; }, 3000);
+    } else if (data.status === 'in_process' || data.status === 'pending') {
+      alert('Pagamento em análise. Você receberá um e-mail de confirmação em breve.');
+      fecharCartaoModal();
+    } else {
+      alert('Pagamento não aprovado (' + (data.status_detail || data.status) + '). Verifique os dados do cartão e tente novamente.');
+    }
+  } catch (e) {
+    console.error('_processarCartao error:', e);
+    alert('Erro ao processar o pagamento. Tente novamente ou use outra forma de pagamento.');
+  } finally {
+    hideSpinnerLoader();
+  }
+}
