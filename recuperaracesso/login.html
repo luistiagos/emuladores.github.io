@@ -314,6 +314,21 @@
                 });
         }
 
+        const CUSTOMER_AREA_URL = 'https://digitalmemberarea.digitalstoregames.com';
+        const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
+
+        function acessarV2(email, storeId) {
+            const token = localStorage.getItem('authToken');
+            const storeParam = storeId ? '?store_id=' + storeId : '';
+            if (token) {
+                window.location.href = CUSTOMER_AREA_URL + '/area-cliente' + storeParam;
+            } else {
+                const emailParam = encodeURIComponent(email);
+                const storeQueryParam = storeId ? '&store_id=' + storeId : '';
+                window.location.href = BACKEND_URL + '/customer/access?email=' + emailParam + storeQueryParam;
+            }
+        }
+
         function exibirGrade(data, email) {
             const gridContainer = document.getElementById('grid-container');
             gridContainer.innerHTML = "";
@@ -331,6 +346,30 @@
                 return;
             }
 
+            // Se o email possui qualquer compra v2, exibe acesso à área do cliente
+            // em vez de listar produtos individualmente.
+            const v2Items = data.filter(item => item[3] === 'v2');
+            if (v2Items.length > 0) {
+                const storeId = v2Items[0][4] || null;
+                const storeArg = storeId !== null ? storeId : 'null';
+                const safeEmail = email.replace(/'/g, "\\'");
+                const hasToken = !!localStorage.getItem('authToken');
+                const msg = hasToken
+                    ? 'Sessão ativa encontrada. Clique para acessar sua área do cliente.'
+                    : 'Suas compras estão disponíveis na área do cliente. Entre com sua senha ou crie uma nova.';
+
+                gridContainer.innerHTML = `
+                    <div style="text-align:center; padding: 20px 0;">
+                        <i class="fas fa-user-circle" style="font-size: 3rem; color: var(--primary); margin-bottom: 16px; display: block;"></i>
+                        <p style="color: var(--text-muted); font-size: 1rem; margin-bottom: 24px;">${msg}</p>
+                        <button onclick="acessarV2('${safeEmail}', ${storeArg})" class="btn btn-primary btn-pulse" style="border: none; padding: 14px 32px; font-size: 1rem;">
+                            <i class="fas fa-sign-in-alt" style="margin-right: 8px;"></i> ACESSAR ÁREA DO CLIENTE
+                        </button>
+                    </div>`;
+                return;
+            }
+
+            // Apenas v1: exibe tabela com links diretos e reenvio de e-mail.
             let html = `
                 <table class="custom-table">
                     <thead>
@@ -343,17 +382,15 @@
             `;
 
             data.forEach(item => {
-                // item[0] = id, item[1] = name, item[2] = link
+                // item[0]=productid, item[1]=title, item[2]=deliverlink, item[3]=access_type, item[4]=store_id
                 html += `
                     <tr>
-                        <td>
-                            <strong>${item[1]}</strong>
-                        </td>
+                        <td><strong>${item[1]}</strong></td>
                         <td>
                             <a href="${item[2]}" target="_blank" class="action-icon" title="Acessar Conteúdo">
                                 <i class="fas fa-external-link-alt text-white"></i>
                             </a>
-                            <a href="#" onclick="enviarEmail('${email}', '${item[0]}'); return false;" class="action-icon" title="Reenviar Email">
+                            <a href="#" onclick="enviarEmail('${email.replace(/'/g,"\\'")}', '${item[0]}'); return false;" class="action-icon" title="Reenviar Email">
                                 <i class="fas fa-envelope text-white"></i>
                             </a>
                         </td>
