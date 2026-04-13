@@ -76,10 +76,25 @@
       .catch(error => console.error('Erro:', error));
   }
 
+  const CUSTOMER_AREA_URL = 'https://digitalmemberarea.digitalstoregames.com';
+  const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
+
+  function acessarV2(email, storeId) {
+    const token = localStorage.getItem('authToken');
+    const storeParam = storeId ? '?store_id=' + storeId : '';
+    if (token) {
+      window.location.href = CUSTOMER_AREA_URL + '/area-cliente' + storeParam;
+    } else {
+      const emailParam = encodeURIComponent(email);
+      const storeQueryParam = storeId ? '&store_id=' + storeId : '';
+      window.location.href = BACKEND_URL + '/customer/access?email=' + emailParam + storeQueryParam;
+    }
+  }
+
   function consultarDados() {
     if (validarEmail()) {
       const email = document.getElementById('email').value;
-      fetch(`https://digitalstoregames.pythonanywhere.com/list_products_by_email?email=${email}`)
+      fetch(`${BACKEND_URL}/list_products_by_email?email=${encodeURIComponent(email)}`)
         .then(response => {
           if (!response.ok) return [];
           return response.json();
@@ -106,33 +121,43 @@
 
     const tbody = document.createElement('tbody');
     data.forEach(item => {
+      // item[0]=productid, item[1]=title, item[2]=deliverlink, item[3]=access_type, item[4]=store_id
+      const isV2 = item[3] === 'v2';
+      const storeId = item[4] || null;
       const row = document.createElement('tr');
 
       const pacoteTd = document.createElement('td');
-      const link = document.createElement('a');
-      link.href = item[2];
-      link.target = '_blank';
-      link.textContent = item[1];
-      pacoteTd.appendChild(link);
+      pacoteTd.textContent = item[1];
       row.appendChild(pacoteTd);
 
       const accessTd = document.createElement('td');
-      const accessLink = document.createElement('a');
-      accessLink.href = item[2];
-      accessLink.target = '_blank';
-      const accessIcon = document.createElement('i');
-      accessIcon.className = 'fas fa-unlock-alt text-success fs-5';
-      accessIcon.style.cursor = 'pointer';
-      accessLink.appendChild(accessIcon);
-      accessTd.appendChild(accessLink);
+      if (isV2) {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-sm btn-outline-success';
+        btn.title = 'Acessar Área do Cliente';
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i>';
+        btn.onclick = () => acessarV2(email.trim(), storeId);
+        accessTd.appendChild(btn);
+      } else {
+        const accessLink = document.createElement('a');
+        accessLink.href = item[2];
+        accessLink.target = '_blank';
+        const accessIcon = document.createElement('i');
+        accessIcon.className = 'fas fa-unlock-alt text-success fs-5';
+        accessIcon.style.cursor = 'pointer';
+        accessLink.appendChild(accessIcon);
+        accessTd.appendChild(accessLink);
+      }
       row.appendChild(accessTd);
 
       const emailTd = document.createElement('td');
-      const emailIcon = document.createElement('i');
-      emailIcon.className = 'fas fa-envelope text-primary fs-5';
-      emailIcon.style.cursor = 'pointer';
-      emailIcon.onclick = () => enviarEmail(email.trim(), ('' + item[0]).trim());
-      emailTd.appendChild(emailIcon);
+      if (!isV2) {
+        const emailIcon = document.createElement('i');
+        emailIcon.className = 'fas fa-envelope text-primary fs-5';
+        emailIcon.style.cursor = 'pointer';
+        emailIcon.onclick = () => enviarEmail(email.trim(), ('' + item[0]).trim());
+        emailTd.appendChild(emailIcon);
+      }
       row.appendChild(emailTd);
 
       tbody.appendChild(row);
