@@ -1111,7 +1111,13 @@ savelead(STOREID, 'AddToCart');
 // MP Public Key (required for CardPayment Brick).
 // Set your key from https://www.mercadopago.com.br/developers/pt/docs/credentials
 // ---------------------------------------------------------------------------
-const MP_PUBLIC_KEY = '';  // ← preencha com sua PUBLIC KEY do Mercado Pago
+//TESTE
+const MP_PUBLIC_KEY = 'APP_USR-b02f74f0-e82c-4540-856b-562f69d351d0';
+//PROD
+//const MP_PUBLIC_KEY = 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
+
+// Detecta automaticamente modo de teste pela public key ativa
+const MP_TEST_MODE = MP_PUBLIC_KEY === 'APP_USR-b02f74f0-e82c-4540-856b-562f69d351d0' || MP_PUBLIC_KEY.startsWith('TEST-');
 
 const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
 
@@ -1188,7 +1194,7 @@ async function abrirPix() {
   const fbc = getCookie('_fbc') || '';
 
   try {
-    const body = { sids, email, storeid: STOREID };
+    const body = { sids, email, storeid: STOREID, test: MP_TEST_MODE };
     if (cel) body.telefone = cel;
     if (cupom) body.cupom = cupom;
     if (fbp) body.fbp = fbp;
@@ -1335,7 +1341,7 @@ function _loadCardBrick(email) {
     return;
   }
 
-  container.innerHTML = '<div style="text-align:center;padding:20px;color:#666">A carregar formulário…</div>';
+  container.innerHTML = '';
 
   const amount = getCartTotal();
 
@@ -1381,6 +1387,8 @@ async function _processarCartao(cardData) {
   const sids = getCurrentSids();
   const fbp = getCookie('_fbp') || '';
   const fbc = getCookie('_fbc') || '';
+  const email = cardData.payer?.email || document.getElementById('email')?.value?.trim();
+  let paymentDone = false;
 
   try {
     const body = {
@@ -1388,8 +1396,9 @@ async function _processarCartao(cardData) {
       token: cardData.token,
       installments: cardData.installments,
       payment_method_id: cardData.payment_method_id,
-      email: cardData.payer?.email || document.getElementById('email')?.value?.trim(),
-      storeid: STOREID
+      email,
+      storeid: STOREID,
+      test: MP_TEST_MODE
     };
     if (cel) body.telefone = cel;
     if (cupom) body.cupom = cupom;
@@ -1409,11 +1418,13 @@ async function _processarCartao(cardData) {
     }
 
     if (data.status === 'approved') {
+      paymentDone = true;
       fecharCartaoModal();
       const statusEl = document.getElementById('cardModalStatus');
       if (statusEl) statusEl.innerHTML = '<p style="color:#00b04a;font-weight:700;text-align:center">✅ Pagamento aprovado! Verifique seu e-mail.</p>';
       setTimeout(() => { window.location.href = 'https://emulators.digitalstoregames.com/recuperaracesso/'; }, 3000);
     } else if (data.status === 'in_process' || data.status === 'pending') {
+      paymentDone = true;
       alert('Pagamento em análise. Você receberá um e-mail de confirmação em breve.');
       fecharCartaoModal();
     } else {
@@ -1424,5 +1435,12 @@ async function _processarCartao(cardData) {
     alert('Erro ao processar o pagamento. Tente novamente ou use outra forma de pagamento.');
   } finally {
     hideSpinnerLoader();
+    if (!paymentDone) {
+      if (_mpBricksController) {
+        try { _mpBricksController.unmount(); } catch (_e) {}
+        _mpBricksController = null;
+      }
+      _loadCardBrick(email);
+    }
   }
 }
