@@ -1111,13 +1111,7 @@ savelead(STOREID, 'AddToCart');
 // MP Public Key (required for CardPayment Brick).
 // Set your key from https://www.mercadopago.com.br/developers/pt/docs/credentials
 // ---------------------------------------------------------------------------
-//TESTE
-const MP_PUBLIC_KEY = 'APP_USR-b02f74f0-e82c-4540-856b-562f69d351d0';
-//PROD
-//const MP_PUBLIC_KEY = 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
-
-// Detecta automaticamente modo de teste pela public key ativa
-const MP_TEST_MODE = MP_PUBLIC_KEY === 'APP_USR-b02f74f0-e82c-4540-856b-562f69d351d0' || MP_PUBLIC_KEY.startsWith('TEST-');
+const MP_PUBLIC_KEY = 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
 
 const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
 
@@ -1194,7 +1188,7 @@ async function abrirPix() {
   const fbc = getCookie('_fbc') || '';
 
   try {
-    const body = { sids, email, storeid: STOREID, test: MP_TEST_MODE };
+    const body = { sids, email, storeid: STOREID };
     if (cel) body.telefone = cel;
     if (cupom) body.cupom = cupom;
     if (fbp) body.fbp = fbp;
@@ -1288,7 +1282,8 @@ function _iniciarPollingPix(paymentId) {
         _pixPollingInterval = null;
         const statusEl = document.getElementById('pixStatusMsg');
         if (statusEl) statusEl.innerHTML = '<span style="color:#00b04a;font-weight:700">✅ Pagamento confirmado! Verifique seu e-mail.</span>';
-        setTimeout(() => { window.location.href = 'https://emulators.digitalstoregames.com/recuperaracesso/'; }, 3500);
+        const _pixRedirectUrl = d.redirect_url || 'https://digitalmemberarea.digitalstoregames.com/recuperaracesso/';
+        setTimeout(() => { window.location.href = _pixRedirectUrl; }, 3500);
       } else if (['rejected', 'cancelled', 'expired'].includes(d.status)) {
         clearInterval(_pixPollingInterval);
         _pixPollingInterval = null;
@@ -1397,9 +1392,12 @@ async function _processarCartao(cardData) {
       installments: cardData.installments,
       payment_method_id: cardData.payment_method_id,
       email,
-      storeid: STOREID,
-      test: MP_TEST_MODE
+      storeid: STOREID
     };
+    if (cardData.payer?.identification?.number) {
+      body.identification_type = cardData.payer.identification.type || 'CPF';
+      body.identification_number = cardData.payer.identification.number;
+    }
     if (cel) body.telefone = cel;
     if (cupom) body.cupom = cupom;
     if (fbp) body.fbp = fbp;
@@ -1422,7 +1420,8 @@ async function _processarCartao(cardData) {
       fecharCartaoModal();
       const statusEl = document.getElementById('cardModalStatus');
       if (statusEl) statusEl.innerHTML = '<p style="color:#00b04a;font-weight:700;text-align:center">✅ Pagamento aprovado! Verifique seu e-mail.</p>';
-      setTimeout(() => { window.location.href = 'https://emulators.digitalstoregames.com/recuperaracesso/'; }, 3000);
+      const _cardRedirectUrl = data.redirect_url || 'https://digitalmemberarea.digitalstoregames.com/recuperaracesso/';
+      setTimeout(() => { window.location.href = _cardRedirectUrl; }, 3000);
     } else if (data.status === 'in_process' || data.status === 'pending') {
       paymentDone = true;
       alert('Pagamento em análise. Você receberá um e-mail de confirmação em breve.');
