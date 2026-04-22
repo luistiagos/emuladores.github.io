@@ -1,20 +1,19 @@
 /* Sticky CTA for mobile */
-/* Sticky CTA for mobile */
 @media (max-width: 768px) {
   .mobile-sticky-bar {
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--card);
     border-top: 1px solid var(--border);
-    padding: 10px 12px;
+    padding: 10px 14px;
+    padding-bottom: calc(10px + env(safe-area-inset-bottom)); /* iOS home bar */
     z-index: 100;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.15);
   }
 
   body {
-    padding-bottom: 120px
+    padding-bottom: 180px; /* espaço para os 3 botões */
   }
-
-  /* Add padding to body to prevent content from being hidden behind sticky bar */
 }
