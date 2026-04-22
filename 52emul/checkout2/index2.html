@@ -490,12 +490,30 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 12px;
+      margin-top: 2px;
     }
     .pay-btn__brands img {
-      height: 18px;
+      height: 22px;
       width: auto;
       object-fit: contain;
+      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      filter: drop-shadow(0 2px 3px rgba(0,0,0,0.12));
+    }
+    /* UX Pixel-Perfect: Stroke outline via multi-drop-shadow garante leitura do texto branco sem quebrar a harmonia visual geométrica */
+    .pay-btn__brands img[alt="Elo"] {
+      background: transparent;
+      padding: 0;
+      border-radius: 0;
+      filter: 
+        drop-shadow(1px 0 0 rgba(0,0,0,0.15))
+        drop-shadow(-1px 0 0 rgba(0,0,0,0.15))
+        drop-shadow(0 1px 0 rgba(0,0,0,0.15))
+        drop-shadow(0 -1px 0 rgba(0,0,0,0.15))
+        drop-shadow(0 2px 3px rgba(0,0,0,0.12));
+    }
+    .pay-btn--card:hover .pay-btn__brands img {
+      transform: scale(1.08) translateY(-1px);
     }
     
     .pix-spinner {
