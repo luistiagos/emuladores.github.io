@@ -188,12 +188,20 @@
               <span>Mercado Pago</span>
             </button>
             <button id="altPixBtn" class="pay-btn pay-btn--pix" onclick="abrirPix()" type="button">
-              <img src="images/payment-methods/pix.svg" alt="" width="22" height="22">
+              <img src="images/payment-methods/pix.svg" alt="" width="22" height="22" style="filter:brightness(0) invert(1)">
               <span>PIX</span>
             </button>
             <button id="altCardBtn" class="pay-btn pay-btn--card" onclick="abrirCartao()" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-              <span>Cartão de Crédito</span>
+              <span class="pay-btn__title">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+                Cartão de Crédito
+              </span>
+              <span class="pay-btn__brands">
+                <img src="images/payment-methods/visa.svg" alt="Visa" height="16">
+                <img src="images/payment-methods/mastercard.webp" alt="Mastercard" height="16">
+                <img src="images/payment-methods/elo.svg" alt="Elo" height="16">
+                <img src="images/payment-methods/amex.svg" alt="Amex" height="16">
+              </span>
             </button>
           </div>
         </div>
@@ -383,6 +391,31 @@
     .pay-btn--pix:hover  { background: #29a99b; }
     .pay-btn--card { background: #2d2d2d; }
     .pay-btn--card:hover { background: #3d3d3d; }
+    .pay-btn--card {
+      flex-direction: column;
+      gap: 6px;
+    }
+    .pay-btn__title {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .pay-btn__brands {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .pay-btn__brands img {
+      height: 16px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
     .pix-spinner {
       display: inline-block; width: 14px; height: 14px; vertical-align: middle;
       border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%;
