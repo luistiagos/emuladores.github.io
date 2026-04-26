@@ -1,6 +1,7 @@
 // Product configuration and pricing
-const STOREID = 20000;
-const MAIN_PACKAGE_ID = 20000;
+const STOREID = Number(window.STOREID_OVERRIDE || 20000);
+const DEFAULT_MAIN_PACKAGE_ID = 20000;
+let MAIN_PACKAGE_ID = Number(window.MAIN_PACKAGE_ID_OVERRIDE || DEFAULT_MAIN_PACKAGE_ID);
 const BASE = {
   id: 'principal-52emul',
   name: 'Plataforma Multijogos',
@@ -11,6 +12,57 @@ BASE.economy = BASE.original_price - BASE.price;
 
 let ADDONS = {};
 // Old static ADDONS removed
+let _mainPackageReady = false;
+let _mainPackagePromise = null;
+
+function getMainPackageId() {
+  const id = Number(MAIN_PACKAGE_ID);
+  return Number.isFinite(id) && id > 0 ? id : DEFAULT_MAIN_PACKAGE_ID;
+}
+
+async function ensureMainPackageIdFromStore() {
+  if (_mainPackageReady) return getMainPackageId();
+  if (_mainPackagePromise) return _mainPackagePromise;
+
+  _mainPackagePromise = (async () => {
+    try {
+      const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/principal`);
+      if (!response.ok) return getMainPackageId();
+      const data = await response.json();
+      const resolved = Number(data?.package_id ?? data?.id);
+      if (Number.isFinite(resolved) && resolved > 0) {
+        MAIN_PACKAGE_ID = resolved;
+      }
+      return getMainPackageId();
+    } catch (err) {
+      console.warn('Could not resolve principal package for store', STOREID, err);
+      return getMainPackageId();
+    } finally {
+      _mainPackageReady = true;
+    }
+  })();
+
+  return _mainPackagePromise;
+}
+
+const BUMP_DESCRIPTION_FALLBACK = {
+  1000001: 'Compatível com PC e celular Android, com milhares de jogos clássicos.',
+  100: 'Catálogo Nintendo com acesso digital e atualização contínua.',
+  1000000: 'Seleção de jogos do Xbox clássico com acesso imediato.',
+  200: 'Pacote Sega Saturn com jogos essenciais da plataforma.'
+};
+
+function normalizeBumpDescription(value) {
+  if (!value) return '';
+  if (typeof value === 'string') return value.trim();
+  if (Array.isArray(value)) return value.filter(Boolean).join(' • ').trim();
+  if (typeof value === 'object') {
+    if (typeof value.text === 'string') return value.text.trim();
+    if (typeof value.description === 'string') return value.description.trim();
+    return '';
+  }
+  return '';
+}
 
 
 // Gallery images
@@ -374,6 +426,8 @@ async function fetchBumpOrders() {
   const bumpStack = document.querySelector('.bump-stack');
   if (!bumpStack) return;
 
+  await ensureMainPackageIdFromStore();
+
   // Show loader inside bump-stack or just ensure we don't show empty content
   // We'll use a simple indicator or just render when ready
   // For now let's show a small spinner in bump-stack if possible, or just wait.
@@ -395,15 +449,26 @@ async function fetchBumpOrders() {
       // Create a unique key for the checkbox
       const key = `bump_${item.id}_check`;
 
+      const name = item.title || item.package_title || item.name || 'Pacote adicional';
+      const price = Number(item.price ?? item.package_price ?? 0);
+      const originalPrice = Number(item.relprice ?? item.original_price ?? 0);
+      const description =
+        normalizeBumpDescription(item.description) ||
+        normalizeBumpDescription(item.prd_content) ||
+        normalizeBumpDescription(item.package_description) ||
+        BUMP_DESCRIPTION_FALLBACK[item.package_id] ||
+        '';
+      const image = item.image || item.package_image || '';
+
       ADDONS[key] = {
         id: item.id, // internal id
         package_id: item.package_id, // needed for payment
-        name: item.title,
-        original_price: item.relprice || 0, // 'relprice' seems to be the "original" higher price
-        price: item.price,
-        description: item.description,
-        image: item.image,
-        economy: (item.relprice || 0) - item.price
+        name,
+        original_price: originalPrice,
+        price,
+        description,
+        image,
+        economy: originalPrice - price
       };
     });
 
@@ -877,9 +942,10 @@ async function pagar_v2() {
   }
 
   // Collect selected package IDs
+  await ensureMainPackageIdFromStore();
   const cupom = document.getElementById('cupom')?.value || '';
 
-  let sidParts = [MAIN_PACKAGE_ID];
+  let sidParts = [getMainPackageId()];
   const selected = getSelected();
   // selected returns array   of ADDONS objects, each has .package_id
   selected.forEach(item => {
@@ -1127,12 +1193,13 @@ let _mpBricksController = null;
  *   - Legacy (static addon IDs encoded as 5-digit product ID)
  */
 function getCurrentSids() {
+  const isDynamicPage = document.body.dataset.dynamicBumps === 'true';
   const addonValues = Object.values(ADDONS);
-  const isV2Mode = addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number');
+  const isV2Mode = isDynamicPage || (addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number'));
 
   if (isV2Mode) {
     const selected = getSelected();
-    const parts = [MAIN_PACKAGE_ID];
+    const parts = [getMainPackageId()];
     selected.forEach(item => {
       if (typeof item.package_id === 'number') parts.push(item.package_id);
     });
@@ -1180,6 +1247,8 @@ async function abrirPix() {
   const btn = document.getElementById('altPixBtn');
   if (btn) btn.disabled = true;
   showSpinnerLoader();
+
+  await ensureMainPackageIdFromStore();
 
   const cel = document.getElementById('cel')?.value?.trim() || '';
   const cupom = document.getElementById('cupom')?.value?.trim() || '';
@@ -1377,6 +1446,7 @@ function _loadCardBrick(email) {
 
 async function _processarCartao(cardData) {
   showSpinnerLoader();
+  await ensureMainPackageIdFromStore();
   const cel = document.getElementById('cel')?.value?.trim() || '';
   const cupom = document.getElementById('cupom')?.value?.trim() || '';
   const sids = getCurrentSids();
