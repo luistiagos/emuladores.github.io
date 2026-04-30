@@ -54,11 +54,15 @@ const BUMP_DESCRIPTION_FALLBACK = {
 
 function normalizeBumpDescription(value) {
   if (!value) return '';
-  if (typeof value === 'string') return value.trim();
+  if (typeof value === 'string') {
+    const trimmed = value.trim();
+    if (trimmed.toLowerCase() === 'null') return '';
+    return trimmed;
+  }
   if (Array.isArray(value)) return value.filter(Boolean).join(' • ').trim();
   if (typeof value === 'object') {
-    if (typeof value.text === 'string') return value.text.trim();
-    if (typeof value.description === 'string') return value.description.trim();
+    if (typeof value.text === 'string') return value.text.toLowerCase() === 'null' ? '' : value.text.trim();
+    if (typeof value.description === 'string') return value.description.toLowerCase() === 'null' ? '' : value.description.trim();
     return '';
   }
   return '';
@@ -449,7 +453,11 @@ async function fetchBumpOrders() {
       // Create a unique key for the checkbox
       const key = `bump_${item.id}_check`;
 
-      const name = item.title || item.package_title || item.name || 'Pacote adicional';
+      const getValidText = (...args) => {
+        const val = args.find(v => v && String(v).trim().toLowerCase() !== 'null');
+        return val || '';
+      };
+      const name = getValidText(item.title, item.package_title, item.name) || 'Pacote adicional';
       const price = Number(item.price ?? item.package_price ?? 0);
       const originalPrice = Number(item.relprice ?? item.original_price ?? 0);
       const description =
