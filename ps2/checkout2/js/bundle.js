@@ -413,13 +413,18 @@ async function fetchBumpOrders() {
     data.forEach(item => {
       const key = `bump_${item.id}_check`;
 
+      const getValidText = (...args) => {
+        const val = args.find(v => v && String(v).trim().toLowerCase() !== 'null');
+        return val || '';
+      };
+      
       ADDONS[key] = {
         id: item.id,
         package_id: item.package_id,
-        name: item.title,
+        name: getValidText(item.title, item.package_title, item.name) || 'Pacote adicional',
         original_price: item.relprice || 0,
         price: item.price,
-        description: item.description,
+        description: getValidText(item.description, item.prd_content, item.package_description),
         image: item.image,
         economy: (item.relprice || 0) - item.price
       };
