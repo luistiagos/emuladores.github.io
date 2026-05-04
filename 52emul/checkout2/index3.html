@@ -37,7 +37,7 @@
       src="https://www.facebook.com/tr?id=2120259218170665&ev=PageView&noscript=1" /></noscript>
 </head>
 
-<body data-dynamic-bumps="true">
+<body>
   <a class="sr-only" href="#checkoutForm">Pular para o formulário</a>
 
   <div class="wrap">
@@ -109,7 +109,97 @@
         </div>
 
         <div class="bump-stack">
-          <!-- Dynamic Bumps Loaded Here -->
+          <div class="bump" id="bumpXbox360">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Xbox 360 com mais de 3.000 jogos</div>
+              <span class="bump-badge" id="bxBadge">-60%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 48,00</span> por <span class="bump-price">R$
+                  30,00</span> <span class="bump-economy">(Economia R$ 28,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpXbox360_check" onclick="updateAll()"
+                  aria-label="Adicionar Xbox 360 +3.000 jogos">
+                <img class="bump-thumb clickable" data-target="bumpXbox360_check" src="images/xbox360.webp"
+                  alt="Pacote Xbox 360" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma Xbox 360 para PC, Notebook, Xbox 360 ou Xbox Series (via devmode) -
+                    Com mais de
+                    3.000 Jogos</div>
+                  <div class="bump-note">Não substitui o produto principal. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bump" id="bumpXboxClassico">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Xbox Clássico</div>
+              <span class="bump-badge" id="clBadge">-70%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 67,00</span> por <span class="bump-price">R$
+                  20,00</span> <span class="bump-economy">(Economia R$ 47,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpXboxClassico_check" onclick="updateAll()"
+                  aria-label="Adicionar Xbox Clássico">
+                <img class="bump-thumb clickable" data-target="bumpXboxClassico_check" src="images/xboxclassicbox.webp"
+                  alt="Pacote Switch" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma de Xbox Clássico para PC e Notebook - Com todos os jogos -
+                    Acesso Vitalício
+                  </div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bump" id="bumpSwitch">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Nintendo Switch</div>
+              <span class="bump-badge" id="swBadge">-60%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 75,00</span> por <span class="bump-price">R$
+                  30,00</span> <span class="bump-economy">(Economia R$ 45,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpSwitch_check" onclick="updateAll()"
+                  aria-label="Adicionar Nintendo Switch + DLCs">
+                <img class="bump-thumb clickable" data-target="bumpSwitch_check" src="images/switchbox.webp"
+                  alt="Pacote Switch" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma de Nintendo Switch para PC e Notebook - Acesso Vitalício</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bump" id="bumpSaturn">
+            <div class="bump-head">
+              <div class="bump-title">Plataforma Sega Saturn</div>
+              <span class="bump-badge" id="satBadge">-60%</span>
+            </div>
+            <div class="bump-body">
+              <div class="bump-hero"><span class="bump-strike">de R$ 25,00</span> por <span class="bump-price">R$
+                  10,00</span> <span class="bump-economy">(Economia R$ 15,00)</span></div>
+              <div class="bump-main">
+                <span class="bump-pointer" aria-hidden="true">➜</span>
+                <input type="checkbox" id="bumpSaturn_check" onclick="updateAll()" aria-label="Adicionar Sega Saturn">
+                <img class="bump-thumb clickable" data-target="bumpSaturn_check" src="images/saturnbox.webp"
+                  alt="Pacote Saturn" loading="lazy">
+                <div>
+                  <div class="bump-sub">Plataforma de Sega Saturn para PC e Notebook, Android e iOS, com todos os jogos
+                    - Acesso Vitalício</div>
+                  <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="field">
           <label class="label" for="cupom">Cupom de desconto (opcional)</label>
@@ -194,40 +284,14 @@
         <div class="mobile-sticky-bar">
           <div class="micro-guarantee" id="microGuarantee" aria-live="polite">
             <span>⚡ Acesso imediato</span><span class="sep">•</span>
-            <span>✅ Garantia de 30 dias</span><span class="sep">•</span>
+            <span>✅ Garantia de 7 dias</span><span class="sep">•</span>
             <span>💬 Suporte via WhatsApp</span>
           </div>
 
-          <p class="pay-label">Escolha como pagar</p>
-          <div class="pay-grid">
-            <button id="payBtn" class="pay-btn pay-btn--mp" data-analytics="cta_pay" onclick="pagar_v2()" type="button">
-              <img src="images/payment-methods/mercadopago.webp" alt="" width="26" height="26"
-                style="object-fit:contain">
-              <span>Mercado Pago</span>
-            </button>
-            <button id="altPixBtn" class="pay-btn pay-btn--pix" onclick="abrirPix()" type="button">
-              <span class="pay-btn__icon-badge">
-                <img src="images/payment-methods/pix.svg" alt="" width="20" height="20">
-              </span>
-              <span>PIX</span>
-            </button>
-            <button id="altCardBtn" class="pay-btn pay-btn--card" onclick="abrirCartao()" type="button">
-              <span class="pay-btn__title">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor" stroke-width="2">
-                  <rect x="2" y="5" width="20" height="14" rx="2" />
-                  <path d="M2 10h20" />
-                </svg>
-                Cartão de Crédito
-              </span>
-              <span class="pay-btn__brands">
-                <img src="images/payment-methods/visa.svg" alt="Visa" height="16">
-                <img src="images/payment-methods/mastercard.webp" alt="Mastercard" height="16">
-                <img src="images/payment-methods/elo.svg" alt="Elo" height="16">
-                <img src="images/payment-methods/amex.svg" alt="Amex" height="16">
-              </span>
-            </button>
-          </div>
+          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar()">
+            <img src="images/payment-methods/mercadopago.webp" alt="" class="mp-icon" width="40" height="40">
+            <span>Pagar com Mercado Pago</span>
+          </button>
         </div>
       </section>
 
@@ -337,253 +401,7 @@
     </svg>
   </a>
 
-  <!-- JavaScript Files -->
-  <script>
-    // Override only for index2 checkout page.
-    window.STOREID_OVERRIDE = 600005;
-  </script>
   <script src="js/bundle.js?v=2" defer></script>
-
-  <!-- PIX Payment Modal -->
-  <div id="pixModal" role="dialog" aria-modal="true" aria-label="Pagar com PIX"
-    style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10001;align-items:center;justify-content:center;overflow-y:auto">
-    <div
-      style="background:#fff;border-radius:16px;padding:28px 24px;max-width:400px;width:90%;margin:20px auto;text-align:center;font-family:'Montserrat',sans-serif">
-      <h2 style="margin:0 0 4px;color:#00b04a;font-size:1.4rem">🏦 Pague com PIX</h2>
-      <p style="color:#555;font-size:0.85rem;margin:0 0 18px">Escaneie o QR Code ou copie o código</p>
-      <img id="pixQrImg" src="" alt="QR Code PIX"
-        style="max-width:200px;border:4px solid #00b04a;border-radius:10px;display:block;margin:0 auto">
-      <p id="pixAmount" style="font-weight:700;font-size:1.2rem;color:#222;margin:12px 0 6px"></p>
-      <p id="pixCodePreview"
-        style="font-size:0.72rem;color:#999;word-break:break-all;font-family:monospace;background:#f7f7f7;border-radius:6px;padding:8px;margin:0 0 14px;line-height:1.4">
-      </p>
-      <button id="btnCopiarPix" onclick="copiarCodigoPix()"
-        style="width:100%;padding:13px;background:#00b04a;color:#fff;border:none;border-radius:8px;font-size:1rem;font-weight:700;cursor:pointer;font-family:'Montserrat',sans-serif">
-        📋 Copiar código PIX
-      </button>
-      <div id="pixStatusMsg" style="margin-top:14px;font-size:0.88rem;color:#666;min-height:24px"></div>
-      <button onclick="fecharPixModal()"
-        style="margin-top:10px;padding:8px 18px;background:#eee;color:#444;border:none;border-radius:6px;cursor:pointer;font-size:0.82rem;font-family:'Montserrat',sans-serif">
-        Fechar
-      </button>
-    </div>
-  </div>
-
-  <!-- Card Payment Modal (MP CardPayment Brick) -->
-  <div id="cardModal" role="dialog" aria-modal="true" aria-label="Pagar com cartão"
-    style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:10001;align-items:flex-start;justify-content:center;overflow-y:auto;padding:16px 0">
-    <div
-      style="background:#fff;border-radius:16px;padding:20px 24px;max-width:440px;width:90%;margin:auto;font-family:'Montserrat',sans-serif;max-height:calc(100vh - 32px);overflow-y:auto;box-sizing:border-box">
-      <div
-        style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;position:sticky;top:0;background:#fff;padding-bottom:8px;border-bottom:1px solid #f0f0f0;z-index:1">
-        <h2 style="margin:0;color:#222;font-size:1.1rem">💳 Pagar com cartão</h2>
-        <button onclick="fecharCartaoModal()" aria-label="Fechar"
-          style="background:none;border:none;font-size:1.4rem;cursor:pointer;color:#888;line-height:1;padding:4px 8px">✕</button>
-      </div>
-      <div id="cardBrickInner"></div>
-      <div id="cardModalStatus" style="margin-top:10px"></div>
-    </div>
-  </div>
-
-  <style>
-    .pay-label {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #777;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin: 0 0 16px;
-      position: relative;
-    }
-
-    .pay-label::before,
-    .pay-label::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: rgba(0, 0, 0, 0.1);
-      margin: 0 12px;
-    }
-
-    .pay-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-
-    .pay-btn {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      width: 100%;
-      padding: 16px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 14px;
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1.05rem;
-      font-weight: 700;
-      color: #fff;
-      cursor: pointer;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-      box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.1), 0 3px 6px -3px rgba(0, 0, 0, 0.08);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      -webkit-tap-highlight-color: transparent;
-      overflow: hidden;
-      z-index: 1;
-      touch-action: manipulation;
-    }
-
-    .pay-btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 100%);
-      opacity: 0.8;
-      transition: opacity 0.2s ease;
-      z-index: -1;
-    }
-
-    .pay-btn::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
-      opacity: 0;
-      transform: scale(0.5);
-      transition: all 0.4s ease;
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .pay-btn:hover {
-      transform: translateY(-3px) scale(1.01);
-      box-shadow: 0 10px 20px -4px rgba(0, 0, 0, 0.2), 0 4px 8px -4px rgba(0, 0, 0, 0.1);
-    }
-
-    .pay-btn:hover::after {
-      opacity: 1;
-    }
-
-    .pay-btn:hover::before {
-      opacity: 1;
-      transform: scale(1);
-    }
-
-    .pay-btn:active {
-      transform: translateY(1px) scale(0.98);
-      box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      transition: all 0.1s ease;
-    }
-
-    .pay-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .pay-btn--mp {
-      background: linear-gradient(135deg, #00B2FF 0%, #009EE3 100%);
-      border-bottom: 4px solid #008AC5;
-    }
-
-    .pay-btn--mp img {
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-      margin-right: 4px;
-    }
-
-    .pay-btn--pix {
-      background: linear-gradient(135deg, #38C7B7 0%, #20A597 100%);
-      border-bottom: 4px solid #1a8f81;
-    }
-
-    .pay-btn__icon-badge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #fff;
-      border-radius: 50%;
-      width: 32px;
-      height: 32px;
-      flex-shrink: 0;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
-    }
-
-    .pay-btn__icon-badge img {
-      display: block;
-    }
-
-    .pay-btn--card {
-      background: #ffffff;
-      border-bottom: 4px solid #d1d5db;
-      border-color: #e2e8f0;
-      color: #1e293b;
-      text-shadow: none;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .pay-btn--card:hover {
-      background: #f8fafc;
-    }
-
-    .pay-btn--card .pay-btn__title {
-      color: #1e293b;
-    }
-
-    .pay-btn__brands {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 2px;
-    }
-
-    .pay-btn__brands img {
-      height: 22px;
-      width: auto;
-      object-fit: contain;
-      transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
-    }
-
-    /* UX Pixel-Perfect: Stroke outline via multi-drop-shadow garante leitura do texto branco sem quebrar a harmonia visual geométrica */
-    .pay-btn__brands img[alt="Elo"] {
-      background: transparent;
-      padding: 0;
-      border-radius: 0;
-      filter:
-        drop-shadow(1px 0 0 rgba(0, 0, 0, 0.15)) drop-shadow(-1px 0 0 rgba(0, 0, 0, 0.15)) drop-shadow(0 1px 0 rgba(0, 0, 0, 0.15)) drop-shadow(0 -1px 0 rgba(0, 0, 0, 0.15)) drop-shadow(0 2px 3px rgba(0, 0, 0, 0.12));
-    }
-
-    .pay-btn--card:hover .pay-btn__brands img {
-      transform: scale(1.08) translateY(-1px);
-    }
-
-    .pix-spinner {
-      display: inline-block;
-      width: 16px;
-      height: 16px;
-      vertical-align: middle;
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin-left: 8px;
-    }
-  </style>
-
 </body>
 
 </html>
