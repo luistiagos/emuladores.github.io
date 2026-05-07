@@ -268,7 +268,8 @@ function savelead(storeid, status = undefined, email = undefined, telefone = und
 }
 
 function fbPixelRequest(event, productid) {
-  var urlServico = 'https://digitalstoregames.pythonanywhere.com/fbPixel?event=' + encodeURIComponent(event) + '&productid=' + encodeURIComponent(productid);
+  var storeid = (typeof STOREID !== 'undefined') ? STOREID : '';
+  var urlServico = 'https://digitalstoregames.pythonanywhere.com/fbPixel?event=' + encodeURIComponent(event) + '&productid=' + encodeURIComponent(productid) + '&storeid=' + storeid;
   var fbp = getCookie('_fbp');
   var fbc = getCookie('_fbc');
 

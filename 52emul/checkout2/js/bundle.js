@@ -634,7 +634,8 @@ function savelead(storeid, status = undefined, email = undefined, telefone = und
 }
 
 function fbPixelRequest(event, productid) {
-  var urlServico = 'https://digitalstoregames.pythonanywhere.com/fbPixel?event=' + encodeURIComponent(event) + '&productid=' + encodeURIComponent(productid);
+  var storeid = (typeof STOREID !== 'undefined') ? STOREID : '';
+  var urlServico = 'https://digitalstoregames.pythonanywhere.com/fbPixel?event=' + encodeURIComponent(event) + '&productid=' + encodeURIComponent(productid) + '&storeid=' + storeid;
   var fbp = getCookie('_fbp');
   var fbc = getCookie('_fbc');
 
@@ -1181,13 +1182,33 @@ renderSummary();
 startRotation();
 savelead(STOREID, 'AddToCart');
 
-// ---------------------------------------------------------------------------
-// MP Public Key (required for CardPayment Brick).
-// Set your key from https://www.mercadopago.com.br/developers/pt/docs/credentials
-// ---------------------------------------------------------------------------
-const MP_PUBLIC_KEY = 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
+/**
+ * Builds comma-separated product IDs for the current cart.
+ * Handles V2 (dynamic bumps with numeric package_id) and legacy (binary-encoded) modes.
+ */
+function getCurrentSids() {
+  const isDynamicPage = document.body.dataset.dynamicBumps === 'true';
+  const addonValues = Object.values(ADDONS);
+  const isV2Mode = isDynamicPage || (addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number'));
 
-const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
+  if (isV2Mode) {
+    const selected = getSelected();
+    const parts = [getMainPackageId()];
+    selected.forEach(item => {
+      if (typeof item.package_id === 'number') parts.push(item.package_id);
+    });
+    return parts.join(',');
+  }
+
+  // Legacy mode: binary-encoded product ID
+  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
+  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
+  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
+  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
+  return '2' + (checkSwitch ? '1' : '0') + (checkXbox ? '1' : '0') + (checkSaturn ? '1' : '0') + (checkXbox360 ? '1' : '0');
+}
+
+
 
 // PIX payment state
 let _pixPollingInterval = null;
