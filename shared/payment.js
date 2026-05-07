@@ -74,7 +74,17 @@ async function abrirPix() {
     });
     const data = await resp.json();
 
-    if (data.error) { alert('Erro ao gerar PIX: ' + data.error); return; }
+    if (data.error) {
+      if (data.error_field === 'email') {
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro ao gerar PIX: ' + data.error);
+      }
+      return;
+    }
 
     _currentPixCode = data.qr_code;
     _mostrarPixModal(data.qr_code, data.qr_code_base64, data.amount);
@@ -255,7 +265,18 @@ async function _processarCartao(cardData) {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
     });
     const data = await resp.json();
-    if (data.error) { alert('Erro no pagamento: ' + data.error); return; }
+    if (data.error) {
+      if (data.error_field === 'email') {
+        fecharCartaoModal();
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro no pagamento: ' + data.error);
+      }
+      return;
+    }
 
     if (data.status === 'approved') {
       paymentDone = true;

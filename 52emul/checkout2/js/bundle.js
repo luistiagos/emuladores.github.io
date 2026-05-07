@@ -1300,7 +1300,14 @@ async function abrirPix() {
     const data = await resp.json();
 
     if (data.error) {
-      alert('Erro ao gerar PIX: ' + data.error);
+      if (data.error_field === 'email') {
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro ao gerar PIX: ' + data.error);
+      }
       return;
     }
 
@@ -1510,7 +1517,15 @@ async function _processarCartao(cardData) {
     const data = await resp.json();
 
     if (data.error) {
-      alert('Erro no pagamento: ' + data.error);
+      if (data.error_field === 'email') {
+        fecharCartaoModal();
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro no pagamento: ' + data.error);
+      }
       return;
     }
 
