@@ -1,6 +1,7 @@
 // Product configuration and pricing
 const STOREID = Number(window.STOREID_OVERRIDE || 300000);
-const MAIN_PACKAGE_ID = 300000;
+if (!window.MAIN_PACKAGE_ID_OVERRIDE) throw new Error('[bundle.js] MAIN_PACKAGE_ID_OVERRIDE não definido no index.html');
+const MAIN_PACKAGE_ID = Number(window.MAIN_PACKAGE_ID_OVERRIDE);
 const BASE = {
   id: 'principal-ps2',
   name: 'Plataforma Playstation 2 com todos os jogos',
@@ -771,70 +772,6 @@ document.addEventListener('click', (e) => {
 const emailEl = document.getElementById('email');
 const emailErr = document.getElementById('emailErr');
 
-async function pagar() {
-  const btn = document.getElementById('payBtn');
-  const email = emailEl.value.trim();
-
-  if (!validarEmail(email)) {
-    if (emailErr) {
-      emailErr.style.display = 'block';
-      emailErr.setAttribute('aria-hidden', 'false');
-    }
-    emailEl.classList.add('is-invalid');
-    emailEl.focus();
-    return;
-  }
-
-  const celEl = document.getElementById('cel');
-  const celErr = document.getElementById('celErr');
-  const cel = (celEl && celEl.value || '').trim();
-
-  // Reset phone error state
-  if (celErr) celErr.style.display = 'none';
-  if (celEl) celEl.classList.remove('is-invalid');
-
-  if (cel && typeof isValidPhone === 'function' && !isValidPhone(cel)) {
-    if (celErr) {
-      celErr.style.display = 'block';
-      celErr.setAttribute('aria-hidden', 'false');
-    }
-    if (celEl) {
-      celEl.classList.add('is-invalid');
-      celEl.focus();
-    }
-    return;
-  }
-
-  const checkSony = document.getElementById('bumpSony_check')?.checked;
-  const checkNintendo = document.getElementById('bumpNintendo_check')?.checked;
-  const checkOutros = document.getElementById('bumpOutros_check')?.checked;
-  const checkXbox = document.getElementById('bumpXbox_check')?.checked;
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked;
-
-  // Logic: '3' + Sony + Nintendo + Outros + Xbox + Switch
-  const sid = '3' +
-    ((checkSony) ? '1' : '0') +
-    ((checkNintendo) ? '1' : '0') +
-    ((checkOutros) ? '1' : '0') +
-    ((checkXbox) ? '1' : '0') +
-    ((checkSwitch) ? '1' : '0');
-
-  const cupom = document.getElementById('cupom')?.value || '';
-
-  if (btn) btn.disabled = true;
-  showSpinnerLoader();
-
-  try {
-    await createMLlink(STOREID, email, cel, sid, cupom);
-  } catch (e) {
-    console.error('Erro ao iniciar pagamento:', e);
-    alert('Erro ao iniciar pagamento: ' + e.message);
-  } finally {
-    if (btn) btn.disabled = false;
-    hideSpinnerLoader();
-  }
-}
-
 async function pagar_v2() {
   const btn = document.getElementById('payBtn');
   const emailEl = document.getElementById('email');
@@ -1052,18 +989,6 @@ function startRotation() {
   });
 
   if (emailErr) emailErr.setAttribute('aria-hidden', 'true');
-
-  // Override pagar function to add validation
-  const _pagar = window.pagar || function () { };
-  window.pagar = function () {
-    const ok = isEmail(email.value.trim());
-    setErr(email, emailErr, !ok, 'E-mail invÃ¡lido. Ex.: nome@site.com');
-    if (!ok) {
-      email.focus();
-      return;
-    }
-    return _pagar.apply(this, arguments);
-  };
 })();
 // FAQ accordion functionality
 (function () {
