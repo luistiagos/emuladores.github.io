@@ -1,3 +1,7 @@
+// Fallback constants (shared/payment.js overrides these when loaded)
+window.BACKEND_URL = window.BACKEND_URL || 'https://digitalstoregames.pythonanywhere.com';
+window.MP_PUBLIC_KEY = window.MP_PUBLIC_KEY || 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
+
 // Product configuration and pricing
 const STOREID = Number(window.STOREID_OVERRIDE || 20000);
 const DEFAULT_MAIN_PACKAGE_ID = 20000;
