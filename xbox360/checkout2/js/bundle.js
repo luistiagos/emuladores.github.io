@@ -1,5 +1,39 @@
 // Product configuration and pricing
-const STOREID = 600000;
+const STOREID = window.__CHECKOUT__.storeId;
+let MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
+
+let _mainPackageReady = false;
+let _mainPackagePromise = null;
+
+function getMainPackageId() {
+  return MAIN_PACKAGE_ID;
+}
+
+async function ensureMainPackageIdFromStore() {
+  if (_mainPackageReady) return getMainPackageId();
+  if (MAIN_PACKAGE_ID > 0) { _mainPackageReady = true; return MAIN_PACKAGE_ID; }
+  if (_mainPackagePromise) return _mainPackagePromise;
+
+  _mainPackagePromise = (async () => {
+    try {
+      const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/principal`);
+      if (!response.ok) return getMainPackageId();
+      const data = await response.json();
+      const resolved = Number(data?.package_id ?? data?.id);
+      if (Number.isFinite(resolved) && resolved > 0) {
+        MAIN_PACKAGE_ID = resolved;
+      }
+      return getMainPackageId();
+    } catch (err) {
+      console.error('Erro ao buscar pacote principal', err);
+      return getMainPackageId();
+    } finally {
+      _mainPackageReady = true;
+      _mainPackagePromise = null;
+    }
+  })();
+  return _mainPackagePromise;
+}
 const BASE = {
   id: 'principal-xbox360',
   name: 'Plataforma Xbox 360 com 3000 Jogos',
@@ -8,7 +42,7 @@ const BASE = {
 };
 BASE.economy = BASE.original_price - BASE.price;
 
-const ADDONS = {
+const STATIC_ADDONS = {
   bumppsx_check: {
     id: 'psx',
     name: '4 Plataformas da Sony com todos os jogos',
@@ -34,7 +68,7 @@ const ADDONS = {
     price: 10.00
   }
 };
-Object.values(ADDONS).forEach(a => a.economy = a.original_price - a.price);
+Object.values(STATIC_ADDONS).forEach(a => a.economy = a.original_price - a.price);
 
 // Gallery images
 const GALLERIES = {
@@ -154,6 +188,8 @@ const TESTIMONIALS = [
   { name: 'Quirino J.', stars: 5, text: 'Indico.', avatar: 'https://i.pravatar.cc/80?img=58' },
   { name: 'Raquel K.', stars: 5, text: 'Assino embaixo.', avatar: 'https://i.pravatar.cc/80?img=59' }
 ];
+let ADDONS = {};
+
 // Utility functions
 function fmt(v) {
   return 'R$ ' + v.toFixed(2).replace('.', ',');
@@ -313,34 +349,167 @@ async function createMLlink(storeid, email, telefone, sid, cupom = undefined) {
     urlServico += '&cupom=' + encodeURIComponent(cupom)
   }
 
-  const MAX_ATTEMPTS = 3;
-  const TIMEOUT_MS = 20000;
-  let lastError;
+  const response = await fetch(urlServico);
+  const data = await response.text();
+  const returnedUrl = data;
 
-  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
+  if (!tryRedirect(returnedUrl)) {
+    doLinkConfirmacao(returnedUrl);
+  } else {
+    //hideSpinner();
+    console.log("redirect failed");
+  }
+}
+
+async function createMLlink_v2(storeid, email, telefone, sid, cupom = undefined) {
+  var urlServico = 'https://digitalstoregames.pythonanywhere.com/createMLlink_v2?storeid=' + storeid;
+  var fbp = getCookie('_fbp');
+  var fbc = getCookie('_fbc');
+
+  if (email) {
+    urlServico += '&email=' + encodeURIComponent(email);
+  }
+  if (sid) {
+    urlServico += '&sids=' + encodeURIComponent(sid);
+  }
+  if (telefone) {
+    urlServico += '&telefone=' + encodeURIComponent(telefone);
+  }
+  if (fbp) {
+    urlServico += '&fbp=' + encodeURIComponent(fbp);
+  }
+  if (fbc) {
+    urlServico += '&fbc=' + fbc;
+  }
+  if (cupom) {
+    urlServico += '&cupom=' + encodeURIComponent(cupom)
+  }
+
+  const response = await fetch(urlServico);
+  const data = await response.text();
+
+  // Check for JSON response (error or success object)
+  if (data.trim().startsWith('{')) {
     try {
-      const response = await fetch(urlServico, { signal: controller.signal });
-      clearTimeout(timer);
-      const data = await response.text();
-      if (!tryRedirect(data)) {
-        doLinkConfirmacao(data);
-      } else {
-        //hideSpinner();
-        console.log("redirect failed");
+      const json = JSON.parse(data);
+      if (json.error) {
+        alert('Erro ao processar pagamento: ' + json.error);
+        console.error('Payment API Error:', json);
+        return;
       }
-      return;
+      if (json.checkout_url) {
+        const returnedUrl = json.checkout_url;
+        if (!tryRedirect(returnedUrl)) {
+          doLinkConfirmacao(returnedUrl);
+        } else {
+          console.log("redirect success");
+        }
+        return;
+      }
     } catch (e) {
-      clearTimeout(timer);
-      lastError = e;
-      console.warn(`createMLlink tentativa ${attempt} falhou:`, e);
-      if (attempt < MAX_ATTEMPTS) {
-        await new Promise(r => setTimeout(r, 2000 * attempt));
-      }
+      // Not valid JSON, proceed as URL string fallback
+      console.warn('Failed to parse JSON response, treating as URL string', e);
     }
   }
-  throw lastError;
+
+  // Fallback for plain text URL response
+  const returnedUrl = data;
+
+  if (!tryRedirect(returnedUrl)) {
+    doLinkConfirmacao(returnedUrl);
+  } else {
+    console.log("redirect failed");
+  }
+}
+
+async function fetchBumpOrders() {
+  const bumpStack = document.querySelector('.bump-stack');
+  if (!bumpStack) return;
+
+  bumpStack.innerHTML = '<div style="padding: 20px; text-align: center;"><div style="display: inline-block; width: 30px; height: 30px; border: 3px solid #f3f3f3; border-top: 3px solid #5271ff; border-radius: 50%; animation: spin 1s linear infinite;"></div><p style="margin-top:10px; font-size:0.9rem; color:#666;">Carregando ofertas...</p></div>';
+
+  try {
+    const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/extra`);
+    if (!response.ok) throw new Error('Failed to fetch bumps');
+    const data = await response.json();
+
+    // Clear ADDONS
+    ADDONS = {};
+
+    // Populate ADDONS from API response
+    // API returns: [{ id, package_id, package_price, package_title, price, relprice, title, description, image, ... }, ...]
+    data.forEach(item => {
+      const key = `bump_${item.id}_check`;
+
+      const getValidText = (...args) => {
+        const val = args.find(v => v && String(v).trim().toLowerCase() !== 'null');
+        return val || '';
+      };
+      
+      ADDONS[key] = {
+        id: item.id,
+        package_id: item.package_id,
+        name: getValidText(item.title, item.package_title, item.name) || 'Pacote adicional',
+        original_price: item.relprice || 0,
+        price: item.price,
+        description: getValidText(item.description, item.prd_content, item.package_description),
+        image: item.image,
+        economy: (item.relprice || 0) - item.price
+      };
+    });
+
+    renderBumpItems();
+    renderSummary();
+
+  } catch (e) {
+    console.error('Error fetching bump orders:', e);
+    bumpStack.innerHTML = ''; // Hide loader if error
+  }
+}
+
+function renderBumpItems() {
+  const bumpStack = document.querySelector('.bump-stack');
+  if (!bumpStack) return;
+
+  bumpStack.innerHTML = ''; // Clear loader
+
+  Object.keys(ADDONS).forEach(key => {
+    const item = ADDONS[key];
+    const boxId = key.replace('_check', '');
+
+    let badgeText = '';
+    if (item.original_price > 0 && item.price < item.original_price) {
+      const pct = Math.round((1 - (item.price / item.original_price)) * 100);
+      badgeText = `-${pct}%`;
+    }
+
+    const html = `
+      <div class="bump" id="${boxId}">
+        <div class="bump-head">
+          <div class="bump-title">${item.name}</div>
+          ${badgeText ? `<span class="bump-badge">${badgeText}</span>` : ''}
+        </div>
+        <div class="bump-body">
+          <div class="bump-hero">
+            ${item.original_price > 0 ? `<span class="bump-strike">de ${fmt(item.original_price)}</span>` : ''}
+            por <span class="bump-price">${fmt(item.price)}</span>
+            ${item.economy > 0 ? `<span class="bump-economy">(Economia ${fmt(item.economy)})</span>` : ''}
+          </div>
+          <div class="bump-main">
+            <span class="bump-pointer" aria-hidden="true">&#x279C;</span>
+            <input type="checkbox" id="${key}" onclick="updateAll()" aria-label="Adicionar ${item.name}">
+            ${item.image ? `<img class="bump-thumb clickable" data-target="${key}" src="${item.image}" alt="${item.name}" loading="lazy">` : ''}
+            <div>
+              <div class="bump-sub">${item.description || ''}</div>
+              <div class="bump-note">Pacote extra opcional. Será adicionado ao seu pedido.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    bumpStack.insertAdjacentHTML('beforeend', html);
+  });
 }
 
 function tryRedirect(url) {
@@ -482,8 +651,8 @@ function renderSummary() {
       ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}% OFF</span>` : ''}
       <div class="summary-small">
         <span class="summary-strike">de ${fmt(BASE.original_price)}</span>
-        → por <span class="summary-price">${fmt(basePrice)}</span>
-        <span class="economy">• Economia ${fmt(baseEconomy)}</span>
+        â†’ por <span class="summary-price">${fmt(basePrice)}</span>
+        <span class="economy">â€¢ Economia ${fmt(baseEconomy)}</span>
       </div>
     </td>
     <td style="text-align:right">${fmt(basePrice)}</td>`;
@@ -509,8 +678,8 @@ function renderSummary() {
         ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}%</span>` : ''}
         <div class="summary-small">
           <span class="summary-strike">de ${fmt(a.original_price)}</span>
-          → por <span class="summary-price">${fmt(addonPrice)}</span>
-          <span class="economy">• Economia ${fmt(addonEconomy)}</span>
+          â†’ por <span class="summary-price">${fmt(addonPrice)}</span>
+          <span class="economy">â€¢ Economia ${fmt(addonEconomy)}</span>
         </div>
       </td>
       <td style="text-align:right">${fmt(addonPrice)}</td>`;
@@ -579,11 +748,19 @@ async function applyCoupon() {
   }
 }
 
-// Add Click Handler for Coupon Button
+// Add Click Handler for Coupon Button and initialize dynamic or static bumps
 document.addEventListener('DOMContentLoaded', () => {
   const btnApply = document.querySelector('.btn-apply');
   if (btnApply) {
     btnApply.addEventListener('click', applyCoupon);
+  }
+  // Only fetch dynamic bumps on pages that opt in (e.g. index2.html)
+  if (document.body.dataset.dynamicBumps === 'true') {
+    fetchBumpOrders();
+  } else {
+    // Populate ADDONS from static definitions for static pages (e.g. index.html)
+    ADDONS = Object.assign({}, STATIC_ADDONS);
+    renderSummary();
   }
 });
 
@@ -622,8 +799,10 @@ document.addEventListener('click', (e) => {
 const emailEl = document.getElementById('email');
 const emailErr = document.getElementById('emailErr');
 
-async function pagar() {
+async function pagar_v2() {
   const btn = document.getElementById('payBtn');
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
   const email = emailEl.value.trim();
 
   if (!validarEmail(email)) {
@@ -640,7 +819,6 @@ async function pagar() {
   const celErr = document.getElementById('celErr');
   const cel = (celEl && celEl.value || '').trim();
 
-  // Reset phone error state
   if (celErr) celErr.style.display = 'none';
   if (celEl) celEl.classList.remove('is-invalid');
 
@@ -656,29 +834,29 @@ async function pagar() {
     return;
   }
 
-  const checkPsx = document.getElementById('bumppsx_check')?.checked;
-  const checkNintendo = document.getElementById('bumpnintendo_check')?.checked;
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked;
-  const checkDiversos = document.getElementById('bumpdiversos_check')?.checked;
-
-  // Logic: '6' + Sony + Nintendo + Outros + '0' + Switch
-  const sid = '6' +
-    ((checkPsx) ? '1' : '0') +
-    ((checkNintendo) ? '1' : '0') +
-    ((checkDiversos) ? '1' : '0') +
-    '0' +
-    ((checkSwitch) ? '1' : '0');
-
+  // Collect selected package IDs
+  await ensureMainPackageIdFromStore();
   const cupom = document.getElementById('cupom')?.value || '';
+
+  let sidParts = [getMainPackageId()];
+  const selected = getSelected();
+  selected.forEach(item => {
+    const pid = item.package_id ?? item.id;
+    if (pid != null) {
+      sidParts.push(pid);
+    }
+  });
+
+  const sid = sidParts.join(',');
 
   if (btn) btn.disabled = true;
   showSpinnerLoader();
 
   try {
-    await createMLlink(STOREID, email, cel, sid, cupom);
+    await createMLlink_v2(STOREID, email, cel, sid, cupom);
   } catch (e) {
-    console.error('Erro ao iniciar pagamento:', e);
-    alert('Erro ao processar pagamento. Verifique sua conexão e tente novamente. Se o problema persistir, entre em contato pelo WhatsApp.');
+    console.error('Erro ao iniciar pagamento V2:', e);
+    alert('Erro ao iniciar pagamento: ' + e.message);
   } finally {
     if (btn) btn.disabled = false;
     hideSpinnerLoader();
@@ -839,18 +1017,6 @@ function startRotation() {
   });
 
   if (emailErr) emailErr.setAttribute('aria-hidden', 'true');
-
-  // Override pagar function to add validation
-  const _pagar = window.pagar || function () { };
-  window.pagar = function () {
-    const ok = isEmail(email.value.trim());
-    setErr(email, emailErr, !ok, 'E-mail inválido. Ex.: nome@site.com');
-    if (!ok) {
-      email.focus();
-      return;
-    }
-    return _pagar.apply(this, arguments);
-  };
 })();
 // FAQ accordion functionality
 (function () {
@@ -869,20 +1035,39 @@ function startRotation() {
 
 // Initialize discount badges and run startup functions
 (function () {
-  const bx = document.getElementById('bxBadge');
-  if (bx) bx.textContent = `-${formatPct(48, 30)}%`;
+  const sony = document.getElementById('sonyBadge');
+  if (sony) sony.textContent = `-${formatPct(49.90, 10.00)}%`;
 
-  const cl = document.getElementById('clBadge');
-  if (cl) cl.textContent = `-${formatPct(67, 20)}%`;
+  const nin = document.getElementById('nintendoBadge');
+  if (nin) nin.textContent = `-${formatPct(59.90, 15.00)}%`;
 
   const sw = document.getElementById('swBadge');
-  if (sw) sw.textContent = `-${formatPct(75, 30)}%`;
+  if (sw) sw.textContent = `-${formatPct(75.00, 30.00)}%`;
 
-  const sat = document.getElementById('satBadge');
-  if (sat) sat.textContent = `-${formatPct(20, 10)}%`;
+  const xb = document.getElementById('xboxBadge');
+  if (xb) xb.textContent = `-${formatPct(67.00, 20.00)}%`;
+
+  const out = document.getElementById('outrosBadge');
+  if (out) out.textContent = `-${formatPct(39.90, 10.00)}%`;
 })();
 
+// ---------------------------------------------------------------------------
 // Initialize the page
+// ---------------------------------------------------------------------------
 renderSummary();
 startRotation();
 savelead(STOREID, 'AddToCart');
+
+/**
+ * Builds comma-separated product IDs for the current cart (dynamic bumps / V2).
+ * Called by shared/payment.js for PIX and Card payments.
+ */
+function getCurrentSids() {
+  const selected = getSelected();
+  const parts = [getMainPackageId()];
+  selected.forEach(item => {
+    const pid = item.package_id ?? item.id;
+    if (pid != null) parts.push(pid);
+  });
+  return parts.join(',');
+}

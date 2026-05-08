@@ -3,9 +3,8 @@ window.BACKEND_URL = window.BACKEND_URL || 'https://digitalstoregames.pythonanyw
 window.MP_PUBLIC_KEY = window.MP_PUBLIC_KEY || 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
 
 // Product configuration and pricing
-const STOREID = Number(window.STOREID_OVERRIDE || 20000);
-const DEFAULT_MAIN_PACKAGE_ID = 20000;
-let MAIN_PACKAGE_ID = Number(window.MAIN_PACKAGE_ID_OVERRIDE || DEFAULT_MAIN_PACKAGE_ID);
+const STOREID = window.__CHECKOUT__.storeId;
+let MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
 const BASE = {
   id: 'principal-52emul',
   name: 'Plataforma Multijogos',
@@ -21,11 +20,13 @@ let _mainPackagePromise = null;
 
 function getMainPackageId() {
   const id = Number(MAIN_PACKAGE_ID);
-  return Number.isFinite(id) && id > 0 ? id : DEFAULT_MAIN_PACKAGE_ID;
+  if (!Number.isFinite(id) || id <= 0) throw new Error('[bundle.js] MAIN_PACKAGE_ID não resolvido — defina window.MAIN_PACKAGE_ID_OVERRIDE no index.html ou verifique a API /store/principal');
+  return id;
 }
 
 async function ensureMainPackageIdFromStore() {
   if (_mainPackageReady) return getMainPackageId();
+  if (MAIN_PACKAGE_ID > 0) { _mainPackageReady = true; return MAIN_PACKAGE_ID; }
   if (_mainPackagePromise) return _mainPackagePromise;
 
   _mainPackagePromise = (async () => {
@@ -858,67 +859,6 @@ document.addEventListener('click', (e) => {
 const emailEl = document.getElementById('email');
 const emailErr = document.getElementById('emailErr');
 
-async function pagar() {
-  const btn = document.getElementById('payBtn');
-  const email = emailEl.value.trim();
-
-  if (!validarEmail(email)) {
-    if (emailErr) {
-      emailErr.style.display = 'block';
-      emailErr.setAttribute('aria-hidden', 'false');
-    }
-    emailEl.classList.add('is-invalid');
-    emailEl.focus();
-    return;
-  }
-
-  const celEl = document.getElementById('cel');
-  const celErr = document.getElementById('celErr');
-  const cel = (celEl && celEl.value || '').trim();
-
-  // Reset phone error state
-  if (celErr) celErr.style.display = 'none';
-  if (celEl) celEl.classList.remove('is-invalid');
-
-  if (cel && typeof isValidPhone === 'function' && !isValidPhone(cel)) {
-    if (celErr) {
-      celErr.style.display = 'block';
-      celErr.setAttribute('aria-hidden', 'false');
-    }
-    if (celEl) {
-      celEl.classList.add('is-invalid');
-      celEl.focus();
-    }
-    return;
-  }
-
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
-  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
-  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
-  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
-
-  const sid = '2' +
-    ((checkSwitch) ? '1' : '0') +
-    ((checkXbox) ? '1' : '0') +
-    ((checkSaturn) ? '1' : '0') +
-    ((checkXbox360) ? '1' : '0');
-
-  const cupom = document.getElementById('cupom')?.value || '';
-
-  if (btn) btn.disabled = true;
-  showSpinnerLoader();
-
-  try {
-    await createMLlink(STOREID, email, cel, sid, cupom);
-  } catch (e) {
-    console.error('Erro ao iniciar pagamento:', e);
-    alert('Erro ao iniciar pagamento: ' + e.message);
-  } finally {
-    if (btn) btn.disabled = false;
-    hideSpinnerLoader();
-  }
-}
-
 async function pagar_v2() {
   const btn = document.getElementById('payBtn');
   const emailEl = document.getElementById('email');
@@ -1138,18 +1078,6 @@ function startRotation() {
   });
 
   if (emailErr) emailErr.setAttribute('aria-hidden', 'true');
-
-  // Override pagar function to add validation
-  const _pagar = window.pagar || function () { };
-  window.pagar = function () {
-    const ok = isEmail(email.value.trim());
-    setErr(email, emailErr, !ok, 'E-mail inválido. Ex.: nome@site.com');
-    if (!ok) {
-      email.focus();
-      return;
-    }
-    return _pagar.apply(this, arguments);
-  };
 })();
 // FAQ accordion functionality
 (function () {
@@ -1186,65 +1114,18 @@ renderSummary();
 startRotation();
 savelead(STOREID, 'AddToCart');
 
-/**
- * Builds comma-separated product IDs for the current cart.
- * Handles V2 (dynamic bumps with numeric package_id) and legacy (binary-encoded) modes.
- */
-function getCurrentSids() {
-  const isDynamicPage = document.body.dataset.dynamicBumps === 'true';
-  const addonValues = Object.values(ADDONS);
-  const isV2Mode = isDynamicPage || (addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number'));
-
-  if (isV2Mode) {
-    const selected = getSelected();
-    const parts = [getMainPackageId()];
-    selected.forEach(item => {
-      if (typeof item.package_id === 'number') parts.push(item.package_id);
-    });
-    return parts.join(',');
-  }
-
-  // Legacy mode: binary-encoded product ID
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
-  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
-  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
-  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
-  return '2' + (checkSwitch ? '1' : '0') + (checkXbox ? '1' : '0') + (checkSaturn ? '1' : '0') + (checkXbox360 ? '1' : '0');
-}
-
-
-
 // PIX payment state
 let _pixPollingInterval = null;
 let _currentPixCode = null;
 let _mpBricksController = null;
 
-/**
- * Builds the comma-separated product IDs string for the current cart.
- * Handles both:
- *   - V2 (dynamic bumps fetched from API with numeric package_id)
- *   - Legacy (static addon IDs encoded as 5-digit product ID)
- */
 function getCurrentSids() {
-  const isDynamicPage = document.body.dataset.dynamicBumps === 'true';
-  const addonValues = Object.values(ADDONS);
-  const isV2Mode = isDynamicPage || (addonValues.length > 0 && addonValues.some(a => typeof a.package_id === 'number'));
-
-  if (isV2Mode) {
-    const selected = getSelected();
-    const parts = [getMainPackageId()];
-    selected.forEach(item => {
-      if (typeof item.package_id === 'number') parts.push(item.package_id);
-    });
-    return parts.join(',');
-  }
-
-  // Legacy mode: binary-encoded product ID (e.g. '20000', '21001')
-  const checkSwitch = document.getElementById('bumpSwitch_check')?.checked || false;
-  const checkXbox = document.getElementById('bumpXboxClassico_check')?.checked || false;
-  const checkSaturn = document.getElementById('bumpSaturn_check')?.checked || false;
-  const checkXbox360 = document.getElementById('bumpXbox360_check')?.checked || false;
-  return '2' + (checkSwitch ? '1' : '0') + (checkXbox ? '1' : '0') + (checkSaturn ? '1' : '0') + (checkXbox360 ? '1' : '0');
+  const selected = getSelected();
+  const parts = [getMainPackageId()];
+  selected.forEach(item => {
+    if (typeof item.package_id === 'number') parts.push(item.package_id);
+  });
+  return parts.join(',');
 }
 
 /** Returns current cart total applying active coupon discount. */

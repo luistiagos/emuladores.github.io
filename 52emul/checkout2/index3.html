@@ -288,7 +288,7 @@
             <span>💬 Suporte via WhatsApp</span>
           </div>
 
-          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar()">
+          <button id="payBtn" class="cta-primary cta-mp" data-analytics="cta_pay" onclick="pagar()" type="button">
             <img src="images/payment-methods/mercadopago.webp" alt="" class="mp-icon" width="40" height="40">
             <span>Pagar com Mercado Pago</span>
           </button>
@@ -401,7 +401,13 @@
     </svg>
   </a>
 
+  <!-- JavaScript Files -->
+  <script>
+    window.STOREID_OVERRIDE = 20000;
+  </script>
+  <script src="../../shared/checkout-init.js"></script>
   <script src="js/bundle.js?v=2" defer></script>
+  <script src="js/checkout_legado.js" defer></script>
 </body>
 
 </html>
