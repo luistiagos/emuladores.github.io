@@ -1310,7 +1310,7 @@ header {
 
   /* Add padding to body to prevent content from being hidden behind sticky bar */
 }
-/* WPP_DISABLED_START .whatsapp-float {
+.whatsapp-float {
   position: fixed;
   bottom: 25px;
   right: 25px;
@@ -1328,21 +1328,21 @@ header {
   justify-content: center;
   text-decoration: none;
   transition: all 0.3s ease;
-} WPP_DISABLED_END */
+}
 
-/* WPP_DISABLED_START .whatsapp-float:hover {
+.whatsapp-float:hover {
   background-color: #22bf5b;
   transform: scale(1.1);
   box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-} WPP_DISABLED_END */
+}
 
-/* WPP_DISABLED_START .whatsapp-icon {
+.whatsapp-icon {
   width: 35px;
   height: 35px;
   fill: currentColor;
-} WPP_DISABLED_END */
+}
 
-/* WPP_DISABLED_START .whatsapp-tooltip {
+.whatsapp-tooltip {
   display: none;
   position: absolute;
   right: 70px;
@@ -1355,23 +1355,23 @@ header {
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   white-space: nowrap;
   font-weight: 500;
-} WPP_DISABLED_END */
+}
 
-/* WPP_DISABLED_START .whatsapp-float:hover .whatsapp-tooltip {
+.whatsapp-float:hover .whatsapp-tooltip {
   display: block;
-} WPP_DISABLED_END */
+}
 
 @media (max-width: 768px) {
-  /* WPP_DISABLED_START .whatsapp-float {
+  .whatsapp-float {
     width: 50px;
     height: 50px;
     bottom: 20px;
     right: 20px;
-  } WPP_DISABLED_END */
-  /* WPP_DISABLED_START .whatsapp-icon {
+  }
+  .whatsapp-icon {
     width: 28px;
     height: 28px;
-  } WPP_DISABLED_END */
+  }
 }
 .notification-toast {
     position: fixed;

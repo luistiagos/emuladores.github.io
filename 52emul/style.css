@@ -823,7 +823,7 @@ footer {
 }
 
 /* Floating Button */
-/* WPP_DISABLED_START .float-wa {
+.float-wa {
 	position: fixed;
 	bottom: 30px;
 	right: 30px;
@@ -839,11 +839,11 @@ footer {
 	box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
 	z-index: 1000;
 	transition: 0.3s;
-} WPP_DISABLED_END */
+}
 
-/* WPP_DISABLED_START .float-wa:hover {
+.float-wa:hover {
 	transform: scale(1.1);
-} WPP_DISABLED_END */
+}
 
 /* --- Benefits Grid --- */
 .benefits-section {
@@ -1636,7 +1636,7 @@ footer {
 }
 
 /* --- Smart Hide Floating Elements --- */
-/* WPP_DISABLED_START .hide-floating-elements .float-wa, WPP_DISABLED_END */
+.hide-floating-elements .float-wa,
 .hide-floating-elements .notification-toast {
 	opacity: 0;
 	pointer-events: none;
