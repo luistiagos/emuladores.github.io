@@ -1123,7 +1123,8 @@ function getCurrentSids() {
   const selected = getSelected();
   const parts = [getMainPackageId()];
   selected.forEach(item => {
-    if (typeof item.package_id === 'number') parts.push(item.package_id);
+    const pid = item.package_id ?? item.id;
+    if (pid != null) parts.push(pid);
   });
   return parts.join(',');
 }
