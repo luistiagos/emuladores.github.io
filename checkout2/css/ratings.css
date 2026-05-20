@@ -1,0 +1,37 @@
+/* Rating stars and reviews */
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: flex-start;
+  margin: 8px 0 2px;
+  color: var(--text);
+  font-size: .9375rem
+}
+
+.stars {
+  display: inline-flex;
+  gap: 2px
+}
+
+.stars svg {
+  width: 16px;
+  height: 16px;
+  fill: #fbbf24
+}
+
+.rating-muted {
+  color: var(--muted);
+  font-size: .875rem
+}
+
+@media (max-width: 360px) {
+  .stars svg {
+    width: 14px;
+    height: 14px
+  }
+
+  .rating-row {
+    font-size: .875rem
+  }
+}

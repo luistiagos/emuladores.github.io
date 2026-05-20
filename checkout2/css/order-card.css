@@ -1,0 +1,49 @@
+/* Order card component */
+.order-card {
+  display: flex;
+  gap: 12px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  margin: 10px 0
+}
+
+.order-thumb {
+  width: 160px;
+  height: 160px;
+  object-fit: contain;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  flex-shrink: 0
+}
+
+.order-info h3 {
+  margin: 0 0 6px;
+  font: 600 1.0625rem/1.25 'Montserrat', system-ui
+}
+
+.order-info ul {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: .9375rem
+}
+
+@media (max-width: 480px) {
+  .order-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center
+  }
+
+  .order-thumb {
+    width: 160px;
+    height: 160px
+  }
+
+  .order-info ul {
+    text-align: left;
+    display: inline-block
+  }
+}
