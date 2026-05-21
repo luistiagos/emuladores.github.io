@@ -253,6 +253,11 @@ function hideSpinnerLoader() {
   if (el) el.style.display = "none";
 }
 
+function hideInitialSpinner() {
+  const el = document.getElementById('initial-spinner');
+  if (el) el.style.display = 'none';
+}
+
 function showSpinner() {
   const el = document.getElementById("spinner");
   if (el) el.style.display = "flex";
@@ -825,19 +830,26 @@ async function applyCoupon() {
 }
 
 // Add Click Handler for Coupon Button and initialize dynamic or static bumps
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const btnApply = document.querySelector('.btn-apply');
   if (btnApply) {
     btnApply.addEventListener('click', applyCoupon);
   }
-  // Only fetch dynamic bumps on pages that opt in (e.g. index2.html)
+  // Only fetch dynamic bumps on pages that opt in (e.g. checkout2)
   if (document.body.dataset.dynamicBumps === 'true') {
-    fetchCheckoutInfo();
+    try {
+      await fetchCheckoutInfo();
+    } catch (e) {
+      console.error('Error fetching dynamic checkout info:', e);
+    }
   } else {
-    // Populate ADDONS from static definitions for static pages (e.g. index.html)
+    // Populate ADDONS from static definitions for static pages
     ADDONS = Object.assign({}, STATIC_ADDONS);
     renderSummary();
   }
+  hideInitialSpinner();
+  startRotation();
+  savelead(STOREID, 'AddToCart');
 });
 
 function updateBumpVisuals() {
@@ -1127,11 +1139,8 @@ function startRotation() {
 })();
 
 // ---------------------------------------------------------------------------
-// Initialize the page
+// Initialize the page — moved inside DOMContentLoaded after data fetch
 // ---------------------------------------------------------------------------
-renderSummary();
-startRotation();
-savelead(STOREID, 'AddToCart');
 
 /**
  * Builds comma-separated product IDs for the current cart (dynamic bumps / V2).
