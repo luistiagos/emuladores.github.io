@@ -409,8 +409,18 @@ async function fetchCheckoutInfo() {
 
     // 1. Setup Theme
     if (data.store.checkout_theme_color) {
-      document.documentElement.style.setProperty('--primary', data.store.checkout_theme_color);
-      document.documentElement.style.setProperty('--ok', data.store.checkout_theme_color);
+      const validThemes = ['default', 'blue', 'green'];
+      const theme = data.store.checkout_theme_color.toLowerCase().trim();
+      
+      if (validThemes.includes(theme)) {
+        const styleLink = document.getElementById('theme-stylesheet');
+        if (styleLink) {
+          styleLink.href = `css/bundle-${theme}.css?v=20260520v5`;
+        }
+      } else {
+        document.documentElement.style.setProperty('--primary', theme);
+        document.documentElement.style.setProperty('--ok', theme);
+      }
     }
 
     // 2. Setup Whatsapp Text
