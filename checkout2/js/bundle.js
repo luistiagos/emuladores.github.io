@@ -44,29 +44,13 @@ const STATIC_ADDONS = {
 Object.values(STATIC_ADDONS).forEach(a => a.economy = a.original_price - a.price);
 let ADDONS = {};
 
-// Gallery images
-const GALLERIES = {
-  xbox: [
-    'https://upload.wikimedia.org/wikipedia/en/2/2f/Halo_3_final_boxshot.JPG',
-    'https://upload.wikimedia.org/wikipedia/en/a/ab/Forza_Motorsport_4_cover.jpg',
-    'https://upload.wikimedia.org/wikipedia/en/0/03/Gears_of_War_3_Game_Cover.jpg',
-    'https://upload.wikimedia.org/wikipedia/en/8/80/Skyrim_Cover.jpg'
-  ],
-  switch: [
-    'https://upload.wikimedia.org/wikipedia/en/0/0d/Super_Mario_Odyssey.jpg',
-    'https://upload.wikimedia.org/wikipedia/en/5/5e/The_Legend_of_Zelda_Breath_of_the_Wild.jpg',
-    'https://upload.wikimedia.org/wikipedia/en/9/98/Mario_Kart_8_Boxart.png',
-    'https://upload.wikimedia.org/wikipedia/en/2/2d/Splatoon_2.jpg'
-  ]
-};
-
 // Testimonials data
 const TESTIMONIALS = [
   { name: 'Gabriel S.', stars: 5, text: 'Recebi tudo certinho e o tutorial ajudou muito. Valeu cada centavo!', avatar: 'https://i.pravatar.cc/80?img=12' },
-  { name: 'Marina A.', stars: 5, text: 'Instalação rápida no notebook, catálogo enorme. Recomendo!', avatar: 'https://i.pravatar.cc/80?img=45' },
-  { name: 'Rogério M.', stars: 4, text: 'Suporte pelo Whats funcionou de primeira. Ã“timo custo-benefício.', avatar: 'https://i.pravatar.cc/80?img=22' },
+  { name: 'Marina A.', stars: 5, text: 'Instalação rápida no notebook, catálogo enorme!', avatar: 'https://i.pravatar.cc/80?img=45' },
+  { name: 'Rogério M.', stars: 4, text: 'Suporte pelo Whats funcionou de primeira. Ótimo custo-benefício.', avatar: 'https://i.pravatar.cc/80?img=22' },
   { name: 'Bianca T.', stars: 5, text: 'Comprei e em menos de 5 minutos já estava jogando. Sensacional!', avatar: 'https://i.pravatar.cc/80?img=15' },
-  { name: 'Angela N.', stars: 5, text: 'A parte do Switch com DLCs é top! Conteúdo atualizado.', avatar: 'https://i.pravatar.cc/80?img=31' },
+  { name: 'Angela N.', stars: 5, text: 'Conteúdo atualizado e de qualidade!', avatar: 'https://i.pravatar.cc/80?img=31' },
   { name: 'Carlos E.', stars: 5, text: 'Muito bom, revivi minha infância com o PS1.', avatar: 'https://i.pravatar.cc/80?img=3' },
   { name: 'Fernanda L.', stars: 5, text: 'Fácil de instalar e roda liso no meu PC antigo.', avatar: 'https://i.pravatar.cc/80?img=5' },
   { name: 'João P.', stars: 4, text: 'Bastante jogo, demorei pra escolher o que jogar kkk.', avatar: 'https://i.pravatar.cc/80?img=8' },
@@ -81,86 +65,7 @@ const TESTIMONIALS = [
   { name: 'Gustavo L.', stars: 5, text: 'Top demais, rodando liso.', avatar: 'https://i.pravatar.cc/80?img=28' },
   { name: 'Patricia B.', stars: 5, text: 'Atendimento excelente e produto de qualidade.', avatar: 'https://i.pravatar.cc/80?img=29' },
   { name: 'Felipe N.', stars: 4, text: 'Nostalgia pura com os jogos de Dreamcast.', avatar: 'https://i.pravatar.cc/80?img=33' },
-  { name: 'Larissa G.', stars: 5, text: 'Amei, jogo todo dia.', avatar: 'https://i.pravatar.cc/80?img=35' },
-  { name: 'Rodrigo S.', stars: 5, text: 'Sensacional, biblioteca gigantesca.', avatar: 'https://i.pravatar.cc/80?img=38' },
-  { name: 'Tatiane F.', stars: 5, text: 'Muito fácil de usar, só clicar e jogar.', avatar: 'https://i.pravatar.cc/80?img=40' },
-  { name: 'Eduardo J.', stars: 5, text: 'Preço justo pelo que oferece.', avatar: 'https://i.pravatar.cc/80?img=42' },
-  { name: 'Vanessa P.', stars: 5, text: 'Show de bola!', avatar: 'https://i.pravatar.cc/80?img=44' },
-  { name: 'Ricardo A.', stars: 5, text: 'Recomendo a todos os amigos.', avatar: 'https://i.pravatar.cc/80?img=48' },
-  { name: 'Aline R.', stars: 5, text: 'Muito satisfeita com a compra.', avatar: 'https://i.pravatar.cc/80?img=49' },
-  { name: 'Marcelo T.', stars: 4, text: 'Bom, mas o download demorou um pouco na minha net.', avatar: 'https://i.pravatar.cc/80?img=51' },
-  { name: 'Beatriz L.', stars: 5, text: 'Perfeito, nada a reclamar.', avatar: 'https://i.pravatar.cc/80?img=52' },
-  { name: 'Thiago M.', stars: 5, text: 'Os jogos de arcade são os melhores.', avatar: 'https://i.pravatar.cc/80?img=54' },
-  { name: 'Cristiane O.', stars: 5, text: 'Diversão garantida pra família toda.', avatar: 'https://i.pravatar.cc/80?img=55' },
-  { name: 'Leandro P.', stars: 5, text: 'Muito bom mesmo.', avatar: 'https://i.pravatar.cc/80?img=58' },
-  { name: 'Renata S.', stars: 5, text: 'Adorei a organização.', avatar: 'https://i.pravatar.cc/80?img=59' },
-  { name: 'André F.', stars: 5, text: 'Funciona perfeitamente.', avatar: 'https://i.pravatar.cc/80?img=60' },
-  { name: 'Daniela C.', stars: 5, text: 'Ã“timo atendimento.', avatar: 'https://i.pravatar.cc/80?img=61' },
-  { name: 'Fabio H.', stars: 5, text: 'Valeu a pena.', avatar: 'https://i.pravatar.cc/80?img=62' },
-  { name: 'Gisele M.', stars: 5, text: 'Muito legal.', avatar: 'https://i.pravatar.cc/80?img=63' },
-  { name: 'Hugo R.', stars: 5, text: 'Recomendo.', avatar: 'https://i.pravatar.cc/80?img=64' },
-  { name: 'Isabela T.', stars: 4, text: 'Tudo certo.', avatar: 'https://i.pravatar.cc/80?img=65' },
-  { name: 'Jorge L.', stars: 5, text: 'Excelente.', avatar: 'https://i.pravatar.cc/80?img=66' },
-  { name: 'Karina B.', stars: 5, text: 'Maravilhoso.', avatar: 'https://i.pravatar.cc/80?img=67' },
-  { name: 'Luis G.', stars: 5, text: 'Gostei muito.', avatar: 'https://i.pravatar.cc/80?img=68' },
-  { name: 'Monica P.', stars: 5, text: 'Aprovado.', avatar: 'https://i.pravatar.cc/80?img=69' },
-  { name: 'Nelson D.', stars: 5, text: 'Show.', avatar: 'https://i.pravatar.cc/80?img=70' },
-  { name: 'Olivia S.', stars: 5, text: 'Muito bom.', avatar: 'https://i.pravatar.cc/80?img=1' },
-  { name: 'Paulo V.', stars: 5, text: 'Legal.', avatar: 'https://i.pravatar.cc/80?img=2' },
-  { name: 'Quezia N.', stars: 5, text: 'Bacana.', avatar: 'https://i.pravatar.cc/80?img=10' },
-  { name: 'Roberto J.', stars: 5, text: 'Top.', avatar: 'https://i.pravatar.cc/80?img=14' },
-  { name: 'Sandra K.', stars: 5, text: 'Joia.', avatar: 'https://i.pravatar.cc/80?img=17' },
-  { name: 'Tiago L.', stars: 5, text: 'Massa.', avatar: 'https://i.pravatar.cc/80?img=19' },
-  { name: 'Ursula M.', stars: 4, text: 'Beleza.', avatar: 'https://i.pravatar.cc/80?img=21' },
-  { name: 'Vinicius O.', stars: 5, text: '10/10.', avatar: 'https://i.pravatar.cc/80?img=24' },
-  { name: 'Wagner P.', stars: 5, text: 'Curti.', avatar: 'https://i.pravatar.cc/80?img=26' },
-  { name: 'Xuxa Q.', stars: 5, text: 'Bom demais.', avatar: 'https://i.pravatar.cc/80?img=27' },
-  { name: 'Yara R.', stars: 5, text: 'Supimpa.', avatar: 'https://i.pravatar.cc/80?img=30' },
-  { name: 'Zeca S.', stars: 5, text: 'Arretado.', avatar: 'https://i.pravatar.cc/80?img=32' },
-  { name: 'Alice T.', stars: 5, text: 'Fiquei feliz.', avatar: 'https://i.pravatar.cc/80?img=34' },
-  { name: 'Breno U.', stars: 5, text: 'Me diverti muito.', avatar: 'https://i.pravatar.cc/80?img=36' },
-  { name: 'Clara V.', stars: 5, text: 'Relembrei os velhos tempos.', avatar: 'https://i.pravatar.cc/80?img=37' },
-  { name: 'Davi W.', stars: 5, text: 'Jogos clássicos.', avatar: 'https://i.pravatar.cc/80?img=39' },
-  { name: 'Eliana X.', stars: 5, text: 'Tudo funcionando.', avatar: 'https://i.pravatar.cc/80?img=41' },
-  { name: 'Fabio Y.', stars: 5, text: 'Sem problemas.', avatar: 'https://i.pravatar.cc/80?img=43' },
-  { name: 'Giovana Z.', stars: 5, text: 'Rápido e fácil.', avatar: 'https://i.pravatar.cc/80?img=46' },
-  { name: 'Helio A.', stars: 5, text: 'Prático.', avatar: 'https://i.pravatar.cc/80?img=47' },
-  { name: 'Igor B.', stars: 5, text: 'Eficiente.', avatar: 'https://i.pravatar.cc/80?img=50' },
-  { name: 'Joana C.', stars: 5, text: 'Confiável.', avatar: 'https://i.pravatar.cc/80?img=53' },
-  { name: 'Kleber D.', stars: 5, text: 'Seguro.', avatar: 'https://i.pravatar.cc/80?img=56' },
-  { name: 'Lorena E.', stars: 5, text: 'Garantido.', avatar: 'https://i.pravatar.cc/80?img=57' },
-  { name: 'Marcio F.', stars: 5, text: 'Qualidade.', avatar: 'https://i.pravatar.cc/80?img=12' },
-  { name: 'Natalia G.', stars: 5, text: 'Preço bom.', avatar: 'https://i.pravatar.cc/80?img=45' },
-  { name: 'Otavio H.', stars: 5, text: 'Barato.', avatar: 'https://i.pravatar.cc/80?img=22' },
-  { name: 'Priscila I.', stars: 5, text: 'Promoção boa.', avatar: 'https://i.pravatar.cc/80?img=15' },
-  { name: 'Quiteria J.', stars: 5, text: 'Desconto legal.', avatar: 'https://i.pravatar.cc/80?img=31' },
-  { name: 'Renan K.', stars: 5, text: 'Oferta imperdível.', avatar: 'https://i.pravatar.cc/80?img=3' },
-  { name: 'Simone L.', stars: 5, text: 'Compra segura.', avatar: 'https://i.pravatar.cc/80?img=5' },
-  { name: 'Tomas M.', stars: 5, text: 'Pagamento facilitado.', avatar: 'https://i.pravatar.cc/80?img=8' },
-  { name: 'Ubirajara N.', stars: 5, text: 'Recebi na hora.', avatar: 'https://i.pravatar.cc/80?img=11' },
-  { name: 'Vitoria O.', stars: 5, text: 'Email chegou rápido.', avatar: 'https://i.pravatar.cc/80?img=9' },
-  { name: 'Wesley P.', stars: 5, text: 'Acesso liberado.', avatar: 'https://i.pravatar.cc/80?img=13' },
-  { name: 'Ximena Q.', stars: 5, text: 'Login funcionou.', avatar: 'https://i.pravatar.cc/80?img=16' },
-  { name: 'Yuri R.', stars: 5, text: 'Plataforma boa.', avatar: 'https://i.pravatar.cc/80?img=18' },
-  { name: 'Zuleica S.', stars: 5, text: 'Site confiável.', avatar: 'https://i.pravatar.cc/80?img=20' },
-  { name: 'Adriano T.', stars: 5, text: 'Navegação fácil.', avatar: 'https://i.pravatar.cc/80?img=23' },
-  { name: 'Brenda U.', stars: 5, text: 'Layout bonito.', avatar: 'https://i.pravatar.cc/80?img=25' },
-  { name: 'Caio V.', stars: 5, text: 'Design limpo.', avatar: 'https://i.pravatar.cc/80?img=28' },
-  { name: 'Diana W.', stars: 5, text: 'Informações claras.', avatar: 'https://i.pravatar.cc/80?img=29' },
-  { name: 'Elias X.', stars: 5, text: 'Sem dúvidas.', avatar: 'https://i.pravatar.cc/80?img=33' },
-  { name: 'Flavia Y.', stars: 5, text: 'Suporte atencioso.', avatar: 'https://i.pravatar.cc/80?img=35' },
-  { name: 'Gilberto Z.', stars: 5, text: 'Resolveram meu problema.', avatar: 'https://i.pravatar.cc/80?img=38' },
-  { name: 'Helena A.', stars: 5, text: 'Muito prestativos.', avatar: 'https://i.pravatar.cc/80?img=40' },
-  { name: 'Ivan B.', stars: 5, text: 'Educados.', avatar: 'https://i.pravatar.cc/80?img=42' },
-  { name: 'Julia C.', stars: 5, text: 'Simpáticos.', avatar: 'https://i.pravatar.cc/80?img=44' },
-  { name: 'Kevin D.', stars: 5, text: 'Profissionais.', avatar: 'https://i.pravatar.cc/80?img=48' },
-  { name: 'Livia E.', stars: 5, text: 'Competentes.', avatar: 'https://i.pravatar.cc/80?img=49' },
-  { name: 'Mateus F.', stars: 5, text: 'Experiência ótima.', avatar: 'https://i.pravatar.cc/80?img=51' },
-  { name: 'Nicole G.', stars: 5, text: 'Voltarei a comprar.', avatar: 'https://i.pravatar.cc/80?img=52' },
-  { name: 'Orlando H.', stars: 5, text: 'Fidelizado.', avatar: 'https://i.pravatar.cc/80?img=54' },
-  { name: 'Paloma I.', stars: 5, text: 'Cliente satisfeito.', avatar: 'https://i.pravatar.cc/80?img=55' },
-  { name: 'Quirino J.', stars: 5, text: 'Indico.', avatar: 'https://i.pravatar.cc/80?img=58' },
-  { name: 'Raquel K.', stars: 5, text: 'Assino embaixo.', avatar: 'https://i.pravatar.cc/80?img=59' }
+  { name: 'Larissa G.', stars: 5, text: 'Amei, jogo todo dia!', avatar: 'https://i.pravatar.cc/80?img=35' }
 ];
 // Utility functions
 function fmt(v) {
@@ -258,34 +163,8 @@ function hideInitialSpinner() {
   if (el) el.style.display = 'none';
 }
 
-function showSpinner() {
-  const el = document.getElementById("spinner");
-  if (el) el.style.display = "flex";
-}
-
-function hideSpinner() {
-  const el = document.getElementById("spinner");
-  if (el) el.style.display = "none";
-}
-
 function sleep(time) {
   return new Promise((resolve) => setTimeout(resolve, time));
-}
-
-function efetuarPagamento(storeid, email, telefone, sid, cupom = undefined) {
-  try {
-    createMLlink(storeid, email, telefone, sid, cupom);
-  } catch (error) {
-    try {
-      logError('utils.js', 'efetuarPagamento', error);
-    } catch (error) {
-      console.log(error);
-    }
-
-    setTimeout(() => {
-      efetuarPagamento(storeid, email, telefone, sid, cupom);
-    }, 500);
-  }
 }
 
 async function getCupomDiscount(cupom, productid = undefined) {
@@ -691,20 +570,7 @@ function savelead(storeid, status = undefined, email = undefined, telefone = und
   }
 }
 
-function fbPixelRequest(event, productid) {
-  var storeid = (typeof STOREID !== 'undefined') ? STOREID : '';
-  var urlServico = 'https://digitalstoregames.pythonanywhere.com/fbPixel?event=' + encodeURIComponent(event) + '&productid=' + encodeURIComponent(productid) + '&storeid=' + storeid;
-  var fbp = getCookie('_fbp');
-  var fbc = getCookie('_fbc');
 
-  if (fbc) {
-    urlServico += '&fbc=' + fbc;
-    if (fbp) {
-      urlServico += '&fbp=' + encodeURIComponent(fbp);
-    }
-    fetch(urlServico);
-  }
-}
 // Order summary and cart management
 function renderSummary() {
   const body = document.getElementById('summaryBody');
@@ -1003,29 +869,7 @@ function startRotation() {
   show();
   setInterval(show, 8000);
 }
-// Modal and gallery functionality
-(function () {
-  const modal = document.getElementById('modal');
-  const gallery = document.getElementById('gallery');
-  const modalTitle = document.getElementById('modalTitle');
 
-  if (modal) {
-    document.querySelectorAll('.gallery').forEach(el => {
-      el.addEventListener('click', () => {
-        const key = el.dataset.gallery;
-        const items = GALLERIES[key] || [];
-        modalTitle.textContent = key === 'xbox' ? 'Mais jogados no Xbox 360' : 'Favoritos no Switch';
-        gallery.innerHTML = items.map(src => `<img src="${src}" alt="">`).join('');
-        modal.style.display = 'flex';
-      });
-    });
-
-    document.getElementById('closeModal').addEventListener('click', () => modal.style.display = 'none');
-    modal.addEventListener('click', e => {
-      if (e.target === modal) modal.style.display = 'none';
-    });
-  }
-})();
 // Form validation and input handling
 (function () {
   const form = document.getElementById('checkoutForm');
@@ -1120,23 +964,7 @@ function startRotation() {
   }
 })();
 
-// Initialize discount badges and run startup functions
-(function () {
-  const sony = document.getElementById('sonyBadge');
-  if (sony) sony.textContent = `-${formatPct(49.90, 10.00)}%`;
 
-  const nin = document.getElementById('nintendoBadge');
-  if (nin) nin.textContent = `-${formatPct(59.90, 15.00)}%`;
-
-  const sw = document.getElementById('swBadge');
-  if (sw) sw.textContent = `-${formatPct(75.00, 30.00)}%`;
-
-  const xb = document.getElementById('xboxBadge');
-  if (xb) xb.textContent = `-${formatPct(67.00, 20.00)}%`;
-
-  const out = document.getElementById('outrosBadge');
-  if (out) out.textContent = `-${formatPct(39.90, 10.00)}%`;
-})();
 
 // ---------------------------------------------------------------------------
 // Initialize the page — moved inside DOMContentLoaded after data fetch
@@ -1144,7 +972,7 @@ function startRotation() {
 
 /**
  * Builds comma-separated product IDs for the current cart (dynamic bumps / V2).
- * Called by shared/payment.js for PIX and Card payments.
+ * Called by PIX and Card payment functions.
  */
 function getCurrentSids() {
   const selected = getSelected();
@@ -1154,4 +982,300 @@ function getCurrentSids() {
     if (pid != null) parts.push(pid);
   });
   return parts.join(',');
+}
+
+// ---------------------------------------------------------------------------
+// Payment Module — PIX + MP CardPayment Brick
+// ---------------------------------------------------------------------------
+
+const MP_PUBLIC_KEY = 'APP_USR-f344722f-528a-459f-8949-8e50f7db0e03';
+const BACKEND_URL = 'https://digitalstoregames.pythonanywhere.com';
+
+let _pixPollingInterval = null;
+let _currentPixCode = null;
+let _mpBricksController = null;
+
+/** Returns current cart total applying active coupon discount. */
+function getCartTotal() {
+  const selected = getSelected();
+  let total = BASE.price;
+  if (currentCouponDiscount > 0) total = total * (1 - currentCouponDiscount / 100);
+  selected.forEach(a => {
+    let p = a.price;
+    if (currentCouponDiscount > 0) p = p * (1 - currentCouponDiscount / 100);
+    total += p;
+  });
+  return Math.round(total * 100) / 100;
+}
+
+// ---------------------------------------------------------------------------
+// PIX payment
+// ---------------------------------------------------------------------------
+
+async function abrirPix() {
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if (!validarEmail(email)) {
+    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+    return;
+  }
+  if (emailErr) emailErr.style.display = 'none';
+  if (emailEl) emailEl.classList.remove('is-invalid');
+
+  const btn = document.getElementById('altPixBtn');
+  if (btn) btn.disabled = true;
+  showSpinnerLoader();
+
+  if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
+
+  const cel = document.getElementById('cel')?.value?.trim() || '';
+  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const sids = getCurrentSids();
+  const fbp = getCookie('_fbp') || '';
+  const fbc = getCookie('_fbc') || '';
+
+  try {
+    const body = { sids, email, storeid: STOREID };
+    if (cel) body.telefone = cel;
+    if (cupom) body.cupom = cupom;
+    if (fbp) body.fbp = fbp;
+    if (fbc) body.fbc = fbc;
+
+    const resp = await fetch(`${BACKEND_URL}/create_pix_payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+
+    if (data.error) {
+      if (data.error_field === 'email') {
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro ao gerar PIX: ' + data.error);
+      }
+      return;
+    }
+
+    _currentPixCode = data.qr_code;
+    _mostrarPixModal(data.qr_code, data.qr_code_base64, data.amount);
+    _iniciarPollingPix(data.payment_id);
+
+  } catch (e) {
+    console.error('abrirPix error:', e);
+    alert('Erro ao gerar QR Code PIX. Verifique sua conexão e tente novamente.');
+  } finally {
+    if (btn) btn.disabled = false;
+    hideSpinnerLoader();
+  }
+}
+
+function _mostrarPixModal(qr_code, qr_code_base64, amount) {
+  const modal = document.getElementById('pixModal');
+  if (!modal) return;
+  const amtFmt = (amount || 0).toFixed(2).replace('.', ',');
+  const img = modal.querySelector('#pixQrImg');
+  if (img) {
+    img.src = qr_code_base64 ? `data:image/png;base64,${qr_code_base64}` : '';
+    img.style.display = qr_code_base64 ? 'block' : 'none';
+  }
+  modal.querySelector('#pixAmount').textContent = `R$ ${amtFmt}`;
+  const codeEl = modal.querySelector('#pixCodePreview');
+  if (codeEl) codeEl.textContent = qr_code.substring(0, 50) + '\u2026';
+  modal.querySelector('#pixStatusMsg').innerHTML = 'Aguardando pagamento\u2026 <span class="pix-spinner"></span>';
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function fecharPixModal() {
+  const modal = document.getElementById('pixModal');
+  if (modal) { modal.style.display = 'none'; document.body.style.overflow = ''; }
+  if (_pixPollingInterval) { clearInterval(_pixPollingInterval); _pixPollingInterval = null; }
+  _currentPixCode = null;
+}
+
+function copiarCodigoPix() {
+  if (!_currentPixCode) return;
+  navigator.clipboard.writeText(_currentPixCode).then(() => {
+    const btn = document.getElementById('btnCopiarPix');
+    if (btn) { const o = btn.textContent; btn.textContent = '\u2713 Copiado!'; setTimeout(() => { btn.textContent = o; }, 2500); }
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = _currentPixCode; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    const btn = document.getElementById('btnCopiarPix');
+    if (btn) { const o = btn.textContent; btn.textContent = '\u2713 Copiado!'; setTimeout(() => { btn.textContent = o; }, 2500); }
+  });
+}
+
+function _iniciarPollingPix(paymentId) {
+  if (_pixPollingInterval) clearInterval(_pixPollingInterval);
+  _pixPollingInterval = setInterval(async () => {
+    try {
+      const r = await fetch(`${BACKEND_URL}/payment_status?payment_id=${encodeURIComponent(paymentId)}`);
+      const d = await r.json();
+      if (d.status === 'approved') {
+        clearInterval(_pixPollingInterval); _pixPollingInterval = null;
+        const el = document.getElementById('pixStatusMsg');
+        if (el) el.innerHTML = '<span style="color:#00b04a;font-weight:700">\u2705 Pagamento confirmado! Verifique seu e-mail.</span>';
+        setTimeout(() => { window.location.href = d.redirect_url || 'https://digitalmemberarea.digitalstoregames.com/recuperaracesso/'; }, 3500);
+      } else if (['rejected', 'cancelled', 'expired'].includes(d.status)) {
+        clearInterval(_pixPollingInterval); _pixPollingInterval = null;
+        const el = document.getElementById('pixStatusMsg');
+        if (el) el.innerHTML = '<span style="color:#cc0000;font-weight:700">\u26a0\ufe0f PIX cancelado ou expirado. Feche e tente novamente.</span>';
+      }
+    } catch (_e) { }
+  }, 5000);
+}
+
+// ---------------------------------------------------------------------------
+// Card payment via MP CardPayment Brick
+// ---------------------------------------------------------------------------
+
+function abrirCartao() {
+  const emailEl = document.getElementById('email');
+  const emailErr = document.getElementById('emailErr');
+  const email = emailEl ? emailEl.value.trim() : '';
+
+  if (!validarEmail(email)) {
+    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+    return;
+  }
+  if (emailErr) emailErr.style.display = 'none';
+  if (emailEl) emailEl.classList.remove('is-invalid');
+
+  const modal = document.getElementById('cardModal');
+  if (!modal) return;
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+  _loadCardBrick(email);
+}
+
+function fecharCartaoModal() {
+  const modal = document.getElementById('cardModal');
+  if (modal) { modal.style.display = 'none'; document.body.style.overflow = ''; }
+  if (_mpBricksController) {
+    try { _mpBricksController.unmount(); } catch (_e) {}
+    _mpBricksController = null;
+  }
+}
+
+function _loadCardBrick(email) {
+  const container = document.getElementById('cardBrickInner');
+  if (!container) return;
+
+  if (!MP_PUBLIC_KEY) {
+    container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">Pagamento via cart\u00e3o n\u00e3o configurado.<br>Use PIX ou Mercado Pago.</p>';
+    return;
+  }
+
+  container.innerHTML = '';
+  const amount = getCartTotal();
+
+  function _initBrick() {
+    try {
+      const mp = new MercadoPago(MP_PUBLIC_KEY, { locale: 'pt-BR' });
+      mp.bricks().create('cardPayment', 'cardBrickInner', {
+        initialization: { amount, payer: { email } },
+        callbacks: {
+          onReady: () => {},
+          onSubmit: (cardData) => _processarCartao(cardData),
+          onError: (err) => {
+            console.error('CardBrick error:', err);
+            const el = document.getElementById('cardBrickInner');
+            if (el) el.innerHTML = '<p style="color:#c00;text-align:center;padding:10px">Erro no formul\u00e1rio. Tente novamente.</p>';
+          }
+        }
+      }).then(ctrl => { _mpBricksController = ctrl; });
+    } catch (e) {
+      console.error('_loadCardBrick init error:', e);
+      if (container) container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">Erro ao carregar formul\u00e1rio. Tente Mercado Pago ou PIX.</p>';
+    }
+  }
+
+  if (window.MercadoPago) {
+    _initBrick();
+  } else {
+    const script = document.createElement('script');
+    script.src = 'https://sdk.mercadopago.com/js/v2';
+    script.onload = _initBrick;
+    script.onerror = () => {
+      if (container) container.innerHTML = '<p style="color:#c00;text-align:center;padding:20px">N\u00e3o foi poss\u00edvel carregar o formul\u00e1rio. Verifique sua conex\u00e3o.</p>';
+    };
+    document.head.appendChild(script);
+  }
+}
+
+async function _processarCartao(cardData) {
+  showSpinnerLoader();
+  if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
+  const cel = document.getElementById('cel')?.value?.trim() || '';
+  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const sids = getCurrentSids();
+  const fbp = getCookie('_fbp') || '';
+  const fbc = getCookie('_fbc') || '';
+  const email = cardData.payer?.email || document.getElementById('email')?.value?.trim();
+  let paymentDone = false;
+
+  try {
+    const body = {
+      sids, token: cardData.token, installments: cardData.installments,
+      payment_method_id: cardData.payment_method_id, email, storeid: STOREID
+    };
+    if (cardData.payer?.identification?.number) {
+      body.identification_type = cardData.payer.identification.type || 'CPF';
+      body.identification_number = cardData.payer.identification.number;
+    }
+    if (cel) body.telefone = cel;
+    if (cupom) body.cupom = cupom;
+    if (fbp) body.fbp = fbp;
+    if (fbc) body.fbc = fbc;
+
+    const resp = await fetch(`${BACKEND_URL}/create_card_payment`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+    });
+    const data = await resp.json();
+    if (data.error) {
+      if (data.error_field === 'email') {
+        fecharCartaoModal();
+        const emailErr = document.getElementById('emailErr');
+        const emailEl = document.getElementById('email');
+        if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+        if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+      } else {
+        alert('Erro no pagamento: ' + data.error);
+      }
+      return;
+    }
+
+    if (data.status === 'approved') {
+      paymentDone = true;
+      fecharCartaoModal();
+      const el = document.getElementById('cardModalStatus');
+      if (el) el.innerHTML = '<p style="color:#00b04a;font-weight:700;text-align:center">\u2705 Pagamento aprovado! Verifique seu e-mail.</p>';
+      setTimeout(() => { window.location.href = data.redirect_url || 'https://digitalmemberarea.digitalstoregames.com/recuperaracesso/'; }, 3000);
+    } else if (['in_process', 'pending'].includes(data.status)) {
+      paymentDone = true;
+      alert('Pagamento em análise. Você receberá um e-mail de confirmação em breve.');
+      fecharCartaoModal();
+    } else {
+      alert('Pagamento não aprovado (' + (data.status_detail || data.status) + '). Verifique os dados do cartão e tente novamente.');
+    }
+  } catch (e) {
+    console.error('_processarCartao error:', e);
+    alert('Erro ao processar o pagamento. Tente novamente ou use outra forma de pagamento.');
+  } finally {
+    hideSpinnerLoader();
+    if (!paymentDone) {
+      if (_mpBricksController) { try { _mpBricksController.unmount(); } catch (_e) {} _mpBricksController = null; }
+      _loadCardBrick(email);
+    }
+  }
 }

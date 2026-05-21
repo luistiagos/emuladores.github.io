@@ -6,16 +6,16 @@
   <title>Checkout seguro — Digital Store Games</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://digitalstoregames.pythonanywhere.com" crossorigin>
+  <link rel="preconnect" href="https://sdk.mercadopago.com" crossorigin>
   <link rel="dns-prefetch" href="//api.whatsapp.com">
   <link rel="dns-prefetch" href="//i.pravatar.cc">
-  <link rel="preconnect" href="https://i.pravatar.cc" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" onload="this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap"></noscript>
 
-  <!-- CSS Files -->
-  <link id="theme-stylesheet" rel="stylesheet" href="css/bundle-default.css?v=20260520v5">
+  <!-- CSS — non-blocking: preload + fallback -->
+  <link rel="preload" as="style" href="css/bundle-default.css?v=20260520v5" onload="this.rel='stylesheet'" id="theme-stylesheet">
+  <noscript><link rel="stylesheet" href="css/bundle-default.css?v=20260520v5"></noscript>
 
   <script>
     !function (f, b, e, v, n, t, s) {
@@ -42,13 +42,14 @@
     style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 99998; display: flex; justify-content: center; align-items: center; flex-direction: column;">
     <div style="border: 4px solid #f3f3f3; border-top: 4px solid #009EE3; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;"></div>
     <p style="margin-top: 15px; font-weight: 600; color: #333; font-family: 'Montserrat', sans-serif;">Carregando...</p>
+    <style>@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
   </div>
   <a class="sr-only" href="#checkoutForm">Pular para o formulário</a>
 
   <div class="wrap">
     <header>
       <a href="#" class="logo-custom" style="text-decoration: none;">
-        <i class="fas fa-gamepad logo-icon-brand"></i>
+        <svg class="logo-icon-brand" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h4m-2-2v4M15 13h.01M18 11h.01M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>
         <div class="logo-label">
           DIGITAL STORE <span>GAMES</span>
         </div>
@@ -69,7 +70,7 @@
         <div class="muted">No Cartão ou <span id="avistaVlr"></span> à vista</div>
 
         <div class="order-card">
-          <img class="order-thumb" src="" alt="" loading="lazy">
+          <img class="order-thumb" src="" alt="" fetchpriority="high">
           <div class="order-info">
             <h3></h3>
           </div>
@@ -129,7 +130,7 @@
             <tfoot>
               <tr>
                 <td>Total <span class="economy" id="totalEconomy">(Economia R$ 0,00)</span></td>
-                <td style="text-align:right" id="totalVlr">R$ 25,00</td>
+                <td style="text-align:right" id="totalVlr"></td>
               </tr>
             </tfoot>
           </table>
@@ -176,14 +177,14 @@
 
           <div class="trust-under-cta" aria-label="Formas de pagamento aceitas">
             <span>Você paga no Mercado Pago:</span>
-            <img src="images/payment-methods/mercadopago.webp" alt="Mercado Pago" loading="lazy">
-            <img src="images/payment-methods/pix.svg" alt="Pix" loading="lazy">
-            <img src="images/payment-methods/visa.svg" alt="Visa" loading="lazy">
-            <img src="images/payment-methods/mastercard.webp" alt="Mastercard" loading="lazy">
-            <img src="images/payment-methods/elo.svg" alt="Elo" loading="lazy">
-            <img src="images/payment-methods/amex.svg" alt="American Express" loading="lazy">
-            <img src="images/payment-methods/diners-club.svg" alt="Diners Club" loading="lazy">
-            <img src="images/payment-methods/boleto.webp" alt="Boleto bancário" loading="lazy">
+            <img src="images/payment-methods/mercadopago.webp" alt="Mercado Pago" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/pix.svg" alt="Pix" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/visa.svg" alt="Visa" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/mastercard.webp" alt="Mastercard" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/elo.svg" alt="Elo" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/amex.svg" alt="American Express" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/diners-club.svg" alt="Diners Club" loading="lazy" fetchpriority="low">
+            <img src="images/payment-methods/boleto.webp" alt="Boleto bancário" loading="lazy" fetchpriority="low">
           </div>
         </div>
 
@@ -276,12 +277,10 @@
 
     <div class="footer-contacts"
       style="margin-bottom: 20px; font-size: 0.8rem; opacity: 0.8; display: flex; justify-content: center; gap: 15px;">
-      <a href="mailto:contato@digitalstoregames.com" style="color: inherit; text-decoration: none;"><i
-          class="fas fa-envelope"></i> Email</a>
-      <a href="https://wa.me/5541996260115" target="_blank" style="color: inherit; text-decoration: none;"><i
-          class="fab fa-whatsapp"></i> WhatsApp</a>
+      <a href="mailto:contato@digitalstoregames.com" style="color: inherit; text-decoration: none;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg> Email</a>
+      <a href="https://wa.me/5541996260115" target="_blank" style="color: inherit; text-decoration: none;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> WhatsApp</a>
       <a href="https://www.facebook.com/profile.php?id=100085725639739" target="_blank"
-        style="color: inherit; text-decoration: none;"><i class="fab fa-facebook"></i> Facebook</a>
+        style="color: inherit; text-decoration: none;"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg> Facebook</a>
     </div>
     <a href="https://www.siteconfiavel.com.br/site/digitalstoregames-com" target="_blank" rel="noopener noreferrer">
       <img src="images/trust-seals/siteconfiavel.webp" class="trust-seal" alt="Site Confiável" loading="lazy">
@@ -311,17 +310,6 @@
     </div>
     <p style="margin-top: 15px; font-weight: 600; color: #333; font-family: 'Montserrat', sans-serif;">Processando seu
       pagamento...</p>
-    <style>
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-    </style>
   </div>
 
   <a href="https://api.whatsapp.com/send?phone=5541996260115&text=Gostaria%20de%20mais%20informa%C3%A7%C3%B5es%20sobre%20o%20produto"
@@ -340,7 +328,6 @@
   </script>
   <script src="../../shared/checkout-init.js?v=20260520v5"></script>
   <script src="js/bundle.js?v=20260520v5" defer></script>
-  <script src="../../shared/payment.js?v=20260520v5" defer></script>
 
   <!-- PIX Payment Modal -->
   <div id="pixModal" role="dialog" aria-modal="true" aria-label="Pagar com PIX"
