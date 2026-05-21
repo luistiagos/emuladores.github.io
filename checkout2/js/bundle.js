@@ -457,10 +457,34 @@ async function fetchCheckoutInfo() {
 
     // 4. Setup Features (Bullets)
     if (data.store.checkout_features) {
-      const bulletsHtml = data.store.checkout_features.split('\\n').map(f => `<li>${f.trim()}</li>`).join('');
-      const orderUl = document.querySelector('.order-info ul');
-      if (orderUl) {
-        orderUl.innerHTML = bulletsHtml;
+      const featuresRaw = data.store.checkout_features.trim();
+      const orderInfo = document.querySelector('.order-info');
+      
+      if (orderInfo) {
+        // Remove existing ul or dynamic features
+        const existingUl = orderInfo.querySelector('ul');
+        if (existingUl) existingUl.remove();
+        const existingDyn = orderInfo.querySelector('.dynamic-features');
+        if (existingDyn) existingDyn.remove();
+
+        const featuresContainer = document.createElement('div');
+        featuresContainer.className = 'dynamic-features';
+
+        // If it looks like HTML, inject directly
+        if (featuresRaw.includes('<') && featuresRaw.includes('>')) {
+          featuresContainer.innerHTML = featuresRaw;
+        } else {
+          // Otherwise split by newline
+          const items = featuresRaw.split(/\r?\n/).filter(f => f.trim() !== '');
+          const ul = document.createElement('ul');
+          items.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item.trim();
+            ul.appendChild(li);
+          });
+          featuresContainer.appendChild(ul);
+        }
+        orderInfo.appendChild(featuresContainer);
       }
     }
     
