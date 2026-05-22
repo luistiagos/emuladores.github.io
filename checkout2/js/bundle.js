@@ -1,6 +1,6 @@
 // Product configuration and pricing
 const STOREID = window.__CHECKOUT__.storeId;
-const MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
+let MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
 let BASE = {
   id: 'principal-ps2',
   name: 'Plataforma Playstation 2 com todos os jogos',
@@ -285,7 +285,10 @@ async function fetchCheckoutInfo() {
   }
 
   try {
-    const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/checkout_info`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/checkout_info`, { signal: controller.signal });
+    clearTimeout(timeoutId);
     if (!response.ok) throw new Error('Failed to fetch checkout info');
     const data = await response.json();
 
@@ -329,6 +332,10 @@ async function fetchCheckoutInfo() {
         price: data.principal.price,
       };
       BASE.economy = BASE.original_price - BASE.price;
+
+      if (data.principal.package_id) {
+        MAIN_PACKAGE_ID = data.principal.package_id;
+      }
 
       // Update UI
       const orderThumb = document.querySelector('.order-thumb');
