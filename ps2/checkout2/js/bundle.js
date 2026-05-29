@@ -1,6 +1,32 @@
 // Product configuration and pricing
 const STOREID = window.__CHECKOUT__.storeId;
-const MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
+let MAIN_PACKAGE_ID = window.__CHECKOUT__.mainPackageId;
+let _mainPackageReady = false;
+let _mainPackagePromise = null;
+
+async function ensureMainPackageIdFromStore() {
+  if (_mainPackageReady) return;
+  if (MAIN_PACKAGE_ID > 0) { _mainPackageReady = true; return; }
+  if (_mainPackagePromise) return _mainPackagePromise;
+
+  _mainPackagePromise = (async () => {
+    try {
+      const resp = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/principal`);
+      if (!resp.ok) return;
+      const data = await resp.json();
+      const resolved = Number(data?.package_id ?? data?.id);
+      if (Number.isFinite(resolved) && resolved > 0) {
+        MAIN_PACKAGE_ID = resolved;
+      }
+    } catch (err) {
+      console.warn('[ps2/bundle.js] Could not resolve principal package for store', STOREID, err);
+    } finally {
+      _mainPackageReady = true;
+    }
+  })();
+
+  return _mainPackagePromise;
+}
 const BASE = {
   id: 'principal-ps2',
   name: 'Plataforma Playstation 2 com todos os jogos',
@@ -809,11 +835,13 @@ async function pagar_v2() {
   // Collect selected package IDs
   const cupom = document.getElementById('cupom')?.value || '';
 
-  let sidParts = [MAIN_PACKAGE_ID];
+  await ensureMainPackageIdFromStore();
+
+  let sidParts = (MAIN_PACKAGE_ID > 0) ? [MAIN_PACKAGE_ID] : [];
   const selected = getSelected();
   selected.forEach(item => {
     const pid = item.package_id ?? item.id;
-    if (pid != null) {
+    if (pid != null && pid !== 0) {
       sidParts.push(pid);
     }
   });
@@ -1035,10 +1063,10 @@ savelead(STOREID, 'AddToCart');
  */
 function getCurrentSids() {
   const selected = getSelected();
-  const parts = [MAIN_PACKAGE_ID];
+  const parts = (MAIN_PACKAGE_ID > 0) ? [MAIN_PACKAGE_ID] : [];
   selected.forEach(item => {
     const pid = item.package_id ?? item.id;
-    if (pid != null) parts.push(pid);
+    if (pid != null && pid !== 0) parts.push(pid);
   });
   return parts.join(',');
 }
