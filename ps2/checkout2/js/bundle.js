@@ -754,6 +754,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   // Only fetch dynamic bumps on pages that opt in (e.g. index2.html)
   if (document.body.dataset.dynamicBumps === 'true') {
+    ensureMainPackageIdFromStore();
     fetchBumpOrders();
   } else {
     // Populate ADDONS from static definitions for static pages (e.g. index.html)
