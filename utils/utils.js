@@ -25,17 +25,48 @@ function getCookie(name) {
 }
 
 function logError(file, method, message) {
-    var params = new URLSearchParams({
+    // `message` pode ser uma string OU um objeto Error (vários callers passam o erro).
+    var err = message;
+    var msgText = (err && err.message) ? err.message : String(message);
+    var stack = (err && err.stack) ? String(err.stack) : null;
+
+    var fields = {
         file: file,
         method: method,
-        message: String(message),
+        message: msgText,
         user_agent: navigator.userAgent || '',
         platform: navigator.platform || '',
         screen: (screen.width || '') + 'x' + (screen.height || ''),
         page_url: window.location.href || '',
         project: 'emuladores.github.io'
-    });
-    fetch('https://digitalstoregames.pythonanywhere.com/logErr?' + params.toString());
+    };
+
+    var ENDPOINT = 'https://digitalstoregames.pythonanywhere.com/logErr';
+
+    // Fallback histórico: GET por querystring (comportamento de sempre, sem logs).
+    function sendGet() {
+        try {
+            var params = new URLSearchParams(fields);
+            fetch(ENDPOINT + '?' + params.toString());
+        } catch (e) { /* noop */ }
+    }
+
+    // Novo: POST com o stacktrace inteiro em `logs`. Em QUALQUER falha (rede,
+    // 405 antes do deploy do backend, etc.) cai pro GET — nada deixa de logar.
+    try {
+        var payload = Object.assign({}, fields);
+        if (stack) { payload.logs = [stack]; }
+        fetch(ENDPOINT, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            keepalive: true
+        }).then(function (res) {
+            if (!res || !res.ok) sendGet();
+        }).catch(sendGet);
+    } catch (e) {
+        sendGet();
+    }
 }
 
 function showSpinnerLoader() {
