@@ -21,7 +21,7 @@ Nós reunimos a **biblioteca completa do Xbox 360** em um único pacote digital 
 🎮 **3.000+ Jogos** (Xbox 360 + Xbox Clássico)  
 ⚔️ Halo, Gears, Red Dead, GTA V, Fable, BioShock...  
 💻 Roda no PC/Notebook com gráficos melhorados  
-🔥 Acesso Vitalício por **R$ 30**
+🔥 Acesso Vitalício por **R$ 47**
 
 Você não precisa de um Xbox Series X.
 Você precisa da geração que definiu o online console.
@@ -32,4 +32,4 @@ Você precisa da geração que definiu o online console.
 ---
 
 **Headline:** 🎮 A Era de Ouro do Xbox Live no seu PC.
-**Descrição:** 3.000 jogos por R$ 30. Acesso Vitalício.
+**Descrição:** 3.000 jogos por R$ 47. Acesso Vitalício.

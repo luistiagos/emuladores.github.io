@@ -38,7 +38,7 @@ const BASE = {
   id: 'principal-xbox360',
   name: 'Plataforma Xbox 360 com 3000 Jogos',
   original_price: 299.00,
-  price: 30.00
+  price: 47.00
 };
 BASE.economy = BASE.original_price - BASE.price;
 

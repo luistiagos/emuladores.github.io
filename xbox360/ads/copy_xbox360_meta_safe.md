@@ -1,10 +1,10 @@
 # Xbox 360 - Versão Meta-Safe ✅
 
 **PRIMARY TEXT (119 chars):**
-Toda a biblioteca do Xbox 360 no seu PC. 3.000 jogos clássicos, acesso vitalício por R$ 30. Halo, Gears e mais! 🎮
+Toda a biblioteca do Xbox 360 no seu PC. 3.000 jogos clássicos, acesso vitalício por R$ 47. Halo, Gears e mais! 🎮
 
 **HEADLINE (17 chars):**
-Xbox 360: R$ 30
+Xbox 360: R$ 47
 
 **DESCRIPTION (27 chars):**
 3.000 jogos. Acesso eterno.
@@ -26,7 +26,7 @@ Jogue toda a biblioteca do Xbox 360 + Xbox Clássico no seu PC:
 ✅ Fable II e III
 ✅ +2.995 jogos
 
-💰 Apenas R$ 30 (pagamento único)
+💰 Apenas R$ 47 (pagamento único)
 🎮 Acesso vitalício
 ⚡ Jogue no PC ou notebook
 🔒 Compra 100% segura

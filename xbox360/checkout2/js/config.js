@@ -3,7 +3,7 @@ const BASE = {
   id: 'xbox360-retro',
   name: 'Plataforma Xbox 360',
   original_price: 299.00,
-  price: 30.00
+  price: 47.00
 };
 BASE.economy = BASE.original_price - BASE.price;
 
