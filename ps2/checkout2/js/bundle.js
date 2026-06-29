@@ -190,7 +190,8 @@ const TESTIMONIALS = [
 ];
 // Utility functions
 function fmt(v) {
-  return 'R$ ' + v.toFixed(2).replace('.', ',');
+  if (v === null || v === undefined) return 'R$ 0,00';
+  return 'R$ ' + Number(v).toFixed(2).replace('.', ',');
 }
 
 function show(el, yes) {
@@ -449,10 +450,10 @@ async function fetchBumpOrders() {
         package_id: item.package_id,
         name: getValidText(item.title, item.package_title, item.name) || 'Pacote adicional',
         original_price: item.relprice || 0,
-        price: item.price,
+        price: item.price ?? item.package_price ?? 0,
         description: getValidText(item.description, item.prd_content, item.package_description),
         image: item.image,
-        economy: (item.relprice || 0) - item.price
+        economy: (item.relprice || 0) - (item.price ?? item.package_price ?? 0)
       };
     });
 
