@@ -1,4 +1,4 @@
-const STOREID = 600000;
+const STOREID = 600007;
 const BASE = {
   id: 'xbox360-retro',
   name: 'Plataforma Xbox 360',

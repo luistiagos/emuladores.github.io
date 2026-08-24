@@ -1,5 +1,5 @@
 // Product configuration and pricing
-const STOREID = 300000;
+const STOREID = 600006;
 const BASE = {
   id: 'principal-ps2',
   name: 'Plataforma Playstation 2 com todos os jogos',

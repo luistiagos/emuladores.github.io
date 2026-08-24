@@ -1,5 +1,5 @@
 // Product configuration and pricing
-const STOREID = 20000;
+const STOREID = 600004;
 const BASE = {
   id: 'principal-52emul',
   name: '52 Emuladores + 100.000 jogos',
