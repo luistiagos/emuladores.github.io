@@ -299,14 +299,16 @@
 
             fetch(`https://digitalstoregames.pythonanywhere.com/list_products_by_email?email=${email}`)
                 .then(response => {
-                    if (!response.ok) return [];
+                    // Falha de consulta NAO e ausencia de compra: devolver [] aqui fazia a
+                    // grade imprimir "Email nao encontrado" para quem tinha pago.
+                    if (!response.ok) throw new Error('HTTP ' + response.status);
                     return response.json();
                 })
                 .then(data => {
                     exibirGrade(data, email);
                 })
                 .catch(() => {
-                    showMessage("Erro de conexão. Tente novamente.", "error");
+                    exibirFalhaDeConsulta();
                 })
                 .finally(() => {
                     submitBtn.innerHTML = 'CONSULTAR ACESSOS <i class="fas fa-search" style="margin-left: 10px;"></i>';
@@ -327,6 +329,23 @@
                 const storeQueryParam = storeId ? '&store_id=' + storeId : '';
                 window.location.href = BACKEND_URL + '/customer/access?email=' + emailParam + storeQueryParam;
             }
+        }
+
+        // Consulta que FALHOU. Mensagem separada de "Email nao encontrado" de proposito:
+        // dizer a quem pagou que a compra nao existe manda o cliente embora achando que
+        // foi golpe. Aqui a compra continua la -- o que falhou foi a consulta.
+        function exibirFalhaDeConsulta() {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.style.display = 'block';
+            gridContainer.innerHTML = `
+                <div class="alert-custom alert-warning">
+                    <i class="fas fa-exclamation-circle"></i> Não foi possível consultar agora.<br><br>
+                    <strong>Sua compra não foi perdida.</strong> Tente novamente em alguns instantes.<br><br>
+                    Se continuar, fale com nosso suporte:<br>
+                    <a href="https://wa.me/5541996260115" style="color: white; font-weight: bold; text-decoration: underline;">
+                       <i class="fab fa-whatsapp"></i> (41) 99626-0115
+                    </a>
+                </div>`;
         }
 
         function exibirGrade(data, email) {
