@@ -31,21 +31,135 @@ function getCartTotal() {
 }
 
 // ---------------------------------------------------------------------------
+// E-mail: saneamento, validacao estrita e sugestao de dominio.
+// Dono unico do checkout -- as duas formas de pagamento (PIX e cartao) liam o
+// campo e chamavam validarEmail() em blocos identicos e separados.
+// Espelha mysite/utilshelper.py (normalize_email / EMAIL_REGEX /
+// sugerir_dominio_email); os dois lados PRECISAM concordar.
+// Ver docs/modules/area-membros/bugs/
+// 2026-09-08-recuperar-acesso-email-nao-encontrado.md
+// ---------------------------------------------------------------------------
+
+// Recusa ponto final, ponto duplo e rotulo vazio. A regex antiga dos bundles
+// (/^[^\s@]+@[^\s@]+\.[^\s@]+$/) aceitava os tres: em 'gmail.com.' o ultimo
+// grupo casava 'com.', e o e-mail era gravado com o ponto -- o cliente nunca
+// mais achava a propria compra em "Recuperar acesso".
+var EMAIL_REGEX_ESTRITA =
+  /^[a-zA-Z0-9_%+-]+(?:\.[a-zA-Z0-9_%+-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+// Os 19 dominios que respondem por 36.886 das 37.067 compras aprovadas medidas
+// em producao. Curta de proposito: lista maior faz dominio corporativo legitimo
+// cair perto de um popular e virar sugestao errada.
+var EMAIL_DOMINIOS_CANONICOS = [
+  'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.br', 'yahoo.com',
+  'live.com', 'icloud.com', 'outlook.com.br', 'hotmail.com.br', 'bol.com.br',
+  'msn.com', 'uol.com.br', 'ymail.com', 'terra.com.br', 'globo.com',
+  'ig.com.br', 'me.com', 'protonmail.com', 'gmail.com.br'
+];
+
+// Saneia SEM adivinhar: so remove lixo que nao muda a identidade.
+// 'gmail.con' continua 'gmail.con'.
+function normalizeEmail(valor) {
+  if (!valor) { return ''; }
+  var e = String(valor)
+    .replace(/[\u200B-\u200F\uFEFF]/g, '')
+    .replace(/\u00A0/g, ' ')
+    .trim()
+    .toLowerCase();
+  if (e.indexOf('mailto:') === 0) { e = e.slice(7); }
+  e = e.replace(/\s+/g, '');
+  e = e.replace(/^[.,;:!?'"<>()\[\]{}]+/, '').replace(/[.,;:!?'"<>()\[\]{}]+$/, '');
+  var at = e.lastIndexOf('@');
+  if (at < 0) { return e; }
+  var local = e.slice(0, at).replace(/^\.+/, '').replace(/\.+$/, '');
+  var dominio = e.slice(at + 1).replace(/\.{2,}/g, '.')
+    .replace(/^[.-]+/, '').replace(/[.-]+$/, '');
+  return local + '@' + dominio;
+}
+
+// Levenshtein com corte.
+function _distanciaEdicaoEmail(a, b, teto) {
+  if (Math.abs(a.length - b.length) > teto) { return teto + 1; }
+  var anterior = [], i, j;
+  for (j = 0; j <= b.length; j++) { anterior[j] = j; }
+  for (i = 1; i <= a.length; i++) {
+    var atual = [i], menor = i;
+    for (j = 1; j <= b.length; j++) {
+      var custo = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+      atual[j] = Math.min(anterior[j] + 1, atual[j - 1] + 1, anterior[j - 1] + custo);
+      if (atual[j] < menor) { menor = atual[j]; }
+    }
+    if (menor > teto) { return teto + 1; }
+    anterior = atual;
+  }
+  return anterior[b.length];
+}
+
+// Dominio canonico que o cliente PROVAVELMENTE quis digitar, ou null.
+// Cobre os 128 quase-acertos medidos em producao. NAO cobre erro no local part
+// ('jaoo@gmail.com'), indistinguivel de um endereco legitimo.
+function sugerirDominioEmail(valor) {
+  var e = normalizeEmail(valor);
+  var at = e.lastIndexOf('@');
+  if (at < 0) { return null; }
+  var dominio = e.slice(at + 1);
+  if (!dominio) { return null; }
+  for (var k = 0; k < EMAIL_DOMINIOS_CANONICOS.length; k++) {
+    if (EMAIL_DOMINIOS_CANONICOS[k] === dominio) { return null; }
+  }
+  var melhor = null, melhorDist = null;
+  for (var i = 0; i < EMAIL_DOMINIOS_CANONICOS.length; i++) {
+    var canonico = EMAIL_DOMINIOS_CANONICOS[i];
+    // Teto 1 para dominio curto: em 'me.com' duas edicoes ja viram chute.
+    var teto = canonico.length <= 8 ? 1 : 2;
+    var dist = _distanciaEdicaoEmail(dominio, canonico, teto);
+    if (dist <= teto && (melhorDist === null || dist < melhorDist)) {
+      melhor = canonico; melhorDist = dist;
+    }
+  }
+  return melhor === null ? null : e.slice(0, at) + '@' + melhor;
+}
+
+// Le o campo, saneia, valida e (se for o caso) oferece a correcao de dominio.
+// Devolve o e-mail final, ou null se invalido -- e o chamador ja abortou a UI.
+// Sugere, NUNCA corrige sozinho: um falso positivo corrigido em silencio manda
+// o acesso pago para a caixa de outra pessoa, e ninguem fica sabendo.
+function lerEmailValidado() {
+  var emailEl = document.getElementById('email');
+  var emailErr = document.getElementById('emailErr');
+  var email = normalizeEmail(emailEl ? emailEl.value : '');
+  if (emailEl) { emailEl.value = email; }
+
+  if (!EMAIL_REGEX_ESTRITA.test(email)) {
+    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
+    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
+    return null;
+  }
+
+  var sugestao = sugerirDominioEmail(email);
+  if (sugestao) {
+    var msg = 'Confirme seu e-mail\n\n'
+      + 'Voce digitou:      ' + email + '\n'
+      + 'Voce quis dizer:   ' + sugestao + '\n\n'
+      + 'OK usa ' + sugestao + '. Cancelar mantem o que voce digitou.';
+    if (confirm(msg)) {
+      email = sugestao;
+      if (emailEl) { emailEl.value = sugestao; }
+    }
+  }
+
+  if (emailErr) emailErr.style.display = 'none';
+  if (emailEl) emailEl.classList.remove('is-invalid');
+  return email;
+}
+
+// ---------------------------------------------------------------------------
 // PIX payment
 // ---------------------------------------------------------------------------
 
 async function abrirPix() {
-  const emailEl = document.getElementById('email');
-  const emailErr = document.getElementById('emailErr');
-  const email = emailEl ? emailEl.value.trim() : '';
-
-  if (!validarEmail(email)) {
-    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
-    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
-    return;
-  }
-  if (emailErr) emailErr.style.display = 'none';
-  if (emailEl) emailEl.classList.remove('is-invalid');
+  const email = lerEmailValidado();
+  if (email === null) return;
 
   const btn = document.getElementById('altPixBtn');
   if (btn) btn.disabled = true;
@@ -162,17 +276,8 @@ function _iniciarPollingPix(paymentId) {
 // ---------------------------------------------------------------------------
 
 function abrirCartao() {
-  const emailEl = document.getElementById('email');
-  const emailErr = document.getElementById('emailErr');
-  const email = emailEl ? emailEl.value.trim() : '';
-
-  if (!validarEmail(email)) {
-    if (emailErr) { emailErr.style.display = 'block'; emailErr.setAttribute('aria-hidden', 'false'); }
-    if (emailEl) { emailEl.classList.add('is-invalid'); emailEl.focus(); }
-    return;
-  }
-  if (emailErr) emailErr.style.display = 'none';
-  if (emailEl) emailEl.classList.remove('is-invalid');
+  const email = lerEmailValidado();
+  if (email === null) return;
 
   const modal = document.getElementById('cardModal');
   if (!modal) return;

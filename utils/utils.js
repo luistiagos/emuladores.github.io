@@ -85,8 +85,104 @@ function hideSpinner() {
     document.getElementById("spinner").style.display = "none";
 }
 
+// ---------------------------------------------------------------------------
+// E-mail: saneamento e sugestão de domínio.
+// Espelha mysite/utilshelper.py (normalize_email / EMAIL_REGEX /
+// sugerir_dominio_email). Os dois lados PRECISAM concordar: o backend normaliza
+// o que grava, e aqui é onde o cliente ainda consegue corrigir.
+// Ver docs/modules/area-membros/bugs/
+// 2026-09-08-recuperar-acesso-email-nao-encontrado.md
+// ---------------------------------------------------------------------------
+
+// Recusa ponto final, ponto duplo e rótulo vazio -- a regex antiga
+// (/^[^\s@]+@[^\s@]+\.[^\s@]+$/) aceitava os três: em 'gmail.com.' o último
+// grupo casava 'com.', e o e-mail ia gravado com o ponto.
+var EMAIL_REGEX_ESTRITA =
+    /^[a-zA-Z0-9_%+-]+(?:\.[a-zA-Z0-9_%+-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+[a-zA-Z]{2,}$/;
+
+// Os 19 domínios que respondem por 36.886 das 37.067 compras aprovadas medidas
+// em produção. Lista curta de propósito: quanto maior, maior a chance de um
+// domínio corporativo legítimo cair perto de um popular e virar sugestão errada.
+var EMAIL_DOMINIOS_CANONICOS = [
+    'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.br', 'yahoo.com',
+    'live.com', 'icloud.com', 'outlook.com.br', 'hotmail.com.br', 'bol.com.br',
+    'msn.com', 'uol.com.br', 'ymail.com', 'terra.com.br', 'globo.com',
+    'ig.com.br', 'me.com', 'protonmail.com', 'gmail.com.br'
+];
+
+// Saneia SEM adivinhar: só remove lixo que não muda a identidade.
+// 'gmail.con' continua 'gmail.con' -- trocar domínio é palpite, e palpite errado
+// manda acesso pago para a caixa de outra pessoa. A sugestão é separada, e o
+// cliente confirma.
+function normalizeEmail(valor) {
+    if (!valor) { return ''; }
+    var e = String(valor)
+        .replace(/[\u200B-\u200F\uFEFF]/g, '')
+        .replace(/\u00A0/g, ' ')
+        .trim()
+        .toLowerCase();
+    if (e.indexOf('mailto:') === 0) { e = e.slice(7); }
+    e = e.replace(/\s+/g, '');
+    e = e.replace(/^[.,;:!?'"<>()\[\]{}]+/, '').replace(/[.,;:!?'"<>()\[\]{}]+$/, '');
+    var at = e.lastIndexOf('@');
+    if (at < 0) { return e; }
+    var local = e.slice(0, at).replace(/^\.+/, '').replace(/\.+$/, '');
+    var dominio = e.slice(at + 1).replace(/\.{2,}/g, '.')
+        .replace(/^[.-]+/, '').replace(/[.-]+$/, '');
+    return local + '@' + dominio;
+}
+
+// Levenshtein com corte: devolve teto+1 assim que passa do teto.
+function _distanciaEdicao(a, b, teto) {
+    if (Math.abs(a.length - b.length) > teto) { return teto + 1; }
+    var anterior = [], i, j;
+    for (j = 0; j <= b.length; j++) { anterior[j] = j; }
+    for (i = 1; i <= a.length; i++) {
+        var atual = [i], menor = i;
+        for (j = 1; j <= b.length; j++) {
+            var custo = a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1;
+            atual[j] = Math.min(anterior[j] + 1, atual[j - 1] + 1, anterior[j - 1] + custo);
+            if (atual[j] < menor) { menor = atual[j]; }
+        }
+        if (menor > teto) { return teto + 1; }
+        anterior = atual;
+    }
+    return anterior[b.length];
+}
+
+// Domínio canônico que o cliente PROVAVELMENTE quis digitar, ou null.
+// Cobre os 128 quase-acertos medidos em produção (gmai.com, gmail.con,
+// hotmail.con, gmail.com+letra solta). NÃO cobre erro no local part
+// ('jaoo@gmail.com'), que é indistinguível de um endereço legítimo.
+function sugerirDominioEmail(valor) {
+    var e = normalizeEmail(valor);
+    var at = e.lastIndexOf('@');
+    if (at < 0) { return null; }
+    var dominio = e.slice(at + 1);
+    if (!dominio) { return null; }
+    for (var k = 0; k < EMAIL_DOMINIOS_CANONICOS.length; k++) {
+        if (EMAIL_DOMINIOS_CANONICOS[k] === dominio) { return null; }
+    }
+    var melhor = null, melhorDist = null;
+    for (var i = 0; i < EMAIL_DOMINIOS_CANONICOS.length; i++) {
+        var canonico = EMAIL_DOMINIOS_CANONICOS[i];
+        // Teto 1 para domínio curto: em 'me.com' duas edições chegam em
+        // qualquer coisa e a sugestão vira chute.
+        var teto = canonico.length <= 8 ? 1 : 2;
+        var dist = _distanciaEdicao(dominio, canonico, teto);
+        if (dist <= teto && (melhorDist === null || dist < melhorDist)) {
+            melhor = canonico;
+            melhorDist = dist;
+        }
+    }
+    return melhor === null ? null : e.slice(0, at) + '@' + melhor;
+}
+
 function validaEmail(inputEmail) {
-    var email = inputEmail.value.trim();
+    // Grava de volta o valor saneado: é ele que segue para o backend.
+    var email = normalizeEmail(inputEmail.value);
+    inputEmail.value = email;
+
     if (email.length == 0) {
         inputEmail.classList.add('invalid');
         inputEmail.nextElementSibling.textContent = 'Email obrigatório';
@@ -94,13 +190,24 @@ function validaEmail(inputEmail) {
         return false;
     }
 
-     // Regular expression for a valid email address
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
+    if (!EMAIL_REGEX_ESTRITA.test(email)) {
         inputEmail.classList.add('invalid');
         inputEmail.nextElementSibling.textContent = 'Email inválido';
         alert('Email inválido');
         return false;
+    }
+
+    // Sugere, nunca corrige sozinho: quem decide é o cliente.
+    var sugestao = sugerirDominioEmail(email);
+    if (sugestao) {
+        var msg = 'Confirme seu e-mail' + '\n\n'
+                + 'Voce digitou:      ' + email + '\n'
+                + 'Voce quis dizer:   ' + sugestao + '\n\n'
+                + 'OK usa ' + sugestao + '. Cancelar mantem o que voce digitou.';
+        if (confirm(msg)) {
+            email = sugestao;
+            inputEmail.value = sugestao;
+        }
     }
 
     inputEmail.classList.remove('invalid');
