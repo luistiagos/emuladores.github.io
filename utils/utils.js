@@ -107,7 +107,11 @@ var EMAIL_DOMINIOS_CANONICOS = [
     'gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com.br', 'yahoo.com',
     'live.com', 'icloud.com', 'outlook.com.br', 'hotmail.com.br', 'bol.com.br',
     'msn.com', 'uol.com.br', 'ymail.com', 'terra.com.br', 'globo.com',
-    'ig.com.br', 'me.com', 'protonmail.com', 'gmail.com.br'
+    'ig.com.br', 'me.com', 'protonmail.com', 'gmail.com.br',
+    // Provedores REAIS que o sugeridor confundia com os populares: sem eles
+    // aqui, 'aroncesar.ac@email.com' (endereco legitimo) virava sugestao de
+    // gmail.com.
+    'mail.com', 'email.com'
 ];
 
 // Saneia SEM adivinhar: só remove lixo que não muda a identidade.
@@ -163,19 +167,25 @@ function sugerirDominioEmail(valor) {
     for (var k = 0; k < EMAIL_DOMINIOS_CANONICOS.length; k++) {
         if (EMAIL_DOMINIOS_CANONICOS[k] === dominio) { return null; }
     }
-    var melhor = null, melhorDist = null;
+    var melhor = null, melhorDist = null, empatado = false;
     for (var i = 0; i < EMAIL_DOMINIOS_CANONICOS.length; i++) {
         var canonico = EMAIL_DOMINIOS_CANONICOS[i];
         // Teto 1 para domínio curto: em 'me.com' duas edições chegam em
         // qualquer coisa e a sugestão vira chute.
         var teto = canonico.length <= 8 ? 1 : 2;
         var dist = _distanciaEdicao(dominio, canonico, teto);
-        if (dist <= teto && (melhorDist === null || dist < melhorDist)) {
-            melhor = canonico;
-            melhorDist = dist;
+        if (dist > teto) { continue; }
+        if (melhorDist === null || dist < melhorDist) {
+            melhor = canonico; melhorDist = dist; empatado = false;
+        } else if (dist === melhorDist) {
+            empatado = true;
         }
     }
-    return melhor === null ? null : e.slice(0, at) + '@' + melhor;
+    // EMPATE NAO SUGERE. 'hamail.com' fica a 2 edicoes de gmail.com E de
+    // hotmail.com; quem decidia era a ordem da lista, e ela escolhia gmail --
+    // provavelmente errado. Sem desempate honesto, o certo e calar.
+    if (melhor === null || empatado) { return null; }
+    return e.slice(0, at) + '@' + melhor;
 }
 
 function validaEmail(inputEmail) {
