@@ -57,8 +57,9 @@ var EMAIL_DOMINIOS_CANONICOS = [
   'ig.com.br', 'me.com', 'protonmail.com', 'gmail.com.br',
     // Provedores REAIS que o sugeridor confundia com os populares: sem eles
     // aqui, 'aroncesar.ac@email.com' (endereco legitimo) virava sugestao de
-    // gmail.com.
-    'mail.com', 'email.com'
+    // gmail.com, e 'g4lyrmtmp@mozmail.com' (mascara do Firefox Relay) virava
+  // sugestao de hotmail.com.
+    'mail.com', 'email.com', 'mozmail.com'
 ];
 
 // Saneia SEM adivinhar: so remove lixo que nao muda a identidade.
