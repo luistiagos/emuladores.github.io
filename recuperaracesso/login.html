@@ -348,20 +348,124 @@
                 </div>`;
         }
 
+        // Fallback por TELEFONE -- so aparece quando a busca por e-mail nao acha
+        // nada. Existe porque normalizar e-mail nao salva quem JA comprou com
+        // typo, nem quem erra o local part ('jaoo@gmail.com'), indistinguivel de
+        // um endereco legitimo. O telefone e a identidade que a entrega por
+        // WhatsApp ja usa.
+        // Ver docs/modules/area-membros/bugs/
+        // 2026-09-08-recuperar-acesso-email-nao-encontrado.md
+        function exibirFallbackTelefone(emailTentado) {
+            const gridContainer = document.getElementById('grid-container');
+            gridContainer.style.display = 'block';
+            gridContainer.innerHTML = `
+                <div class="alert-custom alert-warning">
+                    <i class="fas fa-frown"></i> Não encontramos compras para <strong>${emailTentado}</strong>.<br><br>
+                    Se o e-mail foi digitado com algum erro na hora da compra, procure pelo
+                    <strong>telefone</strong> que você usou:
+                </div>
+                <div style="margin-top:16px; text-align:left;">
+                    <label for="telefoneBusca" style="display:block; margin-bottom:6px; font-size:.85rem; letter-spacing:.05em;">SEU TELEFONE (COM DDD)</label>
+                    <input type="tel" id="telefoneBusca" placeholder="(41) 99999-9999"
+                           inputmode="numeric" autocomplete="tel"
+                           style="width:100%; padding:12px; border-radius:8px; border:1px solid rgba(255,255,255,.2); background:rgba(0,0,0,.25); color:#fff;">
+                    <button type="button" id="btnBuscarTelefone" class="btn btn-primary"
+                            style="border:none; width:100%; margin-top:12px; padding:14px; font-size:1rem;">
+                        <i class="fas fa-search" style="margin-right:8px;"></i> BUSCAR PELO TELEFONE
+                    </button>
+                    <div id="resultado-telefone" style="margin-top:16px;"></div>
+                </div>`;
+            document.getElementById('btnBuscarTelefone')
+                .addEventListener('click', consultarPorTelefone);
+            document.getElementById('telefoneBusca')
+                .addEventListener('keydown', function (ev) {
+                    if (ev.key === 'Enter') { consultarPorTelefone(); }
+                });
+        }
+
+        function consultarPorTelefone() {
+            const input = document.getElementById('telefoneBusca');
+            const alvo = document.getElementById('resultado-telefone');
+            const btn = document.getElementById('btnBuscarTelefone');
+            const digitos = (input.value || '').replace(/\D/g, '');
+
+            if (digitos.length < 10) {
+                alvo.innerHTML = `<div class="alert-custom alert-warning">
+                    Digite o telefone com DDD (10 ou 11 números).</div>`;
+                return;
+            }
+
+            const rotuloOriginal = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> BUSCANDO...';
+            btn.disabled = true;
+
+            fetch(`${BACKEND_URL}/list_products_by_phone?phone=${encodeURIComponent(digitos)}`)
+                .then(r => {
+                    // Falha de consulta NAO e ausencia de compra -- mesma distincao
+                    // que ja existe no caminho do e-mail.
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.json();
+                })
+                .then(data => exibirGradeTelefone(data))
+                .catch(() => {
+                    alvo.innerHTML = `<div class="alert-custom alert-warning">
+                        Não foi possível consultar agora. <strong>Sua compra não foi perdida.</strong>
+                        Tente novamente em alguns instantes.</div>`;
+                })
+                .finally(() => {
+                    btn.innerHTML = rotuloOriginal;
+                    btn.disabled = false;
+                });
+        }
+
+        function exibirGradeTelefone(data) {
+            const alvo = document.getElementById('resultado-telefone');
+
+            if (!data || data.length === 0) {
+                alvo.innerHTML = `
+                    <div class="alert-custom alert-warning">
+                        Nenhuma compra encontrada para esse telefone também.<br><br>
+                        Fale com nosso suporte — temos como localizar sua compra:<br>
+                        <a href="https://wa.me/5541996260115" style="color:white; font-weight:bold; text-decoration:underline;">
+                           <i class="fab fa-whatsapp"></i> (41) 99626-0115
+                        </a>
+                    </div>`;
+                return;
+            }
+
+            // item = [productid, title, access_type, store_id, email_mascarado]
+            // O backend NAO devolve deliverlink nem o e-mail em claro aqui: digitar
+            // um telefone nao prova posse de nada. O que o cliente ganha e reconhecer
+            // o proprio typo no dominio e ter o que dizer ao suporte.
+            const mascara = data[0][4] || '***';
+            const itens = data.map(i => `<li style="margin:4px 0;"><strong>${i[1]}</strong></li>`).join('');
+
+            alvo.innerHTML = `
+                <div class="alert-custom" style="background:rgba(34,197,94,.15); border:1px solid rgba(34,197,94,.4);">
+                    <i class="fas fa-check-circle"></i> <strong>Encontramos sua compra!</strong><br><br>
+                    Ela está cadastrada no e-mail: <strong>${mascara}</strong><br>
+                    <span style="opacity:.85; font-size:.92em;">
+                        Se esse endereço tem algum erro de digitação, é por isso que a busca
+                        por e-mail não achou.
+                    </span>
+                    <ul style="margin:14px 0 0 18px; padding:0;">${itens}</ul>
+                </div>
+                <div class="alert-custom alert-warning" style="margin-top:12px;">
+                    Para liberar seu acesso, chame o suporte no WhatsApp:<br><br>
+                    <a href="https://wa.me/5541996260115?text=${encodeURIComponent('Ola! Nao consigo recuperar meu acesso pelo e-mail. Achei minha compra pelo telefone e ela esta no e-mail ' + mascara)}"
+                       style="color:white; font-weight:bold; text-decoration:underline;">
+                       <i class="fab fa-whatsapp"></i> (41) 99626-0115
+                    </a>
+                </div>`;
+        }
+
         function exibirGrade(data, email) {
             const gridContainer = document.getElementById('grid-container');
             gridContainer.innerHTML = "";
             gridContainer.style.display = 'block';
 
             if (!data || data.length === 0) {
-                gridContainer.innerHTML = `
-                    <div class="alert-custom alert-warning">
-                        <i class="fas fa-frown"></i> Email não encontrado.<br><br>
-                        Precisa de ajuda? Fale com nosso suporte:<br>
-                        <a href="https://wa.me/5541996260115" style="color: white; font-weight: bold; text-decoration: underline;">
-                           <i class="fab fa-whatsapp"></i> (41) 99626-0115
-                        </a>
-                    </div>`;
+                exibirFallbackTelefone(email);
                 return;
             }
 
