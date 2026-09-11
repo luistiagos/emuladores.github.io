@@ -6,6 +6,7 @@
 //   STOREID, BASE, currentCouponDiscount
 //   getSelected(), validarEmail(), showSpinnerLoader(), hideSpinnerLoader(), getCookie()
 //   getCurrentSids()                  — defined per product in bundle.js
+//   cupomParaCobranca()               — cupom que a TELA mostra (bundle.js)
 //   ensureMainPackageIdFromStore()    — optional, only 52emul defines it
 // ---------------------------------------------------------------------------
 
@@ -181,7 +182,7 @@ async function abrirPix() {
   if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
 
   const cel = document.getElementById('cel')?.value?.trim() || '';
-  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const cupom = await cupomParaCobranca();
   const sids = getCurrentSids();
   const fbp = getCookie('_fbp') || '';
   const fbc = getCookie('_fbc') || '';
@@ -287,9 +288,13 @@ function _iniciarPollingPix(paymentId) {
 // Card payment via MP CardPayment Brick
 // ---------------------------------------------------------------------------
 
-function abrirCartao() {
+async function abrirCartao() {
   const email = lerEmailValidado();
   if (email === null) return;
+
+  // Valida o cupom ANTES de montar o Brick: o formulario abre com o valor final e as
+  // parcelas do valor final.
+  await cupomParaCobranca();
 
   const modal = document.getElementById('cardModal');
   if (!modal) return;
@@ -357,7 +362,7 @@ async function _processarCartao(cardData) {
   showSpinnerLoader();
   if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
   const cel = document.getElementById('cel')?.value?.trim() || '';
-  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const cupom = await cupomParaCobranca();
   const sids = getCurrentSids();
   const fbp = getCookie('_fbp') || '';
   const fbc = getCookie('_fbc') || '';

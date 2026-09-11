@@ -649,14 +649,27 @@ function renderSummary() {
 }
 
 // Coupon Logic
+//
+// `appliedCouponCode` e o cupom que a TELA esta mostrando. Ele existe porque a tela
+// descontava pelo cupom APLICADO enquanto o pagamento mandava o texto que estivesse no
+// campo na hora de pagar: editar (ou apagar) o campo depois de clicar em Aplicar deixava
+// a tela com desconto e a cobranca sem ele. Os dois numeros saem daqui agora.
+// Doc: docs/modules/pagamentos/bugs/2026-09-11-cupom-editado-apos-aplicar.md
 let currentCouponDiscount = 0;
+let appliedCouponCode = '';
 
 async function applyCoupon() {
   const input = document.getElementById('cupom');
-  const code = input.value.trim();
+  const code = (input && input.value || '').trim();
   const btn = document.querySelector('.btn-apply');
 
-  if (!code) return;
+  if (!code) {
+    // Campo vazio = nenhum cupom, na tela E na cobranca.
+    currentCouponDiscount = 0;
+    appliedCouponCode = '';
+    renderSummary();
+    return;
+  }
 
   if (btn) {
     btn.textContent = 'Verificando...';
@@ -668,6 +681,7 @@ async function applyCoupon() {
 
     if (discount > 0) {
       currentCouponDiscount = discount * 100;
+      appliedCouponCode = code;
       // Show success feedback
       if (btn) {
         btn.textContent = 'Aplicado!';
@@ -681,6 +695,7 @@ async function applyCoupon() {
       renderSummary();
     } else {
       currentCouponDiscount = 0;
+      appliedCouponCode = '';
       // Show error feedback
       if (btn) {
         btn.textContent = 'Inválido';
@@ -694,12 +709,28 @@ async function applyCoupon() {
       renderSummary(); // Reset if previously valid
     }
   } catch (e) {
+    // Falhou a consulta: a tela volta para o preco cheio em vez de mostrar um desconto
+    // que a cobranca nao teria.
     console.error(e);
+    currentCouponDiscount = 0;
+    appliedCouponCode = '';
+    renderSummary();
     if (btn) {
       btn.textContent = 'Erro';
       btn.disabled = false;
     }
   }
+}
+
+// O cupom que vale na hora de cobrar: sempre o que a TELA esta mostrando.
+// Digitou e nao clicou em Aplicar -> valida agora, e a tela passa a mostrar o desconto
+// ANTES de cobrar. Editou depois de aplicar -> revalida o texto novo. Nos dois casos o
+// que o cliente ve e o que vai ser cobrado.
+async function cupomParaCobranca() {
+  const el = document.getElementById('cupom');
+  const code = (el && el.value || '').trim();
+  if (code !== appliedCouponCode) await applyCoupon();
+  return appliedCouponCode;
 }
 
 // Add Click Handler for Coupon Button and initialize dynamic or static bumps
@@ -796,7 +827,7 @@ async function pagar_v2() {
   }
 
   // Collect selected package IDs
-  const cupom = document.getElementById('cupom')?.value || '';
+  const cupom = await cupomParaCobranca();
 
   let sidParts = [MAIN_PACKAGE_ID];
   const selected = getSelected();
@@ -1039,7 +1070,7 @@ async function abrirPix() {
   if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
 
   const cel = document.getElementById('cel')?.value?.trim() || '';
-  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const cupom = await cupomParaCobranca();
   const sids = getCurrentSids();
   const fbp = getCookie('_fbp') || '';
   const fbc = getCookie('_fbc') || '';
@@ -1224,7 +1255,7 @@ async function _processarCartao(cardData) {
   showSpinnerLoader();
   if (typeof ensureMainPackageIdFromStore === 'function') await ensureMainPackageIdFromStore();
   const cel = document.getElementById('cel')?.value?.trim() || '';
-  const cupom = document.getElementById('cupom')?.value?.trim() || '';
+  const cupom = await cupomParaCobranca();
   const sids = getCurrentSids();
   const fbp = getCookie('_fbp') || '';
   const fbc = getCookie('_fbc') || '';
