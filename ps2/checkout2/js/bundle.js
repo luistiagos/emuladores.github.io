@@ -90,7 +90,7 @@ const GALLERIES = {
 const TESTIMONIALS = [
   { name: 'Gabriel S.', stars: 5, text: 'Recebi tudo certinho e o tutorial ajudou muito. Valeu cada centavo!', avatar: 'https://i.pravatar.cc/80?img=12' },
   { name: 'Marina A.', stars: 5, text: 'Instalação rápida no notebook, catálogo enorme. Recomendo!', avatar: 'https://i.pravatar.cc/80?img=45' },
-  { name: 'Rogério M.', stars: 4, text: 'Suporte pelo Whats funcionou de primeira. Ã“timo custo-benefício.', avatar: 'https://i.pravatar.cc/80?img=22' },
+  { name: 'Rogério M.', stars: 4, text: 'Suporte pelo Whats funcionou de primeira. Ótimo custo-benefício.', avatar: 'https://i.pravatar.cc/80?img=22' },
   { name: 'Bianca T.', stars: 5, text: 'Comprei e em menos de 5 minutos já estava jogando. Sensacional!', avatar: 'https://i.pravatar.cc/80?img=15' },
   { name: 'Angela N.', stars: 5, text: 'A parte do Switch com DLCs é top! Conteúdo atualizado.', avatar: 'https://i.pravatar.cc/80?img=31' },
   { name: 'Carlos E.', stars: 5, text: 'Muito bom, revivi minha infância com o PS1.', avatar: 'https://i.pravatar.cc/80?img=3' },
@@ -121,7 +121,7 @@ const TESTIMONIALS = [
   { name: 'Leandro P.', stars: 5, text: 'Muito bom mesmo.', avatar: 'https://i.pravatar.cc/80?img=58' },
   { name: 'Renata S.', stars: 5, text: 'Adorei a organização.', avatar: 'https://i.pravatar.cc/80?img=59' },
   { name: 'André F.', stars: 5, text: 'Funciona perfeitamente.', avatar: 'https://i.pravatar.cc/80?img=60' },
-  { name: 'Daniela C.', stars: 5, text: 'Ã“timo atendimento.', avatar: 'https://i.pravatar.cc/80?img=61' },
+  { name: 'Daniela C.', stars: 5, text: 'Ótimo atendimento.', avatar: 'https://i.pravatar.cc/80?img=61' },
   { name: 'Fabio H.', stars: 5, text: 'Valeu a pena.', avatar: 'https://i.pravatar.cc/80?img=62' },
   { name: 'Gisele M.', stars: 5, text: 'Muito legal.', avatar: 'https://i.pravatar.cc/80?img=63' },
   { name: 'Hugo R.', stars: 5, text: 'Recomendo.', avatar: 'https://i.pravatar.cc/80?img=64' },
@@ -650,8 +650,8 @@ function renderSummary() {
       ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}% OFF</span>` : ''}
       <div class="summary-small">
         <span class="summary-strike">de ${fmt(BASE.original_price)}</span>
-        â†’ por <span class="summary-price">${fmt(basePrice)}</span>
-        <span class="economy">â€¢ Economia ${fmt(baseEconomy)}</span>
+        → por <span class="summary-price">${fmt(basePrice)}</span>
+        <span class="economy">• Economia ${fmt(baseEconomy)}</span>
       </div>
     </td>
     <td style="text-align:right">${fmt(basePrice)}</td>`;
@@ -677,8 +677,8 @@ function renderSummary() {
         ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}%</span>` : ''}
         <div class="summary-small">
           <span class="summary-strike">de ${fmt(a.original_price)}</span>
-          â†’ por <span class="summary-price">${fmt(addonPrice)}</span>
-          <span class="economy">â€¢ Economia ${fmt(addonEconomy)}</span>
+          → por <span class="summary-price">${fmt(addonPrice)}</span>
+          <span class="economy">• Economia ${fmt(addonEconomy)}</span>
         </div>
       </td>
       <td style="text-align:right">${fmt(addonPrice)}</td>`;

@@ -651,8 +651,8 @@ function renderSummary() {
       ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}% OFF</span>` : ''}
       <div class="summary-small">
         <span class="summary-strike">de ${fmt(BASE.original_price)}</span>
-        â†’ por <span class="summary-price">${fmt(basePrice)}</span>
-        <span class="economy">â€¢ Economia ${fmt(baseEconomy)}</span>
+        → por <span class="summary-price">${fmt(basePrice)}</span>
+        <span class="economy">• Economia ${fmt(baseEconomy)}</span>
       </div>
     </td>
     <td style="text-align:right">${fmt(basePrice)}</td>`;
@@ -678,8 +678,8 @@ function renderSummary() {
         ${currentCouponDiscount > 0 ? `<span class="badge-discount" style="background:#22c55e; color:white; padding:2px 6px; border-radius:4px; font-size:10px; margin-left:5px;">-${currentCouponDiscount}%</span>` : ''}
         <div class="summary-small">
           <span class="summary-strike">de ${fmt(a.original_price)}</span>
-          â†’ por <span class="summary-price">${fmt(addonPrice)}</span>
-          <span class="economy">â€¢ Economia ${fmt(addonEconomy)}</span>
+          → por <span class="summary-price">${fmt(addonPrice)}</span>
+          <span class="economy">• Economia ${fmt(addonEconomy)}</span>
         </div>
       </td>
       <td style="text-align:right">${fmt(addonPrice)}</td>`;
