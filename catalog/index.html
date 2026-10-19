@@ -9,12 +9,8 @@
   
   <!-- Open Graph / Social Media -->
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Catálogo Oficial de Jogos - Digital Store Games">
+  <meta property="og:title" content="Catálogo Oficial de Jogos - Acervo Premium">
   <meta property="og:description" content="Explore milhares de jogos com capas oficiais em 3D, filtros rápidos e atualizações automáticas em tempo real.">
-  <meta property="og:image" content="../images/digitalstoregames.webp">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/webp" href="../images/digitalstoregames.webp">
 
   <!-- Google Fonts Preconnect -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,13 +28,18 @@
     <div class="header-inner">
       <div class="header-top">
         <a href="../" class="brand-section" title="Voltar para a página inicial">
-          <img src="../images/digitalstoregames.webp" alt="Digital Store Games" class="brand-logo-img" onerror="this.style.display='none'">
+          <div class="brand-gaming-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+              <path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"></path>
+            </svg>
+          </div>
           <div class="brand-title-wrap">
             <div class="brand-title">
-              Digital Store Games
-              <span class="brand-badge">Catálogo</span>
+              Catálogo de Jogos
+              <span class="brand-badge" id="brandConsoleBadge">Hub</span>
             </div>
-            <span class="brand-subtitle">Biblioteca Central de Jogos & Emulação</span>
+            <span class="brand-subtitle" id="brandSubtitle">Biblioteca Central de Jogos &amp; Emulação</span>
           </div>
         </a>
 
@@ -58,11 +59,6 @@
           </a>
         </div>
       </div>
-
-      <!-- Console / Platform Selector Tabs -->
-      <nav class="platform-tabs-scroll" id="platformTabs" aria-label="Consoles e Plataformas">
-        <!-- Rendered dynamically by catalog.js -->
-      </nav>
     </div>
   </header>
 
@@ -124,6 +120,7 @@
 
         <div class="toolbar-controls">
           <select id="sortSelect" class="control-select" aria-label="Ordenar por">
+            <option value="popular_desc" selected>Mais Populares (Destaques)</option>
             <option value="title_asc">Nome (A - Z)</option>
             <option value="title_desc">Nome (Z - A)</option>
             <option value="size_desc">Tamanho (Maior)</option>
@@ -230,6 +227,21 @@
 
             <span class="meta-label">Arquivo:</span>
             <span class="meta-val" id="modalFilename" style="font-family: var(--font-mono); font-size: 0.72rem;">--</span>
+          </div>
+
+          <!-- Grouped Versions / Discs Section -->
+          <div class="modal-versions-section" id="modalVersionsSection" style="display: none;">
+            <div class="modal-versions-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              <span>Edições &amp; Discos Inclusos</span>
+            </div>
+            <div class="modal-versions-list" id="modalVersionsList">
+              <!-- Rendered dynamically -->
+            </div>
           </div>
 
           <div class="modal-actions">

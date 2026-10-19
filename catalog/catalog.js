@@ -1,7 +1,7 @@
 /**
  * XBOX & PS2 COMPANION INSPIRED GAME CATALOG
  * Digital Store Games - Catálogo de Jogos Premium
- * Architecture: SPA with IndexedDB Cache, Fast Filter, 3D Game Boxes & Dynamic Routing
+ * Architecture: Dedicated Platform SPA with Deduplication, Popularity Ranking, and 3D Game Boxes
  */
 
 (function () {
@@ -27,8 +27,8 @@
       headerBg: '#002666',
       caseClass: 'case-ps2',
       libretro: 'Sony_-_PlayStation_2',
-      tagline: 'A maior biblioteca de jogos do lendário PS2',
-      approxCount: '19.000+',
+      tagline: 'A maior e mais lendária biblioteca de jogos de todos os tempos',
+      approxCount: '8.500+ Jogos Únicos',
     },
     {
       id: 'wii',
@@ -41,8 +41,8 @@
       headerBg: '#f8fafc',
       caseClass: 'case-wii',
       libretro: 'Nintendo_-_Wii',
-      tagline: 'Clássicos memoráveis com controle por movimento',
-      approxCount: '1.460+',
+      tagline: 'Clássicos memoráveis e diversão com controle por movimento',
+      approxCount: '1.200+ Jogos Únicos',
     },
     {
       id: 'ps3',
@@ -55,8 +55,8 @@
       headerBg: '#2b2b2b',
       caseClass: 'case-ps3',
       libretro: 'Sony_-_PlayStation_3',
-      tagline: 'A era de ouro em alta definição e grandes narrativas',
-      approxCount: '4.260+',
+      tagline: 'A era de ouro em alta definição e grandes narrativas cinematográficas',
+      approxCount: '3.100+ Jogos Únicos',
     },
     {
       id: 'xbox360',
@@ -69,8 +69,8 @@
       headerBg: '#107c10',
       caseClass: 'case-xbox360',
       libretro: 'Microsoft_-_Xbox_360',
-      tagline: 'Coleção completa dos sucessos inesquecíveis da geração 360',
-      approxCount: '6.400+',
+      tagline: 'Coleção completa dos maiores sucessos da geração Xbox 360',
+      approxCount: '4.800+ Jogos Únicos',
     },
     {
       id: 'ps1',
@@ -83,8 +83,8 @@
       headerBg: '#3f4652',
       caseClass: 'case-ps1',
       libretro: 'Sony_-_PlayStation',
-      tagline: 'Os clássicos 32-bits que revolucionaram os games',
-      approxCount: '2.550+',
+      tagline: 'Os clássicos pioneiros em 32-bits que revolucionaram o mundo dos games',
+      approxCount: '2.100+ Jogos Únicos',
     },
     {
       id: 'psp',
@@ -97,8 +97,8 @@
       headerBg: '#1a1e28',
       caseClass: 'case-psp',
       libretro: 'Sony_-_PlayStation_Portable',
-      tagline: 'O melhor videogame portátil da Sony onde você estiver',
-      approxCount: '1.800+',
+      tagline: 'O melhor videogame portátil da Sony com gráficos surpreendentes',
+      approxCount: '1.500+ Jogos Únicos',
     },
     {
       id: 'dreamcast',
@@ -111,8 +111,8 @@
       headerBg: '#f8fafc',
       caseClass: 'case-dreamcast',
       libretro: 'Sega_-_Dreamcast',
-      tagline: 'O console à frente de seu tempo com arcades incríveis',
-      approxCount: '3.070+',
+      tagline: 'O console inovador da Sega com arcades rápidos e inesquecíveis',
+      approxCount: '1.900+ Jogos Únicos',
     },
     {
       id: 'switch',
@@ -125,8 +125,8 @@
       headerBg: '#e60012',
       caseClass: 'case-switch',
       libretro: 'Nintendo_-_Nintendo_Switch',
-      tagline: 'Grandes sucessos híbridos para jogar em qualquer lugar',
-      approxCount: '2.300+',
+      tagline: 'Grandes sucessos modernos para jogar na TV ou em qualquer lugar',
+      approxCount: '2.100+ Jogos Únicos',
     },
     {
       id: 'gamecube',
@@ -139,8 +139,8 @@
       headerBg: '#6b5ce7',
       caseClass: 'case-gamecube',
       libretro: 'Nintendo_-_GameCube',
-      tagline: 'O clássico cubo roxo com títulos inesquecíveis da Nintendo',
-      approxCount: '1.060+',
+      tagline: 'O cubo mágico da Nintendo com clássicos cultuados mundialmente',
+      approxCount: '950+ Jogos Únicos',
     },
     {
       id: 'nds',
@@ -153,8 +153,8 @@
       headerBg: '#4a4e69',
       caseClass: 'case-nds',
       libretro: 'Nintendo_-_Nintendo_DS',
-      tagline: 'A revolução das duas telas com milhares de opções',
-      approxCount: '2.690+',
+      tagline: 'A revolução das duas telas com milhares de opções criativas',
+      approxCount: '2.400+ Jogos Únicos',
     },
     {
       id: '3ds',
@@ -167,8 +167,8 @@
       headerBg: '#d63031',
       caseClass: 'case-3ds',
       libretro: 'Nintendo_-_Nintendo_3DS',
-      tagline: 'A evolução tridimensional portátil da Nintendo',
-      approxCount: '1.020+',
+      tagline: 'A evolução tridimensional portátil da Nintendo com gráficos ricos',
+      approxCount: '900+ Jogos Únicos',
     },
     {
       id: 'snes',
@@ -181,8 +181,8 @@
       headerBg: '#833471',
       caseClass: 'case-snes',
       libretro: 'Nintendo_-_Super_Nintendo_Entertainment_System',
-      tagline: 'A obra-prima dos 16-bits com clássicos eternos',
-      approxCount: '3.480+',
+      tagline: 'A obra-prima dos 16-bits com a época de ouro das aventuras 2D',
+      approxCount: '2.600+ Jogos Únicos',
     },
     {
       id: 'n64',
@@ -195,8 +195,8 @@
       headerBg: '#009432',
       caseClass: 'case-n64',
       libretro: 'Nintendo_-_Nintendo_64',
-      tagline: 'A transição pioneira para os mundos totalmente em 3D',
-      approxCount: '1.080+',
+      tagline: 'A transição pioneira para mundos 3D com clássicos épicos',
+      approxCount: '780+ Jogos Únicos',
     },
     {
       id: 'megadrive',
@@ -209,8 +209,8 @@
       headerBg: '#2c3e50',
       caseClass: 'case-megadrive',
       libretro: 'Sega_-_Mega_Drive_-_Genesis',
-      tagline: 'A velocidade e atitude do console 16-bits da Sega',
-      approxCount: '1.490+',
+      tagline: 'A velocidade de Sonic e a atitude marcante dos 16-bits da Sega',
+      approxCount: '1.200+ Jogos Únicos',
     },
     {
       id: 'saturn',
@@ -223,8 +223,8 @@
       headerBg: '#2f3542',
       caseClass: 'case-saturn',
       libretro: 'Sega_-_Saturn',
-      tagline: 'O poder dos arcades em 2D e 3D em sua casa',
-      approxCount: '290+',
+      tagline: 'O poder incomparável dos jogos de luta 2D e clássicos 3D da Sega',
+      approxCount: '280+ Jogos Únicos',
     },
     {
       id: 'xbox',
@@ -237,13 +237,13 @@
       headerBg: '#0e5a0e',
       caseClass: 'case-xbox',
       libretro: 'Microsoft_-_Xbox',
-      tagline: 'O console que iniciou o legado da marca Xbox',
-      approxCount: '1.540+',
+      tagline: 'O primeiro console da Microsoft que inaugurou o legado Xbox',
+      approxCount: '1.200+ Jogos Únicos',
     },
     {
       id: 'ps2_futebol',
       name: 'PS2 Patchs Futebol',
-      shortName: 'Bomba Patch & PES',
+      shortName: 'Futebol & Bomba Patch',
       mnemonic: 'ps2',
       filterCustom: 'futebol',
       company: 'Mods & Patchs',
@@ -252,8 +252,8 @@
       headerBg: '#1e3799',
       caseClass: 'case-ps2',
       libretro: 'Sony_-_PlayStation_2',
-      tagline: 'Bomba Patch, PES atualizados, Brasileirão e edições especiais',
-      approxCount: '630+',
+      tagline: 'Bomba Patch, PES atualizados, Brasileirão, Clubes Mundiais e edições raras',
+      approxCount: '450+ Jogos Únicos',
     },
     {
       id: 'ps2patchs_gta_games',
@@ -268,21 +268,48 @@
       caseClass: 'case-ps2',
       libretro: 'Sony_-_PlayStation_2',
       tagline: 'Modificações lendárias de GTA: Rio de Janeiro, Tropa de Elite, Dragon Ball e mais',
-      approxCount: '200+',
+      approxCount: '140+ Jogos Únicos',
     },
+  ];
+
+  // --------------------------------------------------------------------------
+  // Major Hit Franchises for Popularity Scoring
+  // --------------------------------------------------------------------------
+  const POPULAR_KEYWORDS = [
+    'grand theft auto', 'gta', 'san andreas', 'vice city',
+    'god of war', 'resident evil', 'biohazard', 'silent hill',
+    'need for speed', 'underground', 'most wanted', 'carbon',
+    'dragon ball', 'budokai', 'tenkaichi', 'naruto', 'shippuden',
+    'mortal kombat', 'street fighter', 'tekken', 'king of fighters', 'kof',
+    'bomba patch', 'pes 20', 'pro evolution soccer', 'winning eleven', 'fifa',
+    'crash bandicoot', 'crash', 'spyro', 'tony hawk',
+    'metal gear', 'mgs', 'snake eater', 'devil may cry', 'dmc',
+    'shadow of the colossus', 'kingdom hearts', 'final fantasy',
+    'black', 'bully', 'def jam', 'burnout', 'midnight club',
+    'call of duty', 'medal of honor', 'battlefield',
+    'super mario', 'mario kart', 'mario galaxy', 'zelda', 'the legend of zelda',
+    'donkey kong', 'pokemon', 'pokémon', 'metroid', 'kirby', 'smash bros',
+    'halo', 'gears of war', 'forza', 'fable', 'left 4 dead',
+    'red dead', 'red dead redemption', 'the last of us', 'uncharted',
+    'spider-man', 'spiderman', 'batman', 'arkham', 'castlevania',
+    'gran turismo', 'guitar hero', 'rock band', 'sonic the hedgehog',
+    'sonic', 'tomb raider', 'lara croft', 'assassin', 'monster hunter',
+    'persona', 'yakuza', 'dark souls', 'demon souls', 'max payne',
+    'god hand', 'downhill domination', 'mx vs atv', 'def jam fight for ny'
   ];
 
   // --------------------------------------------------------------------------
   // Application State
   // --------------------------------------------------------------------------
   const state = {
+    isHubMode: false,
     currentPlatform: null,
-    allGames: [],
+    groupedGames: [],     // Unique games (deduplicated)
     filteredGames: [],
     renderedCount: 0,
     searchQuery: '',
     selectedRegion: 'all', // all | br | usa | eur | jp | with_cover
-    sortBy: 'title_asc',   // title_asc | title_desc | size_desc | size_asc
+    sortBy: 'popular_desc', // popular_desc (default) | title_asc | title_desc | size_desc | size_asc
     viewMode: 'grid',      // grid | list
     isLoading: false,
     selectedGame: null,
@@ -291,14 +318,12 @@
   // --------------------------------------------------------------------------
   // IndexedDB Cache Layer
   // --------------------------------------------------------------------------
-  const DB_NAME = 'DSG_Catalog_DB';
+  const DB_NAME = 'DSG_Catalog_DB_v2';
   const DB_STORE = 'platforms';
 
   function openDatabase() {
-    return new Promise((resolve, reject) => {
-      if (!window.indexedDB) {
-        return resolve(null);
-      }
+    return new Promise((resolve) => {
+      if (!window.indexedDB) return resolve(null);
       const req = indexedDB.open(DB_NAME, 1);
       req.onupgradeneeded = (e) => {
         const db = e.target.result;
@@ -347,67 +372,73 @@
   }
 
   // --------------------------------------------------------------------------
-  // Title & Filename Cleaning Helpers
+  // Title Parsing & Deduplication Comparison Key
   // --------------------------------------------------------------------------
-  function cleanGameTitle(rawFilename) {
-    if (!rawFilename) return { cleanTitle: 'Jogo sem título', tags: [] };
+  function getBaseTitle(raw) {
+    if (!raw) return 'Jogo sem título';
+    let title = raw.includes('/') || raw.includes('\\')
+      ? raw.substring(Math.max(raw.lastIndexOf('/'), raw.lastIndexOf('\\')) + 1)
+      : raw;
+    return title
+      .replace(/\.(iso|rvz|chd|cso|wbfs|nsp|xci|nsz|rar|7z|zip|bin|cue|gdi|cdi|sfc|smc|z64|n64|md|gen|pkg)$/i, '')
+      .replace(/^[A-Z]{3,4}[-_][0-9]{3,5}\.[0-9]{2}\./i, '')
+      .replace(/\[[0-9A-Fa-f]{16}\]/g, '')
+      .replace(/\s*\(.*?\)/g, '')
+      .replace(/\s*\[.*?\]/g, '')
+      .replace(/^[-\s_]+|[-\s_]+$/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
 
-    let str = rawFilename.trim();
+  function getComparisonKey(baseTitle) {
+    let key = (baseTitle || '').toLowerCase();
 
-    // Remove file extensions
-    str = str.replace(/\.(iso|rvz|chd|cso|wbfs|nsp|xci|nsz|rar|7z|zip|bin|cue|gdi|cdi|sfc|smc|z64|n64|md|gen|pkg)$/i, '');
+    // Standardize common localizations
+    key = key.replace(/\bbrasil\b/g, 'brazil');
+    key = key.replace(/\ba era do gelo\b/g, 'ice age');
+    key = key.replace(/\bac\b/g, "assassin's creed");
 
-    // Extract disc information
-    let disc = '';
+    // Convert Roman numerals
+    key = key.replace(/\bxv\b/g, '15')
+      .replace(/\bxiv\b/g, '14')
+      .replace(/\bxiii\b/g, '13')
+      .replace(/\bxii\b/g, '12')
+      .replace(/\bxi\b/g, '11')
+      .replace(/\bx\b/g, '10')
+      .replace(/\bix\b/g, '9')
+      .replace(/\bviii\b/g, '8')
+      .replace(/\bvii\b/g, '7')
+      .replace(/\bvi\b/g, '6')
+      .replace(/\biv\b/g, '4')
+      .replace(/\biii\b/g, '3')
+      .replace(/\bii\b/g, '2')
+      .replace(/\bv\b/g, '5');
+
+    // Remove region suffixes
+    key = key.replace(/\b(aus|usa|eur|pal|uk|jp|jpn|rf|regionfree|region\s+free|asia|ntsc|kor|chn|eng|spa|ger|fra|ita|rus|por|free)$/g, '').trim();
+
+    // Alphanumeric only
+    return key.replace(/[^a-z0-9]/g, '');
+  }
+
+  function extractRegion(str) {
+    if (!str) return '';
+    if (/\b(Brazil|Brasil|PT-BR|Dublado|Legendado|Traduzido|Bomba Patch)\b/i.test(str)) return 'Brasil';
+    if (/\b(USA|US)\b/i.test(str)) return 'USA';
+    if (/\b(Europe|En,Fr,De|En,Es,It|PAL)\b/i.test(str)) return 'Europa';
+    if (/\b(Japan|JP|NTSC-J)\b/i.test(str)) return 'Japão';
+    return '';
+  }
+
+  function extractDisc(str) {
     const discMatch = str.match(/\((Disc|Disk|DVD|CD)\s*([0-9]+)[^)]*\)/i) || str.match(/\[(Disc|Disk|DVD|CD)\s*([0-9]+)[^\]]*\]/i);
-    if (discMatch) {
-      disc = `Disco ${discMatch[2]}`;
-    }
-
-    // Extract region
-    let region = '';
-    if (/\b(USA|US)\b/i.test(str)) region = 'USA';
-    else if (/\b(Europe|En,Fr,De|En,Es,It|PAL)\b/i.test(str)) region = 'Europa';
-    else if (/\b(Japan|JP|NTSC-J)\b/i.test(str)) region = 'Japão';
-    else if (/\b(Brazil|Brasil|PT-BR|Dublado|Legendado)\b/i.test(str)) region = 'Brasil';
-
-    // Remove game serial prefixes (e.g. SLUS_209.46. or [01008F50155A6000])
-    str = str.replace(/^[A-Z]{3,4}[-_][0-9]{3,5}\.[0-9]{2}\./i, '');
-    str = str.replace(/\[[0-9A-Fa-f]{16}\]/g, '');
-
-    // Extract tags inside parenthesis and brackets for pill display
-    const tagMatches = str.match(/\(([^)]+)\)|\[([^\]]+)\]/g) || [];
-    const tags = [];
-    tagMatches.forEach((t) => {
-      const cleanedTag = t.replace(/[()[\]]/g, '').trim();
-      // Keep only meaningful tags, not entire huge language lists
-      if (cleanedTag.length > 0 && cleanedTag.length <= 18) {
-        tags.push(cleanedTag);
-      }
-    });
-
-    // Clean primary title by stripping all (...) and [...]
-    let clean = str.replace(/\([^)]*\)/g, '').replace(/\[[^\]]*\]/g, '');
-    // Clean trailing/leading hyphens and extra spaces
-    clean = clean.replace(/^[-\s_]+|[-\s_]+$/g, '').replace(/\s{2,}/g, ' ');
-
-    if (!clean.trim()) {
-      clean = str;
-    }
-
-    return {
-      cleanTitle: clean.trim(),
-      region,
-      disc,
-      tags: tags.slice(0, 3),
-      isPTBR: /\b(Brasil|PT-BR|Dublado|Legendado|Traduzido|Bomba Patch)\b/i.test(rawFilename),
-    };
+    return discMatch ? `Disco ${discMatch[2]}` : '';
   }
 
   function formatBytes(bytes) {
     if (!bytes) return '';
     if (typeof bytes === 'string' && isNaN(Number(bytes))) {
-      return bytes; // e.g. "3.4 GB" already formatted
+      return bytes;
     }
     const n = Number(bytes);
     if (isNaN(n) || n <= 0) return '';
@@ -418,22 +449,16 @@
     return `${Math.round(n / 1024)} KB`;
   }
 
-  // --------------------------------------------------------------------------
-  // Image Cover Resolution
-  // --------------------------------------------------------------------------
   function resolveCoverUrl(entry, platform) {
-    // 1. Direct DB covers (cover2d_url or image_url)
     let url = entry.cover2d_url || entry.image_url;
     if (url && typeof url === 'string') {
       url = url.trim();
-      // Enforce HTTPS
       if (url.startsWith('http://')) {
         url = url.replace(/^http:\/\//i, 'https://');
       }
       return url;
     }
 
-    // 2. Libretro fallback derived from filename
     if (platform && platform.libretro) {
       const baseName = (entry.path || '').replace(/\.[a-zA-Z0-9]+$/, '').trim();
       if (baseName) {
@@ -444,6 +469,54 @@
     return null;
   }
 
+  function getCoverKey(url) {
+    if (!url || typeof url !== 'string') return null;
+    try {
+      const clean = url.split('#')[0].split('?')[0];
+      const fileName = decodeURIComponent(clean.substring(clean.lastIndexOf('/') + 1));
+      if (!fileName) return null;
+      const base = getBaseTitle(fileName);
+      const comp = getComparisonKey(base);
+      return comp || fileName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    } catch {
+      return url.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Popularity Calculation Engine
+  // --------------------------------------------------------------------------
+  function computePopularityScore(displayTitle, rawPath, versionsCount, hasCover, isPTBR) {
+    let score = 0;
+    const lower = `${displayTitle} ${rawPath}`.toLowerCase();
+
+    // 1. Franchise matching
+    for (let i = 0; i < POPULAR_KEYWORDS.length; i++) {
+      const kw = POPULAR_KEYWORDS[i];
+      if (lower.includes(kw)) {
+        // Earlier keywords in the list are massive blockbusters
+        score += Math.max(250 - i * 3, 100);
+        break;
+      }
+    }
+
+    // 2. Bonus for multiple versions / multi-disc (indicates high demand/major retail release)
+    score += Math.min(versionsCount * 12, 60);
+
+    // 3. Bonus for verified official cover art
+    if (hasCover) score += 50;
+
+    // 4. Bonus for PT-BR localized edition
+    if (isPTBR) score += 40;
+
+    // 5. Heavy penalties for non-commercial or test versions
+    if (/\b(demo|taikenban|trial|sample)\b/i.test(lower)) score -= 300;
+    if (/\b(beta|proto|prototype)\b/i.test(lower)) score -= 200;
+    if (/\b(promo|kiosk|preview|bonus disc|not for sale)\b/i.test(lower)) score -= 150;
+
+    return score;
+  }
+
   // --------------------------------------------------------------------------
   // DOM Elements References
   // --------------------------------------------------------------------------
@@ -452,12 +525,18 @@
   function cacheDom() {
     dom = {
       header: document.querySelector('.catalog-header'),
-      platformTabs: document.getElementById('platformTabs'),
+      headerTop: document.querySelector('.header-top'),
+      brandSection: document.querySelector('.brand-section'),
+      brandTitle: document.querySelector('.brand-title'),
+      brandBadge: document.querySelector('.brand-badge'),
+      brandSubtitle: document.querySelector('.brand-subtitle'),
+      headerActions: document.querySelector('.header-actions'),
       bannerCard: document.getElementById('bannerCard'),
       bannerTitle: document.getElementById('bannerTitle'),
       bannerTagline: document.getElementById('bannerTagline'),
       bannerTotalGames: document.getElementById('bannerTotalGames'),
       bannerWithCovers: document.getElementById('bannerWithCovers'),
+      toolbar: document.querySelector('.catalog-toolbar'),
       searchInput: document.getElementById('searchInput'),
       searchClearBtn: document.getElementById('searchClearBtn'),
       regionChips: document.getElementById('regionChips'),
@@ -465,7 +544,6 @@
       viewGridBtn: document.getElementById('viewGridBtn'),
       viewListBtn: document.getElementById('viewListBtn'),
       resultsCountText: document.getElementById('resultsCountText'),
-      activeFilterHint: document.getElementById('activeFilterHint'),
       gamesContainer: document.getElementById('gamesContainer'),
       scrollSentinel: document.getElementById('scrollSentinel'),
       refreshBtn: document.getElementById('refreshBtn'),
@@ -480,6 +558,8 @@
       modalRegion: document.getElementById('modalRegion'),
       modalGenre: document.getElementById('modalGenre'),
       modalFilename: document.getElementById('modalFilename'),
+      modalVersionsSection: document.getElementById('modalVersionsSection'),
+      modalVersionsList: document.getElementById('modalVersionsList'),
       modalWhatsAppBtn: document.getElementById('modalWhatsAppBtn'),
       modalCopyBtn: document.getElementById('modalCopyBtn'),
       toast: document.getElementById('toast'),
@@ -489,70 +569,87 @@
   // --------------------------------------------------------------------------
   // Navigation & URL Routing
   // --------------------------------------------------------------------------
-  function detectInitialPlatform() {
-    // 1. Meta tag in HTML shell (used by subfolders like /catalog/ps2/index.html)
+  function detectPlatformContext() {
+    // 1. Meta tag in HTML (e.g. in /catalog/ps2/index.html)
     const metaTag = document.querySelector('meta[name="default-platform"]');
     if (metaTag && metaTag.content) {
       const p = PLATFORMS.find((x) => x.id === metaTag.content.trim().toLowerCase());
-      if (p) return p;
+      if (p) return { platform: p, isDedicated: true };
     }
 
     // 2. Pathname segment: e.g. /catalog/ps2 or /catalog/ps2/
     const path = window.location.pathname.toLowerCase();
     for (const p of PLATFORMS) {
-      if (path.includes(`/catalog/${p.id}`) || path.endsWith(`/${p.id}`) || path.endsWith(`/${p.id}/`)) {
-        return p;
+      if (path.includes(`/catalog/${p.id}/`) || path.endsWith(`/catalog/${p.id}`) || path.endsWith(`/${p.id}/`) || path.endsWith(`/${p.id}`)) {
+        return { platform: p, isDedicated: true };
       }
     }
 
-    // 3. Search query: ?platform=ps2 or ?console=ps2
+    // 3. Search query: ?platform=ps2
     const params = new URLSearchParams(window.location.search);
     const queryPlat = params.get('platform') || params.get('console');
     if (queryPlat) {
       const p = PLATFORMS.find((x) => x.id === queryPlat.toLowerCase());
-      if (p) return p;
+      if (p) return { platform: p, isDedicated: true };
     }
 
-    // 4. Hash: #ps2 or #/ps2
+    // 4. Hash: #ps2
     const hash = window.location.hash.replace(/^[#/]+/, '').toLowerCase();
     if (hash) {
       const p = PLATFORMS.find((x) => x.id === hash);
-      if (p) return p;
+      if (p) return { platform: p, isDedicated: true };
     }
 
-    // Default to PS2 (most popular catalog)
-    return PLATFORMS[0];
-  }
-
-  function updateBrowserUrl(platformId) {
-    try {
-      const currentPath = window.location.pathname;
-      let newPath = currentPath;
-
-      // If we are at /catalog/ or /catalog/index.html
-      if (currentPath.endsWith('/catalog/') || currentPath.endsWith('/catalog') || currentPath.endsWith('index.html')) {
-        // Use clean query or clean path
-        const base = currentPath.replace(/\/index\.html$/, '').replace(/\/$/, '');
-        newPath = `${base}/${platformId}/`;
-      } else {
-        // Replace existing platform segment if any
-        newPath = currentPath.replace(/\/catalog\/[a-z0-9_-]+\/?$/i, `/catalog/${platformId}/`);
-        if (!newPath.includes(platformId)) {
-          newPath = `/catalog/${platformId}/`;
-        }
-      }
-
-      window.history.pushState({ platformId }, '', newPath);
-    } catch (e) {
-      // Fallback to search query if path push is restricted
-      const url = new URL(window.location);
-      url.searchParams.set('platform', platformId);
-      window.history.pushState({ platformId }, '', url.toString());
-    }
+    // If at root /catalog/ without specific platform, it is the Hub Mode
+    return { platform: null, isDedicated: false };
   }
 
   // --------------------------------------------------------------------------
-  // Apply Platform Theme & Styles
+  // Hub Mode (Central Console Picker)
+  // --------------------------------------------------------------------------
+  function renderHubMode() {
+    state.isHubMode = true;
+    document.title = 'Catálogo Oficial de Jogos - Selecione uma Plataforma';
+
+    // Hide toolbar and banner
+    if (dom.bannerCard) dom.bannerCard.parentElement.style.display = 'none';
+    if (dom.toolbar) dom.toolbar.style.display = 'none';
+
+    // Update Header
+    if (dom.brandTitle) {
+      dom.brandTitle.innerHTML = 'Catálogo de Jogos <span class="brand-badge">Hub</span>';
+    }
+    if (dom.brandSubtitle) {
+      dom.brandSubtitle.textContent = 'Selecione uma plataforma para explorar o catálogo completo';
+    }
+
+    // Render Platform Cards Grid
+    dom.gamesContainer.className = 'hub-grid';
+    dom.gamesContainer.innerHTML = PLATFORMS.map((p) => `
+      <a href="./${p.id}/" class="hub-card" style="--card-accent: ${p.accent}; --card-glow: ${p.accent}33; --card-border: ${p.accent}55;">
+        <div class="hub-card-header">
+          <div class="hub-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+              <path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"></path>
+            </svg>
+          </div>
+          <span class="hub-card-badge">${escapeHtml(p.approxCount)}</span>
+        </div>
+        <div class="hub-card-title">${escapeHtml(p.name)}</div>
+        <div class="hub-card-desc">${escapeHtml(p.tagline)}</div>
+        <div class="hub-card-footer">
+          <span>Abrir Catálogo Oficial</span>
+          <span>→</span>
+        </div>
+      </a>
+    `).join('');
+
+    if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
+  }
+
+  // --------------------------------------------------------------------------
+  // Dedicated Platform Setup
   // --------------------------------------------------------------------------
   function applyPlatformTheme(platform) {
     document.documentElement.style.setProperty('--console-primary', platform.accent);
@@ -560,24 +657,41 @@
     document.documentElement.style.setProperty('--console-border', `${platform.accent}66`);
     document.documentElement.style.setProperty('--console-header-bg', platform.headerBg);
 
-    // Update active tab in pills
-    document.querySelectorAll('.platform-pill').forEach((pill) => {
-      const isTarget = pill.getAttribute('data-platform') === platform.id;
-      pill.classList.toggle('active', isTarget);
-      if (isTarget) {
-        pill.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-      }
-    });
+    // Update Header for Dedicated Mode
+    if (dom.brandTitle) {
+      dom.brandTitle.innerHTML = `Catálogo ${escapeHtml(platform.name)} <span class="brand-badge">${escapeHtml(platform.shortName)}</span>`;
+    }
+    if (dom.brandSubtitle) {
+      dom.brandSubtitle.textContent = 'Acervo oficial com capas em alta definição';
+    }
+
+    // Add "Back to Hub" link in header actions if not already present
+    let backBtn = document.getElementById('backHubBtn');
+    if (!backBtn && dom.headerActions) {
+      backBtn = document.createElement('a');
+      backBtn.id = 'backHubBtn';
+      const isSubFolder = /\/catalog\/[^\/]+\/?$/i.test(window.location.pathname) && !/\/catalog\/(index\.html)?$/i.test(window.location.pathname);
+      backBtn.href = isSubFolder ? '../' : './';
+      backBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Outros Catálogos</span>
+      `;
+      dom.headerActions.insertBefore(backBtn, dom.headerActions.firstChild);
+    }
 
     // Update Banner Info
     if (dom.bannerTitle) dom.bannerTitle.textContent = platform.name;
     if (dom.bannerTagline) dom.bannerTagline.textContent = platform.tagline;
-    if (dom.searchInput) dom.searchInput.placeholder = `Buscar entre ${platform.approxCount} jogos de ${platform.shortName}...`;
-    document.title = `Catálogo ${platform.name} - Digital Store Games`;
+    if (dom.searchInput) dom.searchInput.placeholder = `Buscar entre ${platform.approxCount} em ${platform.shortName}...`;
+
+    document.title = `Catálogo Oficial ${platform.name} - Digital Store Games`;
   }
 
   // --------------------------------------------------------------------------
-  // Fetch Games Data
+  // Fetch Games Data & Deduplication Grouping
   // --------------------------------------------------------------------------
   async function loadPlatformData(platform, forceRefresh = false) {
     state.isLoading = true;
@@ -592,7 +706,6 @@
       }
 
       if (!rawEntries) {
-        // Fetch from API
         const payload = {
           mnemonicos: [
             {
@@ -615,13 +728,12 @@
         const data = await resp.json();
         rawEntries = data.entries || [];
 
-        // Save to IndexedDB cache
         if (rawEntries.length > 0) {
           setCachedPlatform(platform.id, rawEntries);
         }
       }
 
-      // Handle custom platform filters (e.g. ps2_futebol, ps2patchs_gta_games)
+      // Handle custom filters (e.g. ps2_futebol or ps2patchs_gta_games)
       let processed = rawEntries;
       if (platform.filterCustom === 'futebol') {
         processed = rawEntries.filter((e) => {
@@ -642,35 +754,151 @@
         });
       }
 
-      // Parse and enrich entries
-      state.allGames = processed.map((entry, index) => {
-        const meta = cleanGameTitle(entry.path);
-        const cover = resolveCoverUrl(entry, platform);
-        return {
-          id: `${platform.id}_${index}`,
-          raw: entry,
-          path: entry.path || '',
-          cleanTitle: meta.cleanTitle,
-          region: meta.region,
-          disc: meta.disc,
-          tags: meta.tags,
-          isPTBR: meta.isPTBR,
+      // ======================================================================
+      // DEDUPLICATION & GROUPING LOGIC (NO REPEATED ITEMS)
+      // Group by cover and then by title
+      // ======================================================================
+      const groups = [];
+      const coverMap = new Map(); // normalizedCoverKey -> group
+      const titleMap = new Map(); // compKey -> group
+
+      for (let i = 0; i < processed.length; i++) {
+        const entry = processed[i];
+        const rawPath = entry.path || '';
+        const baseTitle = getBaseTitle(rawPath);
+        const compKey = getComparisonKey(baseTitle) || rawPath.toLowerCase();
+        const coverUrl = resolveCoverUrl(entry, platform);
+        const coverKey = getCoverKey(coverUrl);
+        const region = extractRegion(rawPath);
+        const disc = extractDisc(rawPath);
+        const isPTBR = region === 'Brasil' || /\b(Brasil|PT-BR|Dublado|Legendado|Traduzido|Bomba Patch)\b/i.test(rawPath);
+
+        const versionData = {
+          rawPath,
           sizeFormatted: formatBytes(entry.size),
+          sizeBytes: parseFloat(entry.size) || 0,
+          region: region || 'Global',
+          disc,
+          isPTBR,
+          format: (rawPath.split('.').pop() || 'ISO').toUpperCase(),
+          coverUrl,
+          link: entry.link,
           genre: entry.genre || '',
-          coverUrl: cover,
-          hasCover: Boolean(entry.cover2d_url || entry.image_url),
+        };
+
+        // 1. Group by cover key first (same cover image = exact same game)
+        let group = null;
+        if (coverKey && coverMap.has(coverKey)) {
+          group = coverMap.get(coverKey);
+        }
+
+        // 2. Then group by title key
+        if (!group && compKey && titleMap.has(compKey)) {
+          group = titleMap.get(compKey);
+        }
+
+        // 3. If matched by cover, but title exists in a different group, merge them
+        if (group && compKey && titleMap.has(compKey) && titleMap.get(compKey) !== group) {
+          const otherGroup = titleMap.get(compKey);
+          for (let v = 0; v < otherGroup.versions.length; v++) {
+            const ver = otherGroup.versions[v];
+            group.versions.push(ver);
+            if (ver.disc) group.discs.add(ver.disc);
+            if (ver.region) group.regions.add(ver.region);
+            if (ver.isPTBR) group.isPTBR = true;
+          }
+          if (!group.coverUrl && otherGroup.coverUrl) {
+            group.coverUrl = otherGroup.coverUrl;
+            group.hasCover = true;
+          }
+          // Re-map references
+          for (const [k, g] of titleMap.entries()) {
+            if (g === otherGroup) titleMap.set(k, group);
+          }
+          for (const [k, g] of coverMap.entries()) {
+            if (g === otherGroup) coverMap.set(k, group);
+          }
+          const oIdx = groups.indexOf(otherGroup);
+          if (oIdx !== -1) groups.splice(oIdx, 1);
+        }
+
+        if (!group) {
+          group = {
+            id: `${platform.id}_${compKey}`,
+            displayTitle: baseTitle,
+            compKey: compKey,
+            coverUrl: coverUrl,
+            hasCover: Boolean(coverUrl),
+            isPTBR: isPTBR,
+            discs: new Set(),
+            regions: new Set(),
+            genre: entry.genre || '',
+            versions: [versionData],
+            bestSizeFormatted: versionData.sizeFormatted,
+            rawPrimaryPath: rawPath,
+          };
+          if (disc) group.discs.add(disc);
+          if (region) group.regions.add(region);
+          groups.push(group);
+        } else {
+          group.versions.push(versionData);
+          if (disc) group.discs.add(disc);
+          if (region) group.regions.add(region);
+          if (isPTBR) group.isPTBR = true;
+
+          // If this version has a verified cover and group doesn't, adopt it
+          if (!group.coverUrl && coverUrl) {
+            group.coverUrl = coverUrl;
+            group.hasCover = true;
+          }
+
+          // Prioritize PT-BR or USA title for cleaner representation
+          if (isPTBR || region === 'USA') {
+            group.displayTitle = baseTitle;
+            group.rawPrimaryPath = rawPath;
+          }
+        }
+
+        if (coverKey) coverMap.set(coverKey, group);
+        if (compKey) titleMap.set(compKey, group);
+      }
+
+      // Convert grouped list and compute popularity scores
+      const groupedList = groups.map((g) => {
+        const discsArr = Array.from(g.discs);
+        const regionsArr = Array.from(g.regions);
+
+        // Calculate popularity score for sorting
+        const score = computePopularityScore(
+          g.displayTitle,
+          g.rawPrimaryPath,
+          g.versions.length,
+          g.hasCover,
+          g.isPTBR
+        );
+
+        return {
+          ...g,
+          discsCount: discsArr.length,
+          discsLabel: discsArr.length > 1 ? `${discsArr.length} Discos` : '',
+          versionsCount: g.versions.length,
+          versionsLabel: g.versions.length > 1 ? `${g.versions.length} Versões` : '',
+          regionsLabel: regionsArr.join(', '),
+          popularityScore: score,
         };
       });
 
-      // Update Banner Stats
-      const totalCount = state.allGames.length;
-      const coversCount = state.allGames.filter((g) => g.hasCover).length;
-      const coverPercent = totalCount > 0 ? Math.round((coversCount / totalCount) * 100) : 0;
+      state.groupedGames = groupedList;
 
-      if (dom.bannerTotalGames) dom.bannerTotalGames.textContent = totalCount.toLocaleString('pt-BR');
+      // Update Banner Stats (Unique Games)
+      const totalUnique = state.groupedGames.length;
+      const coversCount = state.groupedGames.filter((g) => g.hasCover).length;
+      const coverPercent = totalUnique > 0 ? Math.round((coversCount / totalUnique) * 100) : 0;
+
+      if (dom.bannerTotalGames) dom.bannerTotalGames.textContent = `${totalUnique.toLocaleString('pt-BR')} Únicos`;
       if (dom.bannerWithCovers) dom.bannerWithCovers.textContent = `${coversCount.toLocaleString('pt-BR')} (${coverPercent}%)`;
 
-      // Reset filters and render
+      // Apply initial filters and popularity sorting
       applyFilterAndSort();
     } catch (err) {
       console.error('Error loading catalog:', err);
@@ -681,50 +909,62 @@
   }
 
   // --------------------------------------------------------------------------
-  // Filtering & Sorting
+  // Filtering & Sorting (Default: Mais Populares)
   // --------------------------------------------------------------------------
   function applyFilterAndSort() {
-    let result = state.allGames;
+    let result = state.groupedGames;
 
     // Search query filter
     const query = state.searchQuery.trim().toLowerCase();
     if (query) {
       result = result.filter((g) => {
         return (
-          g.cleanTitle.toLowerCase().includes(query) ||
-          g.path.toLowerCase().includes(query) ||
+          g.displayTitle.toLowerCase().includes(query) ||
+          g.compKey.includes(query) ||
           (g.genre && g.genre.toLowerCase().includes(query)) ||
-          g.tags.some((t) => t.toLowerCase().includes(query))
+          g.versions.some((v) => v.rawPath.toLowerCase().includes(query))
         );
       });
     }
 
     // Region / Category Chip filter
     if (state.selectedRegion === 'br') {
-      result = result.filter((g) => g.isPTBR || g.region === 'Brasil');
+      result = result.filter((g) => g.isPTBR);
     } else if (state.selectedRegion === 'usa') {
-      result = result.filter((g) => g.region === 'USA');
+      result = result.filter((g) => g.regions.has('USA'));
     } else if (state.selectedRegion === 'eur') {
-      result = result.filter((g) => g.region === 'Europa');
+      result = result.filter((g) => g.regions.has('Europa'));
     } else if (state.selectedRegion === 'jp') {
-      result = result.filter((g) => g.region === 'Japão');
+      result = result.filter((g) => g.regions.has('Japão'));
     } else if (state.selectedRegion === 'with_cover') {
       result = result.filter((g) => g.hasCover);
     }
 
-    // Sorting
+    // Sorting (Default: Popularity Descending)
     result.sort((a, b) => {
+      if (state.sortBy === 'popular_desc') {
+        if (b.popularityScore !== a.popularityScore) {
+          return b.popularityScore - a.popularityScore;
+        }
+        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+      }
+      if (state.sortBy === 'title_asc') {
+        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+      }
       if (state.sortBy === 'title_desc') {
-        return b.cleanTitle.localeCompare(a.cleanTitle, 'pt-BR');
+        return b.displayTitle.localeCompare(a.displayTitle, 'pt-BR');
       }
       if (state.sortBy === 'size_desc') {
-        return (parseFloat(b.raw.size) || 0) - (parseFloat(a.raw.size) || 0);
+        const sizeA = a.versions[0]?.sizeBytes || 0;
+        const sizeB = b.versions[0]?.sizeBytes || 0;
+        return sizeB - sizeA;
       }
       if (state.sortBy === 'size_asc') {
-        return (parseFloat(a.raw.size) || 0) - (parseFloat(b.raw.size) || 0);
+        const sizeA = a.versions[0]?.sizeBytes || 0;
+        const sizeB = b.versions[0]?.sizeBytes || 0;
+        return sizeA - sizeB;
       }
-      // default: title_asc
-      return a.cleanTitle.localeCompare(b.cleanTitle, 'pt-BR');
+      return b.popularityScore - a.popularityScore;
     });
 
     state.filteredGames = result;
@@ -732,10 +972,9 @@
 
     // Update Counter text
     if (dom.resultsCountText) {
-      dom.resultsCountText.innerHTML = `Exibindo <strong>${result.length.toLocaleString('pt-BR')}</strong> de <strong>${state.allGames.length.toLocaleString('pt-BR')}</strong> jogos`;
+      dom.resultsCountText.innerHTML = `Exibindo <strong>${result.length.toLocaleString('pt-BR')}</strong> títulos únicos de <strong>${state.groupedGames.length.toLocaleString('pt-BR')}</strong>`;
     }
 
-    // Clear and render first chunk
     dom.gamesContainer.innerHTML = '';
     renderNextBatch();
   }
@@ -764,7 +1003,6 @@
     dom.gamesContainer.appendChild(fragment);
     state.renderedCount = end;
 
-    // Show/hide scroll sentinel
     if (dom.scrollSentinel) {
       dom.scrollSentinel.style.display = state.renderedCount < state.filteredGames.length ? 'flex' : 'none';
     }
@@ -775,22 +1013,22 @@
     card.className = 'game-card';
     card.setAttribute('tabindex', '0');
     card.setAttribute('role', 'button');
-    card.setAttribute('aria-label', game.cleanTitle);
+    card.setAttribute('aria-label', game.displayTitle);
 
-    // Badges inside the case
+    // Badges inside the 3D case
     let badgesHtml = '';
     if (game.isPTBR) {
       badgesHtml += `<span class="case-badge badge-br">🇧🇷 PT-BR</span>`;
-    } else if (game.region) {
-      badgesHtml += `<span class="case-badge">${escapeHtml(game.region)}</span>`;
     }
-    if (game.disc) {
-      badgesHtml += `<span class="case-badge badge-multidisc">${escapeHtml(game.disc)}</span>`;
+    if (game.discsLabel) {
+      badgesHtml += `<span class="case-badge badge-multidisc">${escapeHtml(game.discsLabel)}</span>`;
+    } else if (game.versionsCount > 1) {
+      badgesHtml += `<span class="case-badge badge-versions">${game.versionsCount} Versões</span>`;
     }
 
-    // Fallback UI or Cover Image
+    // Cover Image with Fallback
     const coverHtml = game.coverUrl
-      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.cleanTitle)}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
+      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
       : getFallbackInnerHtml(game);
 
     card.innerHTML = `
@@ -806,15 +1044,15 @@
           <div class="box-art-img-wrap">
             ${coverHtml}
             <div class="card-hover-overlay">
-              <span class="overlay-btn">Ver Detalhes</span>
+              <span class="overlay-btn">Ver Opções & Detalhes</span>
             </div>
           </div>
         </div>
       </div>
       <div class="game-card-meta">
-        <div class="game-card-title" title="${escapeHtml(game.cleanTitle)}">${escapeHtml(game.cleanTitle)}</div>
+        <div class="game-card-title" title="${escapeHtml(game.displayTitle)}">${escapeHtml(game.displayTitle)}</div>
         <div class="game-card-tags">
-          ${game.sizeFormatted ? `<span class="game-tag-pill">💾 ${escapeHtml(game.sizeFormatted)}</span>` : ''}
+          ${game.bestSizeFormatted ? `<span class="game-tag-pill">💾 ${escapeHtml(game.bestSizeFormatted)}</span>` : ''}
           ${game.genre ? `<span class="game-tag-pill">• ${escapeHtml(game.genre)}</span>` : ''}
         </div>
       </div>
@@ -838,7 +1076,7 @@
           <rect x="2" y="6" width="20" height="12" rx="2"></rect>
           <path d="M6 12h4m-2-2v4m7-2h.01m2.99 0h.01"></path>
         </svg>
-        <span class="fallback-title">${escapeHtml(game.cleanTitle)}</span>
+        <span class="fallback-title">${escapeHtml(game.displayTitle)}</span>
       </div>
     `;
   }
@@ -859,17 +1097,17 @@
             : `<div class="list-row-thumb" style="display:flex;align-items:center;justify-content:center;color:#666;font-size:10px;">BOX</div>`
         }
         <div class="list-row-info">
-          <div class="list-row-title">${escapeHtml(game.cleanTitle)}</div>
+          <div class="list-row-title">${escapeHtml(game.displayTitle)}</div>
           <div class="list-row-tags">
             ${game.isPTBR ? `<span class="case-badge badge-br">PT-BR</span>` : ''}
-            ${game.region ? `<span class="case-badge">${escapeHtml(game.region)}</span>` : ''}
-            ${game.disc ? `<span class="case-badge badge-multidisc">${escapeHtml(game.disc)}</span>` : ''}
+            ${game.discsLabel ? `<span class="case-badge badge-multidisc">${escapeHtml(game.discsLabel)}</span>` : ''}
+            ${game.versionsCount > 1 ? `<span class="case-badge badge-versions">${game.versionsCount} Versões</span>` : ''}
             ${game.genre ? `<span class="game-tag-pill">${escapeHtml(game.genre)}</span>` : ''}
           </div>
         </div>
       </div>
       <div class="list-row-right">
-        <span class="list-row-size">${escapeHtml(game.sizeFormatted || 'Digital')}</span>
+        <span class="list-row-size">${escapeHtml(game.bestSizeFormatted || 'Digital')}</span>
       </div>
     `;
 
@@ -891,8 +1129,8 @@
     dom.gamesContainer.innerHTML = `
       <div class="loading-container" style="grid-column: 1 / -1;">
         <div class="spinner"></div>
-        <p style="font-size: 1rem; font-weight: 700; color: #fff;">Carregando catálogo de ${state.currentPlatform.name}...</p>
-        <p style="font-size: 0.8rem; color: var(--text-muted);">Consultando a base central de jogos e capas...</p>
+        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">Carregando catálogo de ${state.currentPlatform.name}...</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Agrupando edições e ordenando pelos mais populares...</p>
       </div>
     `;
     if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
@@ -941,18 +1179,18 @@
   }
 
   // --------------------------------------------------------------------------
-  // Game Details Modal
+  // Game Details Modal with Grouped Versions
   // --------------------------------------------------------------------------
   function openGameModal(game) {
     state.selectedGame = game;
 
-    if (dom.modalTitle) dom.modalTitle.textContent = game.cleanTitle;
+    if (dom.modalTitle) dom.modalTitle.textContent = game.displayTitle;
     if (dom.modalConsoleBadge) dom.modalConsoleBadge.textContent = state.currentPlatform.name;
 
-    // Cover in modal
+    // Cover image in modal
     if (dom.modalBoxArt) {
       dom.modalBoxArt.innerHTML = game.coverUrl
-        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.cleanTitle)}" onerror="this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
+        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" onerror="this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
         : getFallbackInnerHtml(game);
     }
 
@@ -960,28 +1198,45 @@
     if (dom.modalTags) {
       let tagsHtml = '';
       if (game.isPTBR) tagsHtml += `<span class="modal-tag" style="background:#009c3b; color:#ffdf00; border-color:#ffdf00;">🇧🇷 PT-BR</span>`;
-      if (game.region) tagsHtml += `<span class="modal-tag">${escapeHtml(game.region)}</span>`;
-      if (game.disc) tagsHtml += `<span class="modal-tag">${escapeHtml(game.disc)}</span>`;
-      game.tags.forEach((t) => {
-        tagsHtml += `<span class="modal-tag">${escapeHtml(t)}</span>`;
-      });
+      if (game.discsLabel) tagsHtml += `<span class="modal-tag">${escapeHtml(game.discsLabel)}</span>`;
+      if (game.versionsCount > 1) tagsHtml += `<span class="modal-tag" style="color:#fbbf24;">${game.versionsCount} Versões Disponíveis</span>`;
+      if (game.regionsLabel) tagsHtml += `<span class="modal-tag">${escapeHtml(game.regionsLabel)}</span>`;
       dom.modalTags.innerHTML = tagsHtml;
     }
 
     // Metadata table
-    if (dom.modalFormat) dom.modalFormat.textContent = (game.path.split('.').pop() || 'ISO').toUpperCase();
-    if (dom.modalSize) dom.modalSize.textContent = game.sizeFormatted || 'Tamanho padrão';
-    if (dom.modalRegion) dom.modalRegion.textContent = game.region || 'Região Global';
-    if (dom.modalGenre) dom.modalGenre.textContent = game.genre || 'Geral / Aventura';
-    if (dom.modalFilename) dom.modalFilename.textContent = game.path;
+    const primaryVersion = game.versions[0] || {};
+    if (dom.modalFormat) dom.modalFormat.textContent = primaryVersion.format || 'ISO';
+    if (dom.modalSize) dom.modalSize.textContent = game.bestSizeFormatted || 'Tamanho padrão';
+    if (dom.modalRegion) dom.modalRegion.textContent = game.regionsLabel || 'Global';
+    if (dom.modalGenre) dom.modalGenre.textContent = game.genre || 'Geral / Clássico';
+    if (dom.modalFilename) dom.modalFilename.textContent = game.rawPrimaryPath;
+
+    // Render grouped versions list
+    if (dom.modalVersionsSection && dom.modalVersionsList) {
+      if (game.versions.length > 1) {
+        dom.modalVersionsSection.style.display = 'flex';
+        dom.modalVersionsList.innerHTML = game.versions.map((v, idx) => `
+          <div class="modal-version-item">
+            <span class="modal-version-name" title="${escapeHtml(v.rawPath)}">${escapeHtml(v.rawPath)}</span>
+            <div class="modal-version-meta">
+              <span>${v.disc ? escapeHtml(v.disc) : escapeHtml(v.region)}</span>
+              <span>•</span>
+              <span>${escapeHtml(v.sizeFormatted || v.format)}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        dom.modalVersionsSection.style.display = 'none';
+      }
+    }
 
     // WhatsApp Order Button
     if (dom.modalWhatsAppBtn) {
-      const msg = `Olá! Vi o jogo *${game.cleanTitle}* no catálogo oficial do *${state.currentPlatform.name}* e gostaria de saber como ter acesso!`;
+      const msg = `Olá! Vi o jogo *${game.displayTitle}* no catálogo oficial do *${state.currentPlatform.name}* e gostaria de saber como ter acesso!`;
       dom.modalWhatsAppBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
     }
 
-    // Open Modal
     dom.modalBackdrop.classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -1018,85 +1273,62 @@
   function init() {
     cacheDom();
 
-    // Render platform tabs in header
-    renderPlatformTabs();
+    // Check if we are on a dedicated platform page or central hub
+    const context = detectPlatformContext();
 
-    // Detect initial platform from URL or meta
-    state.currentPlatform = detectInitialPlatform();
-    applyPlatformTheme(state.currentPlatform);
-
-    // Setup Event Listeners
-    setupEventListeners();
-
-    // Setup Infinite Scroll Observer
-    setupScrollObserver();
-
-    // Load initial platform data
-    loadPlatformData(state.currentPlatform);
-  }
-
-  function renderPlatformTabs() {
-    if (!dom.platformTabs) return;
-
-    dom.platformTabs.innerHTML = PLATFORMS.map((p) => `
-      <button class="platform-pill" data-platform="${p.id}" role="tab" aria-selected="false">
-        <span>${escapeHtml(p.shortName)}</span>
-        <span class="pill-count">${p.approxCount}</span>
-      </button>
-    `).join('');
-
-    dom.platformTabs.addEventListener('click', (e) => {
-      const pill = e.target.closest('.platform-pill');
-      if (!pill) return;
-      const targetId = pill.getAttribute('data-platform');
-      const targetPlatform = PLATFORMS.find((x) => x.id === targetId);
-      if (targetPlatform && targetPlatform.id !== state.currentPlatform.id) {
-        switchPlatform(targetPlatform);
-      }
-    });
-  }
-
-  function switchPlatform(platform) {
-    state.currentPlatform = platform;
-    applyPlatformTheme(platform);
-    updateBrowserUrl(platform.id);
-    loadPlatformData(platform);
+    if (context.isDedicated && context.platform) {
+      state.currentPlatform = context.platform;
+      applyPlatformTheme(state.currentPlatform);
+      setupEventListeners();
+      setupScrollObserver();
+      loadPlatformData(state.currentPlatform);
+    } else {
+      renderHubMode();
+    }
   }
 
   function setupEventListeners() {
-    // Search Input with Debounce
+    // Search input
     let searchDebounceTimer = null;
-    dom.searchInput.addEventListener('input', (e) => {
-      clearTimeout(searchDebounceTimer);
-      state.searchQuery = e.target.value;
-      dom.searchClearBtn.style.display = state.searchQuery ? 'block' : 'none';
+    if (dom.searchInput) {
+      dom.searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchDebounceTimer);
+        state.searchQuery = e.target.value;
+        if (dom.searchClearBtn) {
+          dom.searchClearBtn.style.display = state.searchQuery ? 'block' : 'none';
+        }
 
-      searchDebounceTimer = setTimeout(() => {
+        searchDebounceTimer = setTimeout(() => {
+          applyFilterAndSort();
+        }, 100);
+      });
+    }
+
+    if (dom.searchClearBtn) {
+      dom.searchClearBtn.addEventListener('click', () => {
+        dom.searchInput.value = '';
+        state.searchQuery = '';
+        dom.searchClearBtn.style.display = 'none';
+        dom.searchInput.focus();
         applyFilterAndSort();
-      }, 100);
-    });
+      });
+    }
 
-    dom.searchClearBtn.addEventListener('click', () => {
-      dom.searchInput.value = '';
-      state.searchQuery = '';
-      dom.searchClearBtn.style.display = 'none';
-      dom.searchInput.focus();
-      applyFilterAndSort();
-    });
-
-    // Keyboard shortcut '/' to search
+    // Keyboard shortcut '/'
     window.addEventListener('keydown', (e) => {
       if (e.key === '/' && document.activeElement !== dom.searchInput) {
         e.preventDefault();
-        dom.searchInput.focus();
-        dom.searchInput.select();
+        if (dom.searchInput) {
+          dom.searchInput.focus();
+          dom.searchInput.select();
+        }
       }
       if (e.key === 'Escape' && dom.modalBackdrop.classList.contains('open')) {
         closeGameModal();
       }
     });
 
-    // Region Filter Chips
+    // Region chips
     if (dom.regionChips) {
       dom.regionChips.addEventListener('click', (e) => {
         const chip = e.target.closest('.filter-chip');
@@ -1108,7 +1340,7 @@
       });
     }
 
-    // Sort Select
+    // Sort select
     if (dom.sortSelect) {
       dom.sortSelect.addEventListener('change', (e) => {
         state.sortBy = e.target.value;
@@ -1116,7 +1348,7 @@
       });
     }
 
-    // View Mode Toggle (Grid vs List)
+    // View toggle
     if (dom.viewGridBtn && dom.viewListBtn) {
       dom.viewGridBtn.addEventListener('click', () => {
         state.viewMode = 'grid';
@@ -1134,7 +1366,7 @@
       });
     }
 
-    // Refresh Button (Force API Refresh)
+    // Refresh button
     if (dom.refreshBtn) {
       dom.refreshBtn.addEventListener('click', () => {
         showToast('Atualizando dados da base central...');
@@ -1142,7 +1374,7 @@
       });
     }
 
-    // Modal Close
+    // Modal close
     if (dom.modalCloseBtn) {
       dom.modalCloseBtn.addEventListener('click', closeGameModal);
     }
@@ -1152,25 +1384,15 @@
       });
     }
 
-    // Copy Title Button in Modal
+    // Copy title
     if (dom.modalCopyBtn) {
       dom.modalCopyBtn.addEventListener('click', () => {
         if (!state.selectedGame) return;
-        navigator.clipboard.writeText(state.selectedGame.cleanTitle).then(() => {
+        navigator.clipboard.writeText(state.selectedGame.displayTitle).then(() => {
           showToast('Título copiado para a área de transferência!');
         });
       });
     }
-
-    // Browser History PopState (Back/Forward)
-    window.addEventListener('popstate', (e) => {
-      const plat = detectInitialPlatform();
-      if (plat && plat.id !== state.currentPlatform.id) {
-        state.currentPlatform = plat;
-        applyPlatformTheme(plat);
-        loadPlatformData(plat);
-      }
-    });
   }
 
   function setupScrollObserver() {
@@ -1189,9 +1411,6 @@
     observer.observe(dom.scrollSentinel);
   }
 
-  // --------------------------------------------------------------------------
-  // Document Ready Bootstrap
-  // --------------------------------------------------------------------------
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
