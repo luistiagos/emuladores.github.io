@@ -481,13 +481,6 @@
       return url;
     }
 
-    if (platform && platform.libretro) {
-      const baseName = (entry.path || '').replace(/\.[a-zA-Z0-9]+$/, '').trim();
-      if (baseName) {
-        return `https://raw.githubusercontent.com/libretro-thumbnails/${platform.libretro}/master/Named_Boxarts/${encodeURIComponent(baseName)}.png`;
-      }
-    }
-
     return null;
   }
 
@@ -918,8 +911,13 @@
         };
       });
 
-      // ALWAYS PRE-SORT BY POPULARITY DESCENDING
+      // ALWAYS PRE-SORT: Games with cover FIRST, games without cover ALWAYS LAST; then by popularity descending
       groupedList.sort((a, b) => {
+        const aHas = a.hasCover ? 1 : 0;
+        const bHas = b.hasCover ? 1 : 0;
+        if (bHas !== aHas) {
+          return bHas - aHas;
+        }
         if (b.popularityScore !== a.popularityScore) {
           return b.popularityScore - a.popularityScore;
         }
@@ -977,13 +975,23 @@
     }
 
     // Sorting (Exactly 2 options: 'popular' by default, or 'az')
+    // Games with cover ALWAYS FIRST, games without cover ALWAYS LAST in ANY sorting mode
     result.sort((a, b) => {
+      // 1. Cover priority: Games with covers always come first
+      const aHas = a.hasCover ? 1 : 0;
+      const bHas = b.hasCover ? 1 : 0;
+      if (bHas !== aHas) {
+        return bHas - aHas;
+      }
+
+      // 2. Base sorting mode
       if (state.sortBy === 'popular') {
         if (b.popularityScore !== a.popularityScore) {
           return b.popularityScore - a.popularityScore;
         }
         return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
       }
+
       // 'az'
       return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
     });
@@ -1047,10 +1055,12 @@
       badgesHtml += `<span class="case-badge badge-versions">${game.versionsCount} Versões</span>`;
     }
 
-    // Cover Image with Fallback
+    // Cover Image with clean Fallback
+    const fallbackHtml = getFallbackHtml(game);
     const coverHtml = game.coverUrl
-      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
-      : getFallbackInnerHtml(game);
+      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+         <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
+      : `<div class="box-art-fallback">${fallbackHtml}</div>`;
 
     card.innerHTML = `
       <div class="game-box-3d">
@@ -1090,14 +1100,19 @@
     return card;
   }
 
-  function getFallbackInnerHtml(game) {
+  function getFallbackHtml(game) {
+    const consoleName = (state.currentPlatform && state.currentPlatform.shortName) || 'OFICIAL';
     return `
-      <div class="box-art-fallback">
-        <svg class="fallback-console-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="2" y="6" width="20" height="12" rx="2"></rect>
-          <path d="M6 12h4m-2-2v4m7-2h.01m2.99 0h.01"></path>
-        </svg>
-        <span class="fallback-title">${escapeHtml(game.displayTitle)}</span>
+      <div class="fallback-content">
+        <div class="fallback-console-tag">${escapeHtml(consoleName)}</div>
+        <div class="fallback-disc-art">
+          <svg class="fallback-console-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+            <path d="M6 12h4m-2-2v4m7-2h.01m2.99 0h.01"></path>
+          </svg>
+        </div>
+        <div class="fallback-title">${escapeHtml(game.displayTitle)}</div>
+        <div class="fallback-pill">Edição Digital</div>
       </div>
     `;
   }
@@ -1109,14 +1124,15 @@
     row.setAttribute('role', 'button');
 
     const thumbSrc = game.coverUrl || '';
+    const consoleName = (state.currentPlatform && state.currentPlatform.shortName) || 'ROM';
+    const thumbHtml = thumbSrc
+      ? `<img class="list-row-thumb" src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+         <div class="list-row-thumb list-row-thumb-fallback" style="display:none;">${escapeHtml(consoleName)}</div>`
+      : `<div class="list-row-thumb list-row-thumb-fallback">${escapeHtml(consoleName)}</div>`;
 
     row.innerHTML = `
       <div class="list-row-left">
-        ${
-          thumbSrc
-            ? `<img class="list-row-thumb" src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" onerror="this.style.display='none'" />`
-            : `<div class="list-row-thumb" style="display:flex;align-items:center;justify-content:center;color:#666;font-size:10px;">BOX</div>`
-        }
+        ${thumbHtml}
         <div class="list-row-info">
           <div class="list-row-title">${escapeHtml(game.displayTitle)}</div>
           <div class="list-row-tags">
@@ -1210,9 +1226,11 @@
 
     // Cover image in modal
     if (dom.modalBoxArt) {
+      const fallbackHtml = getFallbackHtml(game);
       dom.modalBoxArt.innerHTML = game.coverUrl
-        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" onerror="this.parentElement.innerHTML='${getFallbackInnerHtml(game)}';" />`
-        : getFallbackInnerHtml(game);
+        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+           <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
+        : `<div class="box-art-fallback">${fallbackHtml}</div>`;
     }
 
     // Modal tags

@@ -857,22 +857,68 @@ body::before {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 1rem 0.75rem;
+  padding: 0.75rem 0.5rem;
   text-align: center;
   background: 
-    radial-gradient(circle at 50% 30%, var(--console-glow) 0%, transparent 70%),
-    linear-gradient(180deg, #162032 0%, #0d121c 100%);
-  gap: 0.5rem;
+    radial-gradient(circle at 50% 35%, var(--console-glow) 0%, transparent 75%),
+    linear-gradient(180deg, #182235 0%, #0c1017 100%);
+  position: relative;
+  overflow: hidden;
+}
+.box-art-fallback::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-size: 10px 10px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.fallback-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  gap: 0.35rem;
+  position: relative;
+  z-index: 2;
+}
+.fallback-console-tag {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--console-primary);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--console-border);
+  padding: 0.12rem 0.4rem;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.fallback-disc-art {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,255,255,0.2) 0%, rgba(0,0,0,0.65) 75%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 8px rgba(0,0,0,0.8);
+  margin: 0.1rem 0;
 }
 .fallback-console-icon {
-  width: 32px;
-  height: 32px;
+  width: 22px;
+  height: 22px;
   color: var(--console-primary);
-  opacity: 0.8;
+  opacity: 0.95;
 }
 .fallback-title {
   font-family: var(--font-display);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: #ffffff;
   line-height: 1.25;
@@ -881,6 +927,18 @@ body::before {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+  padding: 0 0.2rem;
+}
+.fallback-pill {
+  font-size: 0.55rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.55);
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Badges on Case */
@@ -1030,6 +1088,19 @@ body::before {
   background: #111;
   flex-shrink: 0;
   border: 1px solid rgba(255,255,255,0.1);
+}
+.list-row-thumb-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #182235 0%, #0c1017 100%);
+  border: 1px solid var(--console-border);
+  color: var(--console-primary);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.8);
 }
 .list-row-info {
   display: flex;
@@ -1202,6 +1273,26 @@ body::before {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.modal-box-art .box-art-fallback .fallback-disc-art {
+  width: 58px;
+  height: 58px;
+}
+.modal-box-art .box-art-fallback .fallback-console-icon {
+  width: 30px;
+  height: 30px;
+}
+.modal-box-art .box-art-fallback .fallback-title {
+  font-size: 0.95rem;
+  -webkit-line-clamp: 5;
+}
+.modal-box-art .box-art-fallback .fallback-console-tag {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+}
+.modal-box-art .box-art-fallback .fallback-pill {
+  font-size: 0.65rem;
+  padding: 0.2rem 0.55rem;
 }
 
 .modal-details-column {
