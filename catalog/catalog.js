@@ -692,7 +692,7 @@
       dom.brandTitle.innerHTML = `Catálogo ${escapeHtml(platform.name)} <span class="brand-badge">${escapeHtml(platform.shortName)}</span>`;
     }
     if (dom.brandSubtitle) {
-      dom.brandSubtitle.textContent = 'Acervo oficial com capas em alta definição';
+      dom.brandSubtitle.textContent = 'Acervo oficial completo e atualizado';
     }
 
     // Add "Back to Hub" link in header actions if not already present
