@@ -1299,6 +1299,8 @@
 
     if (context.isDedicated && context.platform) {
       state.currentPlatform = context.platform;
+      state.sortBy = 'popular';
+      if (dom.sortSelect) dom.sortSelect.value = 'popular';
       applyPlatformTheme(state.currentPlatform);
       setupEventListeners();
       setupScrollObserver();

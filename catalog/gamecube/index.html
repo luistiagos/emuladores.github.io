@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="../catalog.css">
+  <link rel="stylesheet" href="../catalog.css?v=3">
 </head>
 <body>
 
@@ -84,10 +84,6 @@
           <span class="stat-val" id="bannerTotalGames">--</span>
           <span class="stat-label">Jogos Disponíveis</span>
         </div>
-        <div class="stat-item">
-          <span class="stat-val" id="bannerWithCovers" style="color: #38bdf8;">--</span>
-          <span class="stat-label">Com Capas HD</span>
-        </div>
       </div>
     </div>
   </section>
@@ -121,11 +117,8 @@
 
         <div class="toolbar-controls">
           <select id="sortSelect" class="control-select" aria-label="Ordenar por">
-            <option value="popular_desc" selected>Mais Populares (Destaques)</option>
-            <option value="title_asc">Nome (A - Z)</option>
-            <option value="title_desc">Nome (Z - A)</option>
-            <option value="size_desc">Tamanho (Maior)</option>
-            <option value="size_asc">Tamanho (Menor)</option>
+            <option value="popular" selected>Mais Populares</option>
+            <option value="az">Ordem Alfabética</option>
           </select>
 
           <div class="view-toggle-wrap">
@@ -159,7 +152,6 @@
         <button class="filter-chip" data-region="usa">🇺🇸 USA</button>
         <button class="filter-chip" data-region="eur">🇪🇺 Europa</button>
         <button class="filter-chip" data-region="jp">🇯🇵 Japão</button>
-        <button class="filter-chip" data-region="with_cover">🖼️ Apenas com Capa</button>
       </div>
 
       <!-- Counter -->
@@ -286,6 +278,6 @@
   </footer>
 
   <!-- Script Application -->
-  <script src="../catalog.js"></script>
+  <script src="../catalog.js?v=3"></script>
 </body>
 </html>
