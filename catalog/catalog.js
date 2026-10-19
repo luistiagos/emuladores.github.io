@@ -275,10 +275,31 @@
   // --------------------------------------------------------------------------
   // Major Hit Franchises for Popularity Scoring
   // --------------------------------------------------------------------------
+  const MASTER_HITS = [
+    // GTA Franchise
+    'san andreas', 'grand theft auto', 'vice city', 'gta',
+    // Sony Flagship
+    'god of war', 'shadow of the colossus', 'gran turismo', 'the last of us', 'uncharted',
+    // Survival Horror
+    'resident evil 4', 'resident evil', 'silent hill 2', 'silent hill',
+    // Racing Legends
+    'need for speed', 'most wanted', 'underground 2', 'underground', 'carbon', 'midnight club', 'burnout',
+    // Anime & Fighting Hits
+    'budokai tenkaichi 3', 'dragon ball', 'shippuden', 'naruto', 'shaolin monks', 'mortal kombat', 'tekken', 'def jam', 'street fighter',
+    // Football & Brazilian Favorites
+    'bomba patch', 'pes 20', 'winning eleven', 'fifa', 'downhill domination',
+    // Action / Cult Hits
+    'bully', 'black', 'devil may cry 3', 'devil may cry', 'metal gear', 'kingdom hearts', 'final fantasy x', 'hit & run', 'simpsons',
+    // Nintendo Hits
+    'mario kart', 'super mario galaxy', 'super mario', 'twilight princess', 'zelda', 'smash bros', 'pokemon', 'donkey kong',
+    // Microsoft Hits
+    'halo 3', 'halo', 'gears of war', 'forza', 'red dead redemption'
+  ];
+
   const POPULAR_KEYWORDS = [
-    'grand theft auto', 'gta', 'san andreas', 'vice city',
+    'grand theft auto', 'gta', 'san andreas', 'vice city', 'liberty city',
     'god of war', 'resident evil', 'biohazard', 'silent hill',
-    'need for speed', 'underground', 'most wanted', 'carbon',
+    'need for speed', 'underground', 'most wanted', 'carbon', 'prostreet',
     'dragon ball', 'budokai', 'tenkaichi', 'naruto', 'shippuden',
     'mortal kombat', 'street fighter', 'tekken', 'king of fighters', 'kof',
     'bomba patch', 'pes 20', 'pro evolution soccer', 'winning eleven', 'fifa',
@@ -295,7 +316,8 @@
     'gran turismo', 'guitar hero', 'rock band', 'sonic the hedgehog',
     'sonic', 'tomb raider', 'lara croft', 'assassin', 'monster hunter',
     'persona', 'yakuza', 'dark souls', 'demon souls', 'max payne',
-    'god hand', 'downhill domination', 'mx vs atv', 'def jam fight for ny'
+    'god hand', 'downhill domination', 'mx vs atv', 'def jam fight for ny',
+    'ben 10', 'simpsons', 'hit & run', 'yu-gi-oh', 'lego'
   ];
 
   // --------------------------------------------------------------------------
@@ -308,8 +330,8 @@
     filteredGames: [],
     renderedCount: 0,
     searchQuery: '',
-    selectedRegion: 'all', // all | br | usa | eur | jp | with_cover
-    sortBy: 'popular_desc', // popular_desc (default) | title_asc | title_desc | size_desc | size_asc
+    selectedRegion: 'all', // all | br | usa | eur | jp
+    sortBy: 'popular',     // 'popular' (default) | 'az'
     viewMode: 'grid',      // grid | list
     isLoading: false,
     selectedGame: null,
@@ -490,29 +512,37 @@
     let score = 0;
     const lower = `${displayTitle} ${rawPath}`.toLowerCase();
 
-    // 1. Franchise matching
-    for (let i = 0; i < POPULAR_KEYWORDS.length; i++) {
-      const kw = POPULAR_KEYWORDS[i];
-      if (lower.includes(kw)) {
-        // Earlier keywords in the list are massive blockbusters
-        score += Math.max(250 - i * 3, 100);
+    // 1. Master Hit matching (Top-tier boost)
+    for (let i = 0; i < MASTER_HITS.length; i++) {
+      const hit = MASTER_HITS[i];
+      if (lower.includes(hit)) {
+        score += Math.max(500 - i * 6, 250);
         break;
       }
     }
 
-    // 2. Bonus for multiple versions / multi-disc (indicates high demand/major retail release)
+    // 2. Franchise matching
+    for (let i = 0; i < POPULAR_KEYWORDS.length; i++) {
+      const kw = POPULAR_KEYWORDS[i];
+      if (lower.includes(kw)) {
+        score += Math.max(250 - i * 3, 80);
+        break;
+      }
+    }
+
+    // 3. Bonus for multiple versions / multi-disc (indicates high demand/major retail release)
     score += Math.min(versionsCount * 12, 60);
 
-    // 3. Bonus for verified official cover art
+    // 4. Bonus for verified official cover art
     if (hasCover) score += 50;
 
-    // 4. Bonus for PT-BR localized edition
+    // 5. Bonus for PT-BR localized edition
     if (isPTBR) score += 40;
 
-    // 5. Heavy penalties for non-commercial or test versions
-    if (/\b(demo|taikenban|trial|sample)\b/i.test(lower)) score -= 300;
-    if (/\b(beta|proto|prototype)\b/i.test(lower)) score -= 200;
-    if (/\b(promo|kiosk|preview|bonus disc|not for sale)\b/i.test(lower)) score -= 150;
+    // 6. Heavy penalties for non-commercial or test versions
+    if (/\b(demo|taikenban|trial|sample)\b/i.test(lower)) score -= 500;
+    if (/\b(beta|proto|prototype)\b/i.test(lower)) score -= 400;
+    if (/\b(promo|kiosk|preview|bonus disc|not for sale)\b/i.test(lower)) score -= 300;
 
     return score;
   }
@@ -888,15 +918,23 @@
         };
       });
 
+      // ALWAYS PRE-SORT BY POPULARITY DESCENDING
+      groupedList.sort((a, b) => {
+        if (b.popularityScore !== a.popularityScore) {
+          return b.popularityScore - a.popularityScore;
+        }
+        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+      });
+
       state.groupedGames = groupedList;
 
-      // Update Banner Stats (Unique Games)
+      // Update Banner Stats (Total Unique Games only - cover % hidden per user request)
       const totalUnique = state.groupedGames.length;
-      const coversCount = state.groupedGames.filter((g) => g.hasCover).length;
-      const coverPercent = totalUnique > 0 ? Math.round((coversCount / totalUnique) * 100) : 0;
 
-      if (dom.bannerTotalGames) dom.bannerTotalGames.textContent = `${totalUnique.toLocaleString('pt-BR')} Únicos`;
-      if (dom.bannerWithCovers) dom.bannerWithCovers.textContent = `${coversCount.toLocaleString('pt-BR')} (${coverPercent}%)`;
+      if (dom.bannerTotalGames) dom.bannerTotalGames.textContent = `${totalUnique.toLocaleString('pt-BR')} Títulos`;
+      if (dom.bannerWithCovers && dom.bannerWithCovers.parentElement) {
+        dom.bannerWithCovers.parentElement.style.display = 'none';
+      }
 
       // Apply initial filters and popularity sorting
       applyFilterAndSort();
@@ -909,7 +947,7 @@
   }
 
   // --------------------------------------------------------------------------
-  // Filtering & Sorting (Default: Mais Populares)
+  // Filtering & Sorting (2 Options: Mais Populares [default] & Ordem Alfabética)
   // --------------------------------------------------------------------------
   function applyFilterAndSort() {
     let result = state.groupedGames;
@@ -936,35 +974,18 @@
       result = result.filter((g) => g.regions.has('Europa'));
     } else if (state.selectedRegion === 'jp') {
       result = result.filter((g) => g.regions.has('Japão'));
-    } else if (state.selectedRegion === 'with_cover') {
-      result = result.filter((g) => g.hasCover);
     }
 
-    // Sorting (Default: Popularity Descending)
+    // Sorting (Exactly 2 options: 'popular' by default, or 'az')
     result.sort((a, b) => {
-      if (state.sortBy === 'popular_desc') {
+      if (state.sortBy === 'popular') {
         if (b.popularityScore !== a.popularityScore) {
           return b.popularityScore - a.popularityScore;
         }
         return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
       }
-      if (state.sortBy === 'title_asc') {
-        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
-      }
-      if (state.sortBy === 'title_desc') {
-        return b.displayTitle.localeCompare(a.displayTitle, 'pt-BR');
-      }
-      if (state.sortBy === 'size_desc') {
-        const sizeA = a.versions[0]?.sizeBytes || 0;
-        const sizeB = b.versions[0]?.sizeBytes || 0;
-        return sizeB - sizeA;
-      }
-      if (state.sortBy === 'size_asc') {
-        const sizeA = a.versions[0]?.sizeBytes || 0;
-        const sizeB = b.versions[0]?.sizeBytes || 0;
-        return sizeA - sizeB;
-      }
-      return b.popularityScore - a.popularityScore;
+      // 'az'
+      return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
     });
 
     state.filteredGames = result;
@@ -972,7 +993,7 @@
 
     // Update Counter text
     if (dom.resultsCountText) {
-      dom.resultsCountText.innerHTML = `Exibindo <strong>${result.length.toLocaleString('pt-BR')}</strong> títulos únicos de <strong>${state.groupedGames.length.toLocaleString('pt-BR')}</strong>`;
+      dom.resultsCountText.innerHTML = `Exibindo <strong>${result.length.toLocaleString('pt-BR')}</strong> títulos de <strong>${state.groupedGames.length.toLocaleString('pt-BR')}</strong>`;
     }
 
     dom.gamesContainer.innerHTML = '';
@@ -1340,10 +1361,11 @@
       });
     }
 
-    // Sort select
+    // Sort select (Exactly 2 options: popular [default] and az)
     if (dom.sortSelect) {
+      dom.sortSelect.value = state.sortBy || 'popular';
       dom.sortSelect.addEventListener('change', (e) => {
-        state.sortBy = e.target.value;
+        state.sortBy = e.target.value === 'az' ? 'az' : 'popular';
         applyFilterAndSort();
       });
     }
