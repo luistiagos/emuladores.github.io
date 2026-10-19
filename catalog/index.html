@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Catálogo Oficial de Jogos - Digital Store Games</title>
+  <meta name="description" content="Explore o catálogo completo de jogos retrô e modernos da Digital Store Games. PS2, Wii, PS3, Xbox 360, PS1, PSP, Dreamcast, Switch e muito mais com capas em alta definição e artes 3D.">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Catálogo Oficial de Jogos - Digital Store Games">
+  <meta property="og:description" content="Explore milhares de jogos com capas oficiais em 3D, filtros rápidos e atualizações automáticas em tempo real.">
+  <meta property="og:image" content="../images/digitalstoregames.webp">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/webp" href="../images/digitalstoregames.webp">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./catalog.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       Sticky Glassmorphic Navigation Header
+       ======================================================================== -->
+  <header class="catalog-header" id="mainHeader">
+    <div class="header-inner">
+      <div class="header-top">
+        <a href="../" class="brand-section" title="Voltar para a página inicial">
+          <img src="../images/digitalstoregames.webp" alt="Digital Store Games" class="brand-logo-img" onerror="this.style.display='none'">
+          <div class="brand-title-wrap">
+            <div class="brand-title">
+              Digital Store Games
+              <span class="brand-badge">Catálogo</span>
+            </div>
+            <span class="brand-subtitle">Biblioteca Central de Jogos & Emulação</span>
+          </div>
+        </a>
+
+        <div class="header-actions">
+          <button class="action-btn btn-refresh" id="refreshBtn" title="Atualizar dados diretamente da base">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+            </svg>
+            <span>Atualizar</span>
+          </button>
+          
+          <a href="https://wa.me/5541996260115?text=Ol%C3%A1!%20Gostaria%20de%20tirar%20d%C3%BAvidas%20sobre%20o%20cat%C3%A1logo%20de%20jogos!" target="_blank" rel="noopener noreferrer" class="action-btn btn-whatsapp" title="Falar no WhatsApp">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.062-2.121-.527-1.464-.604-2.477-2.091-2.55-2.19-.074-.099-.607-.808-.607-1.543s.385-1.1.522-1.248c.137-.148.3-.186.4-.186.101 0 .202.002.29.006.094.004.22-.036.344.262.129.311.44 1.073.479 1.152.039.079.066.172.013.277-.053.106-.08.172-.158.264-.079.092-.166.206-.237.276-.08.077-.163.161-.07.321.093.16.413.682.886 1.103.608.541 1.121.708 1.281.787.16.079.254.066.348-.043.094-.108.404-.47.511-.631.108-.16.216-.134.364-.079.148.054.945.446 1.108.527.162.081.27.122.31.19.04.068.04.394-.104.799z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Console / Platform Selector Tabs -->
+      <nav class="platform-tabs-scroll" id="platformTabs" aria-label="Consoles e Plataformas">
+        <!-- Rendered dynamically by catalog.js -->
+      </nav>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       Active Console Hero Banner
+       ======================================================================== -->
+  <section class="platform-banner" aria-label="Informações da Plataforma">
+    <div class="banner-card" id="bannerCard">
+      <div class="banner-info">
+        <div class="banner-title-row">
+          <h1 class="banner-title" id="bannerTitle">PlayStation 2</h1>
+          <span class="banner-status-badge">
+            <span class="dot"></span>
+            Base Atualizada
+          </span>
+        </div>
+        <p class="banner-tagline" id="bannerTagline">A maior biblioteca de jogos do lendário PS2</p>
+      </div>
+
+      <div class="banner-stats">
+        <div class="stat-item">
+          <span class="stat-val" id="bannerTotalGames">--</span>
+          <span class="stat-label">Jogos Disponíveis</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" id="bannerWithCovers" style="color: #38bdf8;">--</span>
+          <span class="stat-label">Com Capas HD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Controls Toolbar: Search, Filters & Views
+       ======================================================================== -->
+  <section class="catalog-toolbar" aria-label="Filtros e Busca">
+    <div class="toolbar-card">
+      <div class="search-and-modes">
+        <div class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Buscar jogo por título, região, gênero..." 
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" title="Limpar busca">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="toolbar-controls">
+          <select id="sortSelect" class="control-select" aria-label="Ordenar por">
+            <option value="title_asc">Nome (A - Z)</option>
+            <option value="title_desc">Nome (Z - A)</option>
+            <option value="size_desc">Tamanho (Maior)</option>
+            <option value="size_asc">Tamanho (Menor)</option>
+          </select>
+
+          <div class="view-toggle-wrap">
+            <button id="viewGridBtn" class="view-toggle-btn active" title="Visualização em Grade 3D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button id="viewListBtn" class="view-toggle-btn" title="Visualização em Lista">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="filter-chips-row" id="regionChips">
+        <span class="filter-chip-label">Filtros:</span>
+        <button class="filter-chip active" data-region="all">Todos</button>
+        <button class="filter-chip" data-region="br">🇧🇷 Brasil / PT-BR</button>
+        <button class="filter-chip" data-region="usa">🇺🇸 USA</button>
+        <button class="filter-chip" data-region="eur">🇪🇺 Europa</button>
+        <button class="filter-chip" data-region="jp">🇯🇵 Japão</button>
+        <button class="filter-chip" data-region="with_cover">🖼️ Apenas com Capa</button>
+      </div>
+
+      <!-- Counter -->
+      <div class="results-count-bar">
+        <span id="resultsCountText">Carregando catálogo...</span>
+        <span style="font-size: 0.7rem; color: var(--text-muted);">Pressione <strong>/</strong> para buscar</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Main Content: Games Grid / List View
+       ======================================================================== -->
+  <main class="catalog-main">
+    <div id="gamesContainer" class="games-grid">
+      <!-- Games rendered dynamically by catalog.js -->
+    </div>
+
+    <!-- Infinite Scroll Sentinel -->
+    <div id="scrollSentinel" class="scroll-sentinel" style="display: none;">
+      <div class="spinner" style="width: 24px; height: 24px; border-width: 2px;"></div>
+      <span style="margin-left: 0.6rem;">Carregando mais títulos...</span>
+    </div>
+  </main>
+
+  <!-- ========================================================================
+       Game Details Modal
+       ======================================================================== -->
+  <div class="modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-dialog">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Fechar modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-content-grid">
+        <div class="modal-cover-column">
+          <div class="modal-box-art" id="modalBoxArt">
+            <!-- Box Art Rendered Here -->
+          </div>
+        </div>
+
+        <div class="modal-details-column">
+          <div class="modal-header-info">
+            <span class="modal-console-badge" id="modalConsoleBadge">PlayStation 2</span>
+            <h2 class="modal-title" id="modalTitle">Nome do Jogo</h2>
+            <div class="modal-tags-row" id="modalTags">
+              <!-- Tags rendered here -->
+            </div>
+          </div>
+
+          <div class="modal-meta-table">
+            <span class="meta-label">Formato:</span>
+            <span class="meta-val" id="modalFormat">ISO</span>
+
+            <span class="meta-label">Tamanho:</span>
+            <span class="meta-val" id="modalSize">--</span>
+
+            <span class="meta-label">Região:</span>
+            <span class="meta-val" id="modalRegion">--</span>
+
+            <span class="meta-label">Gênero:</span>
+            <span class="meta-val" id="modalGenre">--</span>
+
+            <span class="meta-label">Arquivo:</span>
+            <span class="meta-val" id="modalFilename" style="font-family: var(--font-mono); font-size: 0.72rem;">--</span>
+          </div>
+
+          <div class="modal-actions">
+            <a href="#" target="_blank" rel="noopener noreferrer" class="modal-btn primary" id="modalWhatsAppBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.062-2.121-.527-1.464-.604-2.477-2.091-2.55-2.19-.074-.099-.607-.808-.607-1.543s.385-1.1.522-1.248c.137-.148.3-.186.4-.186.101 0 .202.002.29.006.094.004.22-.036.344.262.129.311.44 1.073.479 1.152.039.079.066.172.013.277-.053.106-.08.172-.158.264-.079.092-.166.206-.237.276-.08.077-.163.161-.07.321.093.16.413.682.886 1.103.608.541 1.121.708 1.281.787.16.079.254.066.348-.043.094-.108.404-.47.511-.631.108-.16.216-.134.364-.079.148.054.945.446 1.108.527.162.081.27.122.31.19.04.068.04.394-.104.799z"/>
+              </svg>
+              <span>Pedir no WhatsApp</span>
+            </a>
+
+            <button class="modal-btn secondary" id="modalCopyBtn" title="Copiar nome do jogo">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copiar Título</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast">Mensagem copiada!</div>
+
+  <!-- ========================================================================
+       Footer
+       ======================================================================== -->
+  <footer class="catalog-footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="../">Início</a>
+        <a href="../areacliente/">Área do Cliente</a>
+        <a href="../recuperaracesso/">Recuperar Acesso</a>
+        <a href="../termoservico.html">Termos de Serviço</a>
+        <a href="../politica-de-privacidade.html">Política de Privacidade</a>
+      </div>
+      <p>© 2026 Digital Store Games. Todos os direitos reservados. Catálogo oficial sincronizado com a base de dados central.</p>
+    </div>
+  </footer>
+
+  <!-- Script Application -->
+  <script src="./catalog.js"></script>
+</body>
+</html>
