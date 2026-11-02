@@ -1,34 +1,26 @@
+# -*- coding: utf-8 -*-
 import os
+import json
 
-catalog_dir = r"C:\projects\digitalstoregamesproject\emuladores.github.io\catalog"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+catalog_dir = os.path.join(base_dir, "catalog")
 template_file = os.path.join(catalog_dir, "index.html")
 
 with open(template_file, "r", encoding="utf-8") as f:
     template = f.read()
 
-platforms = [
-    ("ps2", "PlayStation 2"),
-    ("wii", "Nintendo Wii"),
-    ("ps3", "PlayStation 3"),
-    ("xbox360", "Xbox 360"),
-    ("ps1", "PlayStation 1"),
-    ("psp", "PlayStation Portable"),
-    ("dreamcast", "Sega Dreamcast"),
-    ("switch", "Nintendo Switch"),
-    ("gamecube", "Nintendo GameCube"),
-    ("nds", "Nintendo DS"),
-    ("3ds", "Nintendo 3DS"),
-    ("snes", "Super Nintendo"),
-    ("n64", "Nintendo 64"),
-    ("megadrive", "Mega Drive"),
-    ("saturn", "Sega Saturn"),
-    ("xbox", "Original Xbox"),
-    ("ps2_futebol", "PS2 Patchs Futebol"),
-    ("ps2patchs_gta_games", "PS2 Patchs GTA"),
-]
+# Load compiled platforms
+platforms_json_path = os.path.join(r"C:\projects\digitalstoregamesproject\scratch\compiled_platforms.json")
+with open(platforms_json_path, "r", encoding="utf-8") as f:
+    platforms = json.load(f)
 
-# Create per-platform subdirectories and index.html
-for plat_id, plat_name in platforms:
+print(f"Loaded {len(platforms)} platforms for generation.")
+
+# 1. Create per-platform subdirectories and index.html
+created_count = 0
+for p in platforms:
+    plat_id = p["id"]
+    plat_name = p["name"]
     sub_dir = os.path.join(catalog_dir, plat_id)
     os.makedirs(sub_dir, exist_ok=True)
 
@@ -49,9 +41,39 @@ for plat_id, plat_name in platforms:
     out_file = os.path.join(sub_dir, "index.html")
     with open(out_file, "w", encoding="utf-8") as out_f:
         out_f.write(sub_html)
-    print(f"Created {plat_id}/index.html")
+    created_count += 1
 
-# Update legacy redirect files
+print(f"Created/updated {created_count} platform subdirectories with index.html.")
+
+# 2. Aliases (e.g. psx -> ps1)
+aliases = {
+    "psx": "ps1",
+    "lynx": "camplynx",
+    "samcoupe": "simcoupe",
+}
+
+for alias_id, target_id in aliases.items():
+    alias_dir = os.path.join(catalog_dir, alias_id)
+    os.makedirs(alias_dir, exist_ok=True)
+    alias_html = f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url=../{target_id}/">
+  <title>Redirecionando para o Catálogo...</title>
+  <script>location.replace('../{target_id}/');</script>
+</head>
+<body style="background:#080b11;color:#fff;font-family:sans-serif;text-align:center;padding:3rem;">
+  <p>Redirecionando para o catálogo oficial...</p>
+  <p><a href="../{target_id}/" style="color:#0072ce;">Clique aqui se não for redirecionado automaticamente.</a></p>
+</body>
+</html>
+"""
+    with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as af:
+        af.write(alias_html)
+    print(f"Created alias directory {alias_id}/ -> ../{target_id}/")
+
+# 3. Legacy .html files redirecting to folders
 redirect_map = {
     "ps2.html": "ps2",
     "wii.html": "wii",
@@ -84,3 +106,5 @@ for old_file, target in redirect_map.items():
     with open(file_path, "w", encoding="utf-8") as rf:
         rf.write(content)
     print(f"Updated redirect {old_file} -> {target}/")
+
+print("All catalog pages generated successfully!")
