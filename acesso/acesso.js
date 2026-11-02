@@ -1,0 +1,4108 @@
+/**
+ * DIGITAL STORE GAMES - PAGINA DE ACESSO & DOWNLOADS
+ * Baseada no catalogo de jogos com autenticacao via Area de Membros (JWT),
+ * filtragem estrita por direitos canonicos (direito.py /user/systems)
+ * e download direto de ROMs via game.link.
+ */
+
+(function () {
+  'use strict';
+
+  const MEMBER_AREA_LOGIN_URL = 'https://digitalmemberarea.digitalstoregames.com/login';
+  const BACKEND_SYSTEMS_URL = 'https://digitalstoregames.pythonanywhere.com/api/app/user/systems';
+
+  // --------------------------------------------------------------------------
+  // Definicao de Todas as 169 Plataformas
+  // --------------------------------------------------------------------------
+  const ALL_PLATFORMS = [
+  {
+    "id": "ps2",
+    "name": "PlayStation 2",
+    "shortName": "PS2",
+    "mnemonic": "ps2",
+    "company": "Sony",
+    "color": "#003791",
+    "accent": "#0072ce",
+    "headerBg": "#002666",
+    "caseClass": "case-ps2",
+    "libretro": "Sony_-_PlayStation_2",
+    "tagline": "A maior e mais lendária biblioteca de jogos de todos os tempos",
+    "approxCount": "19.723 Jogos",
+    "romCount": 19723
+  },
+  {
+    "id": "wii",
+    "name": "Nintendo Wii",
+    "shortName": "Wii",
+    "mnemonic": "wii",
+    "company": "Nintendo",
+    "color": "#00b2e3",
+    "accent": "#00e5ff",
+    "headerBg": "#f8fafc",
+    "caseClass": "case-wii",
+    "libretro": "Nintendo_-_Wii",
+    "tagline": "Clássicos memoráveis e diversão com controle por movimento",
+    "approxCount": "1.462 Jogos",
+    "romCount": 1462
+  },
+  {
+    "id": "ps3",
+    "name": "PlayStation 3",
+    "shortName": "PS3",
+    "mnemonic": "ps3",
+    "company": "Sony",
+    "color": "#1e1e24",
+    "accent": "#ff0033",
+    "headerBg": "#2b2b2b",
+    "caseClass": "case-ps3",
+    "libretro": "Sony_-_PlayStation_3",
+    "tagline": "A era de ouro em alta definição e grandes narrativas cinematográficas",
+    "approxCount": "4.347 Jogos",
+    "romCount": 4347
+  },
+  {
+    "id": "xbox360",
+    "name": "Xbox 360",
+    "shortName": "Xbox 360",
+    "mnemonic": "xbox360",
+    "company": "Microsoft",
+    "color": "#107c10",
+    "accent": "#52b043",
+    "headerBg": "#107c10",
+    "caseClass": "case-xbox360",
+    "libretro": "Microsoft_-_Xbox_360",
+    "tagline": "Coleção completa dos maiores sucessos da geração Xbox 360",
+    "approxCount": "6.543 Jogos",
+    "romCount": 6543
+  },
+  {
+    "id": "ps1",
+    "name": "PlayStation 1",
+    "shortName": "PS1",
+    "mnemonic": "psx",
+    "company": "Sony",
+    "color": "#3f4652",
+    "accent": "#00f0ff",
+    "headerBg": "#3f4652",
+    "caseClass": "case-ps1",
+    "libretro": "Sony_-_PlayStation",
+    "tagline": "Os clássicos pioneiros em 32-bits que revolucionaram o mundo dos games",
+    "approxCount": "2.975 Jogos",
+    "romCount": 2975
+  },
+  {
+    "id": "psp",
+    "name": "PlayStation Portable",
+    "shortName": "PSP",
+    "mnemonic": "psp",
+    "company": "Sony",
+    "color": "#1a1e28",
+    "accent": "#f5a623",
+    "headerBg": "#1a1e28",
+    "caseClass": "case-psp",
+    "libretro": "Sony_-_PlayStation_Portable",
+    "tagline": "O melhor videogame portátil da Sony com gráficos surpreendentes",
+    "approxCount": "1.860 Jogos",
+    "romCount": 1860
+  },
+  {
+    "id": "dreamcast",
+    "name": "Sega Dreamcast",
+    "shortName": "Dreamcast",
+    "mnemonic": "dreamcast",
+    "company": "Sega",
+    "color": "#e85d04",
+    "accent": "#ff9100",
+    "headerBg": "#f8fafc",
+    "caseClass": "case-dreamcast",
+    "libretro": "Sega_-_Dreamcast",
+    "tagline": "O console inovador da Sega com arcades rápidos e inesquecíveis",
+    "approxCount": "3.209 Jogos",
+    "romCount": 3209
+  },
+  {
+    "id": "switch",
+    "name": "Nintendo Switch",
+    "shortName": "Switch",
+    "mnemonic": "switch",
+    "company": "Nintendo",
+    "color": "#e60012",
+    "accent": "#ff334b",
+    "headerBg": "#e60012",
+    "caseClass": "case-switch",
+    "libretro": "Nintendo_-_Nintendo_Switch",
+    "tagline": "Grandes sucessos modernos para jogar na TV ou em qualquer lugar",
+    "approxCount": "2.325 Jogos",
+    "romCount": 2325
+  },
+  {
+    "id": "gamecube",
+    "name": "Nintendo GameCube",
+    "shortName": "GameCube",
+    "mnemonic": "gamecube",
+    "company": "Nintendo",
+    "color": "#6b5ce7",
+    "accent": "#a29bfe",
+    "headerBg": "#6b5ce7",
+    "caseClass": "case-gamecube",
+    "libretro": "Nintendo_-_GameCube",
+    "tagline": "O cubo mágico da Nintendo com clássicos cultuados mundialmente",
+    "approxCount": "1.076 Jogos",
+    "romCount": 1076
+  },
+  {
+    "id": "nds",
+    "name": "Nintendo DS",
+    "shortName": "NDS",
+    "mnemonic": "nds",
+    "company": "Nintendo",
+    "color": "#4a4e69",
+    "accent": "#00d2d3",
+    "headerBg": "#4a4e69",
+    "caseClass": "case-nds",
+    "libretro": "Nintendo_-_Nintendo_DS",
+    "tagline": "A revolução das duas telas com milhares de opções criativas",
+    "approxCount": "2.772 Jogos",
+    "romCount": 2772
+  },
+  {
+    "id": "3ds",
+    "name": "Nintendo 3DS",
+    "shortName": "3DS",
+    "mnemonic": "3ds",
+    "company": "Nintendo",
+    "color": "#d63031",
+    "accent": "#ff7675",
+    "headerBg": "#d63031",
+    "caseClass": "case-3ds",
+    "libretro": "Nintendo_-_Nintendo_3DS",
+    "tagline": "A evolução tridimensional portátil da Nintendo com gráficos ricos",
+    "approxCount": "1.030 Jogos",
+    "romCount": 1030
+  },
+  {
+    "id": "snes",
+    "name": "Super Nintendo",
+    "shortName": "SNES",
+    "mnemonic": "snes",
+    "company": "Nintendo",
+    "color": "#833471",
+    "accent": "#b53471",
+    "headerBg": "#833471",
+    "caseClass": "case-snes",
+    "libretro": "Nintendo_-_Super_Nintendo_Entertainment_System",
+    "tagline": "A obra-prima dos 16-bits com a época de ouro das aventuras 2D",
+    "approxCount": "3.656 Jogos",
+    "romCount": 3656
+  },
+  {
+    "id": "n64",
+    "name": "Nintendo 64",
+    "shortName": "N64",
+    "mnemonic": "n64",
+    "company": "Nintendo",
+    "color": "#009432",
+    "accent": "#2ed573",
+    "headerBg": "#009432",
+    "caseClass": "case-n64",
+    "libretro": "Nintendo_-_Nintendo_64",
+    "tagline": "A transição pioneira para mundos 3D com clássicos épicos",
+    "approxCount": "1.237 Jogos",
+    "romCount": 1237
+  },
+  {
+    "id": "megadrive",
+    "name": "Mega Drive / Genesis",
+    "shortName": "Mega Drive",
+    "mnemonic": "megadrive",
+    "company": "Sega",
+    "color": "#2c3e50",
+    "accent": "#3498db",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-megadrive",
+    "libretro": "Sega_-_Mega_Drive_-_Genesis",
+    "tagline": "A velocidade de Sonic e a atitude marcante dos 16-bits da Sega",
+    "approxCount": "1.633 Jogos",
+    "romCount": 1633
+  },
+  {
+    "id": "saturn",
+    "name": "Sega Saturn",
+    "shortName": "Saturn",
+    "mnemonic": "saturn",
+    "company": "Sega",
+    "color": "#2f3542",
+    "accent": "#ffa502",
+    "headerBg": "#2f3542",
+    "caseClass": "case-saturn",
+    "libretro": "Sega_-_Saturn",
+    "tagline": "O poder incomparável dos jogos de luta 2D e clássicos 3D da Sega",
+    "approxCount": "296 Jogos",
+    "romCount": 296
+  },
+  {
+    "id": "xbox",
+    "name": "Original Xbox",
+    "shortName": "Xbox Clássico",
+    "mnemonic": "xbox",
+    "company": "Microsoft",
+    "color": "#0e5a0e",
+    "accent": "#2ecc71",
+    "headerBg": "#0e5a0e",
+    "caseClass": "case-xbox",
+    "libretro": "Microsoft_-_Xbox",
+    "tagline": "O primeiro console da Microsoft que inaugurou o legado Xbox",
+    "approxCount": "2.728 Jogos",
+    "romCount": 2728
+  },
+  {
+    "id": "ps2_futebol",
+    "name": "PS2 Patchs Futebol",
+    "shortName": "Futebol & Bomba Patch",
+    "mnemonic": "ps2_futebol",
+    "company": "Mods & Patchs",
+    "color": "#1e3799",
+    "accent": "#4a69bd",
+    "headerBg": "#1e3799",
+    "caseClass": "case-ps2",
+    "libretro": "Sony_-_PlayStation_2",
+    "tagline": "Bomba Patch, PES atualizados, Brasileirão, Clubes Mundiais e edições raras",
+    "approxCount": "0 Jogos",
+    "romCount": 0
+  },
+  {
+    "id": "ps2patchs_gta_games",
+    "name": "PS2 Patchs GTA",
+    "shortName": "GTA Mods & Patchs",
+    "mnemonic": "ps2patchs_gta_games",
+    "company": "Mods & Patchs",
+    "color": "#e55039",
+    "accent": "#eb2f06",
+    "headerBg": "#e55039",
+    "caseClass": "case-ps2",
+    "libretro": "Sony_-_PlayStation_2",
+    "tagline": "Modificações lendárias de GTA: Rio de Janeiro, Tropa de Elite, Dragon Ball e mais",
+    "approxCount": "0 Jogos",
+    "romCount": 0
+  },
+  {
+    "id": "3do",
+    "name": "3DO Interactive Multiplayer",
+    "shortName": "3DO",
+    "mnemonic": "3do",
+    "company": "Outros",
+    "color": "#b33939",
+    "accent": "#e74c3c",
+    "headerBg": "#b33939",
+    "caseClass": "case-3do",
+    "libretro": "",
+    "tagline": "O avançado console multimídia de 32-bits idealizado por Trip Hawkins",
+    "approxCount": "619 Jogos",
+    "romCount": 619
+  },
+  {
+    "id": "adam",
+    "name": "Coleco ADAM",
+    "shortName": "Coleco ADAM",
+    "mnemonic": "adam",
+    "company": "Outros",
+    "color": "#2c3e50",
+    "accent": "#e67e22",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-adam",
+    "libretro": "",
+    "tagline": "O computador de expansão da Coleco compatível com os cartuchos do ColecoVision",
+    "approxCount": "27 Jogos",
+    "romCount": 27
+  },
+  {
+    "id": "advision",
+    "name": "Entex Adventure Vision",
+    "shortName": "Adventure Vision",
+    "mnemonic": "advision",
+    "company": "Outros",
+    "color": "#ea8685",
+    "accent": "#e66767",
+    "headerBg": "#ea8685",
+    "caseClass": "case-advision",
+    "libretro": "",
+    "tagline": "Raríssimo console com tela mecânica de espelho giratório e LEDs vermelhos",
+    "approxCount": "4 Jogos",
+    "romCount": 4
+  },
+  {
+    "id": "amiga1200",
+    "name": "Commodore Amiga 1200",
+    "shortName": "Amiga 1200",
+    "mnemonic": "amiga1200",
+    "company": "Commodore",
+    "color": "#34495e",
+    "accent": "#e67e22",
+    "headerBg": "#34495e",
+    "caseClass": "case-amiga1200",
+    "libretro": "",
+    "tagline": "A poderosa arquitetura AGA da Commodore com gráficos em até 256 cores na tela",
+    "approxCount": "119 Jogos",
+    "romCount": 119
+  },
+  {
+    "id": "amiga500",
+    "name": "Commodore Amiga 500",
+    "shortName": "Amiga 500",
+    "mnemonic": "amiga500",
+    "company": "Commodore",
+    "color": "#2c3e50",
+    "accent": "#e74c3c",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-amiga500",
+    "libretro": "",
+    "tagline": "O computador multimídia mais venerado da história com gráficos e som incomparáveis",
+    "approxCount": "1.597 Jogos",
+    "romCount": 1597
+  },
+  {
+    "id": "amigacd32",
+    "name": "Amiga CD32",
+    "shortName": "Amiga CD32",
+    "mnemonic": "amigacd32",
+    "company": "Commodore",
+    "color": "#2c2c54",
+    "accent": "#706fd3",
+    "headerBg": "#2c2c54",
+    "caseClass": "case-amigacd32",
+    "libretro": "",
+    "tagline": "O primeiro console de 32-bits baseado em CD lançado no Ocidente",
+    "approxCount": "200 Jogos",
+    "romCount": 200
+  },
+  {
+    "id": "amigacdtv",
+    "name": "Commodore CDTV",
+    "shortName": "CDTV",
+    "mnemonic": "amigacdtv",
+    "company": "Commodore",
+    "color": "#192a56",
+    "accent": "#40739e",
+    "headerBg": "#192a56",
+    "caseClass": "case-amigacdtv",
+    "libretro": "",
+    "tagline": "O aparelho multimídia pioneiro com controle remoto sem fio e CD-ROM",
+    "approxCount": "64 Jogos",
+    "romCount": 64
+  },
+  {
+    "id": "amstradcpc",
+    "name": "Amstrad CPC",
+    "shortName": "Amstrad CPC",
+    "mnemonic": "amstradcpc",
+    "company": "Computadores",
+    "color": "#2ed573",
+    "accent": "#ffa502",
+    "headerBg": "#2ed573",
+    "caseClass": "case-amstradcpc",
+    "libretro": "",
+    "tagline": "O famoso computador tudo-em-um britânico com grande presença na Europa",
+    "approxCount": "4.237 Jogos",
+    "romCount": 4237
+  },
+  {
+    "id": "apfm1000",
+    "name": "APF Imagination Machine",
+    "shortName": "APF M-1000",
+    "mnemonic": "apfm1000",
+    "company": "Outros",
+    "color": "#596275",
+    "accent": "#e15f41",
+    "headerBg": "#596275",
+    "caseClass": "case-apfm1000",
+    "libretro": "",
+    "tagline": "Videogame de cartuchos que se acoplava a um computador completo com teclado",
+    "approxCount": "12 Jogos",
+    "romCount": 12
+  },
+  {
+    "id": "apple2",
+    "name": "Apple II",
+    "shortName": "Apple II",
+    "mnemonic": "apple2",
+    "company": "Computadores",
+    "color": "#ffa502",
+    "accent": "#2ed573",
+    "headerBg": "#ffa502",
+    "caseClass": "case-apple2",
+    "libretro": "",
+    "tagline": "A obra-prima criada por Steve Wozniak que inaugurou a revolução dos PCs",
+    "approxCount": "1.235 Jogos",
+    "romCount": 1235
+  },
+  {
+    "id": "apple2gs",
+    "name": "Apple IIGS",
+    "shortName": "Apple IIGS",
+    "mnemonic": "apple2gs",
+    "company": "Computadores",
+    "color": "#eccc68",
+    "accent": "#ff7f50",
+    "headerBg": "#eccc68",
+    "caseClass": "case-apple2gs",
+    "libretro": "",
+    "tagline": "O mais poderoso computador da linha Apple II com chip de som Ensoniq",
+    "approxCount": "589 Jogos",
+    "romCount": 589
+  },
+  {
+    "id": "aquarius",
+    "name": "Mattel Aquarius",
+    "shortName": "Aquarius",
+    "mnemonic": "aquarius",
+    "company": "Outros",
+    "color": "#3867d6",
+    "accent": "#45aaf2",
+    "headerBg": "#3867d6",
+    "caseClass": "case-aquarius",
+    "libretro": "",
+    "tagline": "O compacto computador doméstico lançado pela Mattel no início dos anos 80",
+    "approxCount": "55 Jogos",
+    "romCount": 55
+  },
+  {
+    "id": "arcadia",
+    "name": "Emerson Arcadia 2001",
+    "shortName": "Arcadia 2001",
+    "mnemonic": "arcadia",
+    "company": "Outros",
+    "color": "#3dc1d3",
+    "accent": "#63cdda",
+    "headerBg": "#3dc1d3",
+    "caseClass": "case-arcadia",
+    "libretro": "",
+    "tagline": "Console de 8-bits da segunda geração com dezenas de variantes internacionais",
+    "approxCount": "73 Jogos",
+    "romCount": 73
+  },
+  {
+    "id": "archimedes",
+    "name": "Acorn Archimedes",
+    "shortName": "Archimedes",
+    "mnemonic": "archimedes",
+    "company": "Computadores",
+    "color": "#cd6133",
+    "accent": "#33d9b2",
+    "headerBg": "#cd6133",
+    "caseClass": "case-archimedes",
+    "libretro": "",
+    "tagline": "O computador histórico que estreou no mundo a célebre arquitetura de processadores ARM",
+    "approxCount": "139 Jogos",
+    "romCount": 139
+  },
+  {
+    "id": "arduboy",
+    "name": "Arduboy Open Games",
+    "shortName": "Arduboy",
+    "mnemonic": "arduboy",
+    "company": "Engines & Ports",
+    "color": "#1e272e",
+    "accent": "#00cec9",
+    "headerBg": "#1e272e",
+    "caseClass": "case-arduboy",
+    "libretro": "",
+    "tagline": "O videogame portátil do tamanho de um cartão de crédito programável com Arduino",
+    "approxCount": "517 Jogos",
+    "romCount": 517
+  },
+  {
+    "id": "astrocade",
+    "name": "Bally Astrocade",
+    "shortName": "Astrocade",
+    "mnemonic": "astrocade",
+    "company": "Outros",
+    "color": "#574b90",
+    "accent": "#f78fb3",
+    "headerBg": "#574b90",
+    "caseClass": "case-astrocade",
+    "libretro": "",
+    "tagline": "Console de videogame e computador dos anos 70 com excelente capacidade gráfica",
+    "approxCount": "20 Jogos",
+    "romCount": 20
+  },
+  {
+    "id": "atari2600",
+    "name": "Atari 2600",
+    "shortName": "Atari 2600",
+    "mnemonic": "atari2600",
+    "company": "Atari",
+    "color": "#c0392b",
+    "accent": "#e74c3c",
+    "headerBg": "#c0392b",
+    "caseClass": "case-atari2600",
+    "libretro": "",
+    "tagline": "O console mais emblemático dos anos 70 e 80 que popularizou os videogames",
+    "approxCount": "803 Jogos",
+    "romCount": 803
+  },
+  {
+    "id": "atari5200",
+    "name": "Atari 5200",
+    "shortName": "Atari 5200",
+    "mnemonic": "atari5200",
+    "company": "Atari",
+    "color": "#34495e",
+    "accent": "#e67e22",
+    "headerBg": "#34495e",
+    "caseClass": "case-atari5200",
+    "libretro": "",
+    "tagline": "A avançada central de entretenimento da Atari com controles analógicos inovadores",
+    "approxCount": "119 Jogos",
+    "romCount": 119
+  },
+  {
+    "id": "atari7800",
+    "name": "Atari 7800",
+    "shortName": "Atari 7800",
+    "mnemonic": "atari7800",
+    "company": "Atari",
+    "color": "#2c3e50",
+    "accent": "#f39c12",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-atari7800",
+    "libretro": "",
+    "tagline": "O console com excelente fidelidade gráfica aos sucessos de fliperama da época",
+    "approxCount": "146 Jogos",
+    "romCount": 146
+  },
+  {
+    "id": "atari800",
+    "name": "Atari 8-bit",
+    "shortName": "Atari 8-bit",
+    "mnemonic": "atari800",
+    "company": "Atari",
+    "color": "#7f8c8d",
+    "accent": "#e74c3c",
+    "headerBg": "#7f8c8d",
+    "caseClass": "case-atari800",
+    "libretro": "",
+    "tagline": "A prestigiada linha de computadores domésticos da Atari com acervo gigante",
+    "approxCount": "5.494 Jogos",
+    "romCount": 5494
+  },
+  {
+    "id": "atarist",
+    "name": "Atari ST",
+    "shortName": "Atari ST",
+    "mnemonic": "atarist",
+    "company": "Atari",
+    "color": "#34495e",
+    "accent": "#3498db",
+    "headerBg": "#34495e",
+    "caseClass": "case-atarist",
+    "libretro": "",
+    "tagline": "O famoso computador de 16/32-bits muito cultuado por músicos e jogadores",
+    "approxCount": "437 Jogos",
+    "romCount": 437
+  },
+  {
+    "id": "atom",
+    "name": "Acorn Atom",
+    "shortName": "Acorn Atom",
+    "mnemonic": "atom",
+    "company": "Computadores",
+    "color": "#2c2c54",
+    "accent": "#b33939",
+    "headerBg": "#2c2c54",
+    "caseClass": "case-atom",
+    "libretro": "",
+    "tagline": "Computador doméstico pioneiro britânico do final dos anos 70",
+    "approxCount": "14 Jogos",
+    "romCount": 14
+  },
+  {
+    "id": "atomiswave",
+    "name": "Sammy Atomiswave",
+    "shortName": "Atomiswave",
+    "mnemonic": "atomiswave",
+    "company": "Arcade",
+    "color": "#e67e22",
+    "accent": "#f1c40f",
+    "headerBg": "#e67e22",
+    "caseClass": "case-atomiswave",
+    "libretro": "",
+    "tagline": "Placa arcade da Sammy com The King of Fighters XI, Metal Slug 6 e Dolphin Blue",
+    "approxCount": "34 Jogos",
+    "romCount": 34
+  },
+  {
+    "id": "bbcmicro",
+    "name": "BBC Micro",
+    "shortName": "BBC Micro",
+    "mnemonic": "bbcmicro",
+    "company": "Computadores",
+    "color": "#b33939",
+    "accent": "#cd6133",
+    "headerBg": "#b33939",
+    "caseClass": "case-bbcmicro",
+    "libretro": "",
+    "tagline": "O venerado computador educativo britânico onde nasceu o jogo Elite",
+    "approxCount": "44 Jogos",
+    "romCount": 44
+  },
+  {
+    "id": "c128",
+    "name": "Commodore 128",
+    "shortName": "C128",
+    "mnemonic": "c128",
+    "company": "Commodore",
+    "color": "#2c2c54",
+    "accent": "#474787",
+    "headerBg": "#2c2c54",
+    "caseClass": "case-c128",
+    "libretro": "",
+    "tagline": "O sucessor expandido do C64 com três modos de operação e maior memória",
+    "approxCount": "54 Jogos",
+    "romCount": 54
+  },
+  {
+    "id": "c20",
+    "name": "Commodore VIC-20",
+    "shortName": "VIC-20",
+    "mnemonic": "c20",
+    "company": "Commodore",
+    "color": "#706fd3",
+    "accent": "#ff5252",
+    "headerBg": "#706fd3",
+    "caseClass": "case-c20",
+    "libretro": "",
+    "tagline": "O primeiro computador da Commodore a ultrapassar 1 milhão de unidades vendidas",
+    "approxCount": "2.501 Jogos",
+    "romCount": 2501
+  },
+  {
+    "id": "c64",
+    "name": "Commodore 64",
+    "shortName": "C64",
+    "mnemonic": "c64",
+    "company": "Commodore",
+    "color": "#474787",
+    "accent": "#706fd3",
+    "headerBg": "#474787",
+    "caseClass": "case-c64",
+    "libretro": "",
+    "tagline": "O computador pessoal mais vendido de todos os tempos com o icônico chip de som SID",
+    "approxCount": "320 Jogos",
+    "romCount": 320
+  },
+  {
+    "id": "camplynx",
+    "name": "Atari Lynx",
+    "shortName": "Lynx",
+    "mnemonic": "camplynx",
+    "company": "Atari",
+    "color": "#2d3436",
+    "accent": "#00cec9",
+    "headerBg": "#2d3436",
+    "caseClass": "case-camplynx",
+    "libretro": "",
+    "tagline": "Coleção de jogos portáteis do clássico Atari Lynx",
+    "approxCount": "51 Jogos",
+    "romCount": 51
+  },
+  {
+    "id": "casloopy",
+    "name": "Casio Loopy",
+    "shortName": "Casio Loopy",
+    "mnemonic": "casloopy",
+    "company": "Outros",
+    "color": "#e056fd",
+    "accent": "#ff7979",
+    "headerBg": "#e056fd",
+    "caseClass": "case-casloopy",
+    "libretro": "",
+    "tagline": "O inovador console de 32-bits com impressora térmica embutida para criar adesivos",
+    "approxCount": "12 Jogos",
+    "romCount": 12
+  },
+  {
+    "id": "cave",
+    "name": "CAVE Arcade",
+    "shortName": "CAVE",
+    "mnemonic": "cave",
+    "company": "Arcade",
+    "color": "#962d3e",
+    "accent": "#e84118",
+    "headerBg": "#962d3e",
+    "caseClass": "case-cave",
+    "libretro": "",
+    "tagline": "As maiores obras de tiro frenético Danmaku e Bullet Hell de todos os tempos",
+    "approxCount": "24 Jogos",
+    "romCount": 24
+  },
+  {
+    "id": "cdi",
+    "name": "Philips CD-i",
+    "shortName": "Philips CD-i",
+    "mnemonic": "cdi",
+    "company": "Outros",
+    "color": "#1e272e",
+    "accent": "#00d2d3",
+    "headerBg": "#1e272e",
+    "caseClass": "case-cdi",
+    "libretro": "",
+    "tagline": "A pioneira central multimídia interativa da Philips com jogos exclusivos em CD",
+    "approxCount": "323 Jogos",
+    "romCount": 323
+  },
+  {
+    "id": "channelf",
+    "name": "Fairchild Channel F",
+    "shortName": "Channel F",
+    "mnemonic": "channelf",
+    "company": "Outros",
+    "color": "#303952",
+    "accent": "#e15f41",
+    "headerBg": "#303952",
+    "caseClass": "case-channelf",
+    "libretro": "",
+    "tagline": "O histórico primeiro videogame do mundo a utilizar cartuchos programáveis com ROM",
+    "approxCount": "34 Jogos",
+    "romCount": 34
+  },
+  {
+    "id": "chihiro",
+    "name": "Sega Chihiro",
+    "shortName": "Chihiro",
+    "mnemonic": "chihiro",
+    "company": "Sega",
+    "color": "#10ac84",
+    "accent": "#1dd1a1",
+    "headerBg": "#10ac84",
+    "caseClass": "case-chihiro",
+    "libretro": "",
+    "tagline": "Placa arcade da Sega baseada na poderosa arquitetura do primeiro Xbox",
+    "approxCount": "17 Jogos",
+    "romCount": 17
+  },
+  {
+    "id": "coco",
+    "name": "TRS-80 Color Computer",
+    "shortName": "CoCo",
+    "mnemonic": "coco",
+    "company": "Computadores",
+    "color": "#33d9b2",
+    "accent": "#218c74",
+    "headerBg": "#33d9b2",
+    "caseClass": "case-coco",
+    "libretro": "",
+    "tagline": "O clássico computador colorido da Tandy Radio Shack muito clonado no Brasil",
+    "approxCount": "153 Jogos",
+    "romCount": 153
+  },
+  {
+    "id": "colecovision",
+    "name": "ColecoVision",
+    "shortName": "ColecoVision",
+    "mnemonic": "colecovision",
+    "company": "Outros",
+    "color": "#2c3e50",
+    "accent": "#f1c40f",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-colecovision",
+    "libretro": "",
+    "tagline": "O console que trouxe a verdadeira qualidade gráfica dos fliperamas para a sala",
+    "approxCount": "200 Jogos",
+    "romCount": 200
+  },
+  {
+    "id": "cplus4",
+    "name": "Commodore Plus/4",
+    "shortName": "Plus/4",
+    "mnemonic": "cplus4",
+    "company": "Commodore",
+    "color": "#227093",
+    "accent": "#34ace0",
+    "headerBg": "#227093",
+    "caseClass": "case-cplus4",
+    "libretro": "",
+    "tagline": "Computador com paleta de 121 cores e aplicativos de escritório integrados",
+    "approxCount": "969 Jogos",
+    "romCount": 969
+  },
+  {
+    "id": "cps1",
+    "name": "Capcom Play System 1",
+    "shortName": "CPS-1",
+    "mnemonic": "cps1",
+    "company": "Arcade",
+    "color": "#f39c12",
+    "accent": "#f1c40f",
+    "headerBg": "#f39c12",
+    "caseClass": "case-cps1",
+    "libretro": "",
+    "tagline": "A placa de arcade que definiu os anos 90 com Street Fighter II e Final Fight",
+    "approxCount": "137 Jogos",
+    "romCount": 137
+  },
+  {
+    "id": "cps2",
+    "name": "Capcom Play System 2",
+    "shortName": "CPS-2",
+    "mnemonic": "cps2",
+    "company": "Arcade",
+    "color": "#2980b9",
+    "accent": "#3498db",
+    "headerBg": "#2980b9",
+    "caseClass": "case-cps2",
+    "libretro": "",
+    "tagline": "Os combates velozes de Street Fighter Alpha, Marvel vs Capcom e Dungeons & Dragons",
+    "approxCount": "241 Jogos",
+    "romCount": 241
+  },
+  {
+    "id": "cps3",
+    "name": "Capcom Play System 3",
+    "shortName": "CPS-3",
+    "mnemonic": "cps3",
+    "company": "Arcade",
+    "color": "#8e44ad",
+    "accent": "#9b59b6",
+    "headerBg": "#8e44ad",
+    "caseClass": "case-cps3",
+    "libretro": "",
+    "tagline": "O ápice da animação fluida 2D com Street Fighter III 3rd Strike e JoJo",
+    "approxCount": "6 Jogos",
+    "romCount": 6
+  },
+  {
+    "id": "crvision",
+    "name": "Creatronic CreatiVision",
+    "shortName": "CreatiVision",
+    "mnemonic": "crvision",
+    "company": "Outros",
+    "color": "#4834d4",
+    "accent": "#686de0",
+    "headerBg": "#4834d4",
+    "caseClass": "case-crvision",
+    "libretro": "",
+    "tagline": "Híbrido de videogame e computador doméstico com joysticks de teclado integrado",
+    "approxCount": "21 Jogos",
+    "romCount": 21
+  },
+  {
+    "id": "daphne",
+    "name": "Daphne Laserdisc",
+    "shortName": "Daphne",
+    "mnemonic": "daphne",
+    "company": "Arcade",
+    "color": "#8e44ad",
+    "accent": "#9b59b6",
+    "headerBg": "#8e44ad",
+    "caseClass": "case-daphne",
+    "libretro": "",
+    "tagline": "Os pioneiros jogos animados em Laserdisc como Dragon's Lair e Space Ace",
+    "approxCount": "14 Jogos",
+    "romCount": 14
+  },
+  {
+    "id": "dos",
+    "name": "MS-DOS",
+    "shortName": "MS-DOS",
+    "mnemonic": "dos",
+    "company": "Computadores",
+    "color": "#2f3542",
+    "accent": "#7bed9f",
+    "headerBg": "#2f3542",
+    "caseClass": "case-dos",
+    "libretro": "",
+    "tagline": "A época de ouro dos PCs com Doom, Prince of Persia, Monkey Island e Wolfenstein 3D",
+    "approxCount": "12.215 Jogos",
+    "romCount": 12215
+  },
+  {
+    "id": "easyrpg",
+    "name": "EasyRPG Player",
+    "shortName": "EasyRPG",
+    "mnemonic": "easyrpg",
+    "company": "Engines & Ports",
+    "color": "#34e7e4",
+    "accent": "#00d8d6",
+    "headerBg": "#34e7e4",
+    "caseClass": "case-easyrpg",
+    "libretro": "",
+    "tagline": "Executador livre de jogos criados com RPG Maker 2000 e RPG Maker 2003",
+    "approxCount": "221 Jogos",
+    "romCount": 221
+  },
+  {
+    "id": "fbneo",
+    "name": "Final Burn Neo",
+    "shortName": "FBNeo",
+    "mnemonic": "fbneo",
+    "company": "Arcade",
+    "color": "#c0392b",
+    "accent": "#e67e22",
+    "headerBg": "#c0392b",
+    "caseClass": "case-fbneo",
+    "libretro": "",
+    "tagline": "Milhares de clássicos dos fliperamas de Capcom, SNK, Konami e mais",
+    "approxCount": "1.820 Jogos",
+    "romCount": 1820
+  },
+  {
+    "id": "fds",
+    "name": "Famicom Disk System",
+    "shortName": "FDS",
+    "mnemonic": "fds",
+    "company": "Nintendo",
+    "color": "#d63031",
+    "accent": "#e17055",
+    "headerBg": "#d63031",
+    "caseClass": "case-fds",
+    "libretro": "",
+    "tagline": "O acessório com disquetes regraváveis que estreou Zelda e Metroid",
+    "approxCount": "269 Jogos",
+    "romCount": 269
+  },
+  {
+    "id": "flash",
+    "name": "Adobe Flash Games",
+    "shortName": "Flash Games",
+    "mnemonic": "flash",
+    "company": "Engines & Ports",
+    "color": "#ff3f34",
+    "accent": "#ef5777",
+    "headerBg": "#ff3f34",
+    "caseClass": "case-flash",
+    "libretro": "",
+    "tagline": "A era de ouro das animações e dos jogos inesquecíveis da internet dos anos 2000",
+    "approxCount": "5.337 Jogos",
+    "romCount": 5337
+  },
+  {
+    "id": "fm7",
+    "name": "Fujitsu FM-7",
+    "shortName": "FM-7",
+    "mnemonic": "fm7",
+    "company": "Computadores",
+    "color": "#ff6348",
+    "accent": "#ffa502",
+    "headerBg": "#ff6348",
+    "caseClass": "case-fm7",
+    "libretro": "",
+    "tagline": "Computador japonês de alta performance equipado com dois processadores 6809",
+    "approxCount": "209 Jogos",
+    "romCount": 209
+  },
+  {
+    "id": "fmtowns",
+    "name": "Fujitsu FM Towns",
+    "shortName": "FM Towns",
+    "mnemonic": "fmtowns",
+    "company": "Computadores",
+    "color": "#5352ed",
+    "accent": "#ff4757",
+    "headerBg": "#5352ed",
+    "caseClass": "case-fmtowns",
+    "libretro": "",
+    "tagline": "O pioneiro computador multimídia japonês com leitor de CD-ROM integrado de fábrica",
+    "approxCount": "273 Jogos",
+    "romCount": 273
+  },
+  {
+    "id": "fpinball",
+    "name": "Future Pinball",
+    "shortName": "Future Pinball",
+    "mnemonic": "fpinball",
+    "company": "Arcade",
+    "color": "#d35400",
+    "accent": "#f39c12",
+    "headerBg": "#d35400",
+    "caseClass": "case-fpinball",
+    "libretro": "",
+    "tagline": "Simulador de mesas de pinball com física realista e efeitos visuais",
+    "approxCount": "520 Jogos",
+    "romCount": 520
+  },
+  {
+    "id": "gaelco",
+    "name": "Gaelco Arcade",
+    "shortName": "Gaelco",
+    "mnemonic": "gaelco",
+    "company": "Arcade",
+    "color": "#2c3e50",
+    "accent": "#e74c3c",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-gaelco",
+    "libretro": "",
+    "tagline": "Fliperamas espanhóis memoráveis como World Rally, Alligator Hunt e Thunder Hoop",
+    "approxCount": "10 Jogos",
+    "romCount": 10
+  },
+  {
+    "id": "gamate",
+    "name": "Bit Corp Gamate",
+    "shortName": "Gamate",
+    "mnemonic": "gamate",
+    "company": "Outros",
+    "color": "#6ab04c",
+    "accent": "#badc58",
+    "headerBg": "#6ab04c",
+    "caseClass": "case-gamate",
+    "libretro": "",
+    "tagline": "Portátil taiwanês de 8-bits lançado para rivalizar com o Game Boy da Nintendo",
+    "approxCount": "58 Jogos",
+    "romCount": 58
+  },
+  {
+    "id": "gameandwatch",
+    "name": "Game & Watch",
+    "shortName": "Game & Watch",
+    "mnemonic": "gameandwatch",
+    "company": "Nintendo",
+    "color": "#b71540",
+    "accent": "#e55039",
+    "headerBg": "#b71540",
+    "caseClass": "case-gameandwatch",
+    "libretro": "",
+    "tagline": "Os clássicos aparelhos portáteis pioneiros de LCD dos anos 80",
+    "approxCount": "45 Jogos",
+    "romCount": 45
+  },
+  {
+    "id": "gamecom",
+    "name": "Tiger Game.com",
+    "shortName": "Game.com",
+    "mnemonic": "gamecom",
+    "company": "Outros",
+    "color": "#535c68",
+    "accent": "#c7ecee",
+    "headerBg": "#535c68",
+    "caseClass": "case-gamecom",
+    "libretro": "",
+    "tagline": "O primeiro console portátil com tela sensível ao toque e modem de internet",
+    "approxCount": "21 Jogos",
+    "romCount": 21
+  },
+  {
+    "id": "gamegear",
+    "name": "Sega Game Gear",
+    "shortName": "Game Gear",
+    "mnemonic": "gamegear",
+    "company": "Sega",
+    "color": "#2c3e50",
+    "accent": "#34495e",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-gamegear",
+    "libretro": "",
+    "tagline": "O poderoso portátil colorido com iluminação de tela e som estéreo",
+    "approxCount": "488 Jogos",
+    "romCount": 488
+  },
+  {
+    "id": "gamepock",
+    "name": "Epoch Game Pocket Computer",
+    "shortName": "Epoch Pocket",
+    "mnemonic": "gamepock",
+    "company": "Outros",
+    "color": "#30336b",
+    "accent": "#95afc0",
+    "headerBg": "#30336b",
+    "caseClass": "case-gamepock",
+    "libretro": "",
+    "tagline": "O segundo portátil da história a aceitar cartuchos de jogos intercambiáveis",
+    "approxCount": "5 Jogos",
+    "romCount": 5
+  },
+  {
+    "id": "gb",
+    "name": "Game Boy",
+    "shortName": "Game Boy",
+    "mnemonic": "gb",
+    "company": "Nintendo",
+    "color": "#7f8c8d",
+    "accent": "#95a5a6",
+    "headerBg": "#7f8c8d",
+    "caseClass": "case-gb",
+    "libretro": "",
+    "tagline": "O portátil revolucionário com tela verde e clássicos inesquecíveis",
+    "approxCount": "1.801 Jogos",
+    "romCount": 1801
+  },
+  {
+    "id": "gba",
+    "name": "Game Boy Advance",
+    "shortName": "GBA",
+    "mnemonic": "gba",
+    "company": "Nintendo",
+    "color": "#4834d4",
+    "accent": "#686de0",
+    "headerBg": "#4834d4",
+    "caseClass": "case-gba",
+    "libretro": "",
+    "tagline": "O Super Nintendo de bolso com uma das bibliotecas mais amadas",
+    "approxCount": "2.961 Jogos",
+    "romCount": 2961
+  },
+  {
+    "id": "gbc",
+    "name": "Game Boy Color",
+    "shortName": "Game Boy Color",
+    "mnemonic": "gbc",
+    "company": "Nintendo",
+    "color": "#8e44ad",
+    "accent": "#9b59b6",
+    "headerBg": "#8e44ad",
+    "caseClass": "case-gbc",
+    "libretro": "",
+    "tagline": "A explosão de cores na tela portátil da Nintendo",
+    "approxCount": "2.511 Jogos",
+    "romCount": 2511
+  },
+  {
+    "id": "gmaster",
+    "name": "Hartung Game Master",
+    "shortName": "Game Master",
+    "mnemonic": "gmaster",
+    "company": "Outros",
+    "color": "#130f40",
+    "accent": "#f0932b",
+    "headerBg": "#130f40",
+    "caseClass": "case-gmaster",
+    "libretro": "",
+    "tagline": "Portátil de baixo custo lançado na Europa no início dos anos 90",
+    "approxCount": "18 Jogos",
+    "romCount": 18
+  },
+  {
+    "id": "gp32",
+    "name": "Game Park GP32",
+    "shortName": "GP32",
+    "mnemonic": "gp32",
+    "company": "Outros",
+    "color": "#4b6584",
+    "accent": "#778ca3",
+    "headerBg": "#4b6584",
+    "caseClass": "case-gp32",
+    "libretro": "",
+    "tagline": "O cultuado portátil sul-coreano de arquitetura aberta que inaugurou a cena de emulação",
+    "approxCount": "28 Jogos",
+    "romCount": 28
+  },
+  {
+    "id": "gx4000",
+    "name": "Amstrad GX4000",
+    "shortName": "GX4000",
+    "mnemonic": "gx4000",
+    "company": "Computadores",
+    "color": "#2ed573",
+    "accent": "#ff4757",
+    "headerBg": "#2ed573",
+    "caseClass": "case-gx4000",
+    "libretro": "",
+    "tagline": "O console de videogame da Amstrad baseado na consagrada linha de computadores CPC",
+    "approxCount": "23 Jogos",
+    "romCount": 23
+  },
+  {
+    "id": "hbmame",
+    "name": "Homebrew MAME",
+    "shortName": "HBMAME",
+    "mnemonic": "hbmame",
+    "company": "Arcade",
+    "color": "#7f8c8d",
+    "accent": "#bdc3c7",
+    "headerBg": "#7f8c8d",
+    "caseClass": "case-hbmame",
+    "libretro": "",
+    "tagline": "Hacks, conversões e homebrews criados pela comunidade para fliperamas",
+    "approxCount": "659 Jogos",
+    "romCount": 659
+  },
+  {
+    "id": "hikaru",
+    "name": "Sega Hikaru",
+    "shortName": "Hikaru",
+    "mnemonic": "hikaru",
+    "company": "Sega",
+    "color": "#ffa801",
+    "accent": "#ffd32a",
+    "headerBg": "#ffa801",
+    "caseClass": "case-hikaru",
+    "libretro": "",
+    "tagline": "Placa arcade de alta fidelidade da Sega com efeitos avançados de partículas",
+    "approxCount": "8 Jogos",
+    "romCount": 8
+  },
+  {
+    "id": "intellivision",
+    "name": "Mattel Intellivision",
+    "shortName": "Intellivision",
+    "mnemonic": "intellivision",
+    "company": "Outros",
+    "color": "#8854d0",
+    "accent": "#a55eea",
+    "headerBg": "#8854d0",
+    "caseClass": "case-intellivision",
+    "libretro": "",
+    "tagline": "O sofisticado rival do Atari com teclado numérico e disco direcional",
+    "approxCount": "162 Jogos",
+    "romCount": 162
+  },
+  {
+    "id": "jaguar",
+    "name": "Atari Jaguar",
+    "shortName": "Jaguar",
+    "mnemonic": "jaguar",
+    "company": "Atari",
+    "color": "#1e272e",
+    "accent": "#ff3f34",
+    "headerBg": "#1e272e",
+    "caseClass": "case-jaguar",
+    "libretro": "",
+    "tagline": "O potente console de 64-bits da Atari com títulos cultuados como Alien vs Predator",
+    "approxCount": "278 Jogos",
+    "romCount": 278
+  },
+  {
+    "id": "jaguarcd",
+    "name": "Atari Jaguar CD",
+    "shortName": "Jaguar CD",
+    "mnemonic": "jaguarcd",
+    "company": "Atari",
+    "color": "#1e272e",
+    "accent": "#ff5e57",
+    "headerBg": "#1e272e",
+    "caseClass": "case-jaguarcd",
+    "libretro": "",
+    "tagline": "A expansão com leitor de CD acoplado para o Atari Jaguar",
+    "approxCount": "14 Jogos",
+    "romCount": 14
+  },
+  {
+    "id": "lowresnx",
+    "name": "LowRes NX Retro Console",
+    "shortName": "LowRes NX",
+    "mnemonic": "lowresnx",
+    "company": "Engines & Ports",
+    "color": "#e84393",
+    "accent": "#fd79a8",
+    "headerBg": "#e84393",
+    "caseClass": "case-lowresnx",
+    "libretro": "",
+    "tagline": "Console virtual nostálgico com linguagem BASIC para criação rápida de jogos",
+    "approxCount": "910 Jogos",
+    "romCount": 910
+  },
+  {
+    "id": "lynx",
+    "name": "Atari Lynx",
+    "shortName": "Atari Lynx",
+    "mnemonic": "lynx",
+    "company": "Atari",
+    "color": "#2d3436",
+    "accent": "#00cec9",
+    "headerBg": "#2d3436",
+    "caseClass": "case-lynx",
+    "libretro": "",
+    "tagline": "O pioneiro portátil com tela colorida retroiluminada e zoom de sprites 3D",
+    "approxCount": "119 Jogos",
+    "romCount": 119
+  },
+  {
+    "id": "mame",
+    "name": "MAME Arcade",
+    "shortName": "MAME",
+    "mnemonic": "mame",
+    "company": "Arcade",
+    "color": "#e67e22",
+    "accent": "#f39c12",
+    "headerBg": "#e67e22",
+    "caseClass": "case-mame",
+    "libretro": "",
+    "tagline": "O maior acervo de preservação da história dos fliperamas mundiais",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "mame2003plus",
+    "name": "MAME 2003-Plus",
+    "shortName": "MAME 2003+",
+    "mnemonic": "mame2003Plus",
+    "company": "Arcade",
+    "color": "#d35400",
+    "accent": "#e67e22",
+    "headerBg": "#d35400",
+    "caseClass": "case-mame2003plus",
+    "libretro": "",
+    "tagline": "Versão de alta performance e compatibilidade de fliperama para hardware retrô",
+    "approxCount": "942 Jogos",
+    "romCount": 942
+  },
+  {
+    "id": "mame289",
+    "name": "MAME 0.289",
+    "shortName": "MAME 0.289",
+    "mnemonic": "mame289",
+    "company": "Arcade",
+    "color": "#b71540",
+    "accent": "#e74c3c",
+    "headerBg": "#b71540",
+    "caseClass": "case-mame289",
+    "libretro": "",
+    "tagline": "Edição atualizada do MAME para emulação precisa de fliperamas clássicos",
+    "approxCount": "16.279 Jogos",
+    "romCount": 16279
+  },
+  {
+    "id": "mastersystem",
+    "name": "Sega Master System",
+    "shortName": "Master System",
+    "mnemonic": "mastersystem",
+    "company": "Sega",
+    "color": "#1e3799",
+    "accent": "#4a69bd",
+    "headerBg": "#1e3799",
+    "caseClass": "case-mastersystem",
+    "libretro": "",
+    "tagline": "O amado console de 8-bits com enorme sucesso no Brasil pela Tectoy",
+    "approxCount": "506 Jogos",
+    "romCount": 506
+  },
+  {
+    "id": "megacd",
+    "name": "Sega CD / Mega CD",
+    "shortName": "Sega CD",
+    "mnemonic": "megacd",
+    "company": "Sega",
+    "color": "#0c2461",
+    "accent": "#1e3799",
+    "headerBg": "#0c2461",
+    "caseClass": "case-megacd",
+    "libretro": "",
+    "tagline": "A expansão com trilhas em CD e vídeos com atores para Mega Drive",
+    "approxCount": "662 Jogos",
+    "romCount": 662
+  },
+  {
+    "id": "megadrive-msu",
+    "name": "Mega Drive MSU-MD",
+    "shortName": "Mega Drive MSU",
+    "mnemonic": "megadrive-msu",
+    "company": "Sega",
+    "color": "#130f40",
+    "accent": "#30336b",
+    "headerBg": "#130f40",
+    "caseClass": "case-megadrive-msu",
+    "libretro": "",
+    "tagline": "Jogos clássicos de Mega Drive com áudio orquestrado em alta fidelidade",
+    "approxCount": "61 Jogos",
+    "romCount": 61
+  },
+  {
+    "id": "megaduck",
+    "name": "Mega Duck / Cougar Boy",
+    "shortName": "Mega Duck",
+    "mnemonic": "megaduck",
+    "company": "Outros",
+    "color": "#22a6b3",
+    "accent": "#7ed6df",
+    "headerBg": "#22a6b3",
+    "caseClass": "case-megaduck",
+    "libretro": "",
+    "tagline": "Portátil retrô com cartuchos compatíveis com uma seleta biblioteca de 8-bits",
+    "approxCount": "25 Jogos",
+    "romCount": 25
+  },
+  {
+    "id": "model2",
+    "name": "Sega Model 2",
+    "shortName": "Model 2",
+    "mnemonic": "model2",
+    "company": "Sega",
+    "color": "#0c2461",
+    "accent": "#4a69bd",
+    "headerBg": "#0c2461",
+    "caseClass": "case-model2",
+    "libretro": "",
+    "tagline": "A placa de Daytona USA, Virtua Cop e clássicos 3D que dominaram os fliperamas",
+    "approxCount": "32 Jogos",
+    "romCount": 32
+  },
+  {
+    "id": "model3",
+    "name": "Sega Model 3",
+    "shortName": "Model 3",
+    "mnemonic": "model3",
+    "company": "Sega",
+    "color": "#1e272e",
+    "accent": "#e84118",
+    "headerBg": "#1e272e",
+    "caseClass": "case-model3",
+    "libretro": "",
+    "tagline": "Arcades lendários com gráficos impressionantes como Scud Race e Virtua Fighter 3",
+    "approxCount": "42 Jogos",
+    "romCount": 42
+  },
+  {
+    "id": "msx",
+    "name": "MSX",
+    "shortName": "MSX",
+    "mnemonic": "msx",
+    "company": "Computadores",
+    "color": "#3742fa",
+    "accent": "#5352ed",
+    "headerBg": "#3742fa",
+    "caseClass": "case-msx",
+    "libretro": "",
+    "tagline": "O padrão de computadores de 8-bits da Microsoft e ASCII com enorme legião de fãs",
+    "approxCount": "933 Jogos",
+    "romCount": 933
+  },
+  {
+    "id": "msx2",
+    "name": "MSX2",
+    "shortName": "MSX2",
+    "mnemonic": "msx2",
+    "company": "Computadores",
+    "color": "#2f3542",
+    "accent": "#3742fa",
+    "headerBg": "#2f3542",
+    "caseClass": "case-msx2",
+    "libretro": "",
+    "tagline": "A evolução do padrão MSX com gráficos superiores onde nasceu Metal Gear",
+    "approxCount": "194 Jogos",
+    "romCount": 194
+  },
+  {
+    "id": "msx2plus",
+    "name": "MSX2+",
+    "shortName": "MSX2+",
+    "mnemonic": "msx2plus",
+    "company": "Computadores",
+    "color": "#1e272e",
+    "accent": "#2ed573",
+    "headerBg": "#1e272e",
+    "caseClass": "case-msx2plus",
+    "libretro": "",
+    "tagline": "A terceira geração do MSX com suporte a rolagem suave por hardware",
+    "approxCount": "39 Jogos",
+    "romCount": 39
+  },
+  {
+    "id": "msxturbor",
+    "name": "MSX Turbo R",
+    "shortName": "MSX Turbo R",
+    "mnemonic": "msxturbor",
+    "company": "Computadores",
+    "color": "#2f3542",
+    "accent": "#ffa502",
+    "headerBg": "#2f3542",
+    "caseClass": "case-msxturbor",
+    "libretro": "",
+    "tagline": "O modelo definitivo do padrão MSX equipado com microprocessador de 16-bits",
+    "approxCount": "77 Jogos",
+    "romCount": 77
+  },
+  {
+    "id": "mugen",
+    "name": "M.U.G.E.N Fighting Engine",
+    "shortName": "M.U.G.E.N",
+    "mnemonic": "mugen",
+    "company": "Engines & Ports",
+    "color": "#e84118",
+    "accent": "#fbc531",
+    "headerBg": "#e84118",
+    "caseClass": "case-mugen",
+    "libretro": "",
+    "tagline": "O mais popular motor de jogos de luta 2D personalizáveis da história",
+    "approxCount": "25 Jogos",
+    "romCount": 25
+  },
+  {
+    "id": "multivision",
+    "name": "Tsukuda Othello Multivision",
+    "shortName": "Multivision",
+    "mnemonic": "multivision",
+    "company": "Sega",
+    "color": "#57606f",
+    "accent": "#747d8c",
+    "headerBg": "#57606f",
+    "caseClass": "case-multivision",
+    "libretro": "",
+    "tagline": "Console japonês compatível com os cartuchos do SG-1000",
+    "approxCount": "12 Jogos",
+    "romCount": 12
+  },
+  {
+    "id": "n64dd",
+    "name": "Nintendo 64DD",
+    "shortName": "N64DD",
+    "mnemonic": "n64dd",
+    "company": "Nintendo",
+    "color": "#1e272e",
+    "accent": "#00d2d3",
+    "headerBg": "#1e272e",
+    "caseClass": "case-n64dd",
+    "libretro": "",
+    "tagline": "O raro acessório de discos magnéticos regraváveis para o Nintendo 64",
+    "approxCount": "13 Jogos",
+    "romCount": 13
+  },
+  {
+    "id": "naomi",
+    "name": "Sega NAOMI",
+    "shortName": "NAOMI",
+    "mnemonic": "naomi",
+    "company": "Sega",
+    "color": "#e55039",
+    "accent": "#eb2f06",
+    "headerBg": "#e55039",
+    "caseClass": "case-naomi",
+    "libretro": "",
+    "tagline": "A lendária placa de arcade da Sega baseada na arquitetura do Dreamcast",
+    "approxCount": "98 Jogos",
+    "romCount": 98
+  },
+  {
+    "id": "naomi2",
+    "name": "Sega NAOMI 2",
+    "shortName": "NAOMI 2",
+    "mnemonic": "naomi2",
+    "company": "Sega",
+    "color": "#eb2f06",
+    "accent": "#b71540",
+    "headerBg": "#eb2f06",
+    "caseClass": "case-naomi2",
+    "libretro": "",
+    "tagline": "A poderosa evolução arcade da Sega com gráficos 3D de alta performance",
+    "approxCount": "33 Jogos",
+    "romCount": 33
+  },
+  {
+    "id": "neogeo",
+    "name": "SNK Neo Geo AES / MVS",
+    "shortName": "Neo Geo",
+    "mnemonic": "neogeo",
+    "company": "SNK",
+    "color": "#d63031",
+    "accent": "#e17055",
+    "headerBg": "#d63031",
+    "caseClass": "case-neogeo",
+    "libretro": "",
+    "tagline": "O lendário arcade de 24-bits em casa com The King of Fighters, Metal Slug e Samurai Shodown",
+    "approxCount": "157 Jogos",
+    "romCount": 157
+  },
+  {
+    "id": "neogeo64",
+    "name": "SNK Hyper Neo Geo 64",
+    "shortName": "Neo Geo 64",
+    "mnemonic": "neogeo64",
+    "company": "SNK",
+    "color": "#b71540",
+    "accent": "#ff6b6b",
+    "headerBg": "#b71540",
+    "caseClass": "case-neogeo64",
+    "libretro": "",
+    "tagline": "A placa de arcade em 3D da SNK com Samurai Shodown 64 e Fatal Fury Wild Ambition",
+    "approxCount": "8 Jogos",
+    "romCount": 8
+  },
+  {
+    "id": "neogeocd",
+    "name": "SNK Neo Geo CD",
+    "shortName": "Neo Geo CD",
+    "mnemonic": "neogeocd",
+    "company": "SNK",
+    "color": "#2d3436",
+    "accent": "#e17055",
+    "headerBg": "#2d3436",
+    "caseClass": "case-neogeocd",
+    "libretro": "",
+    "tagline": "Os grandes jogos da SNK acompanhados de trilhas sonoras orquestradas em CD",
+    "approxCount": "98 Jogos",
+    "romCount": 98
+  },
+  {
+    "id": "nes",
+    "name": "Nintendo Entertainment System (NES)",
+    "shortName": "NES",
+    "mnemonic": "nes",
+    "company": "Nintendo",
+    "color": "#c0392b",
+    "accent": "#e74c3c",
+    "headerBg": "#c0392b",
+    "caseClass": "case-nes",
+    "libretro": "",
+    "tagline": "O lendário Nintendinho de 8-bits que salvou a indústria dos videogames",
+    "approxCount": "2.597 Jogos",
+    "romCount": 2597
+  },
+  {
+    "id": "ngp",
+    "name": "Neo Geo Pocket",
+    "shortName": "NGP",
+    "mnemonic": "ngp",
+    "company": "SNK",
+    "color": "#4b4b4b",
+    "accent": "#ee5253",
+    "headerBg": "#4b4b4b",
+    "caseClass": "case-ngp",
+    "libretro": "",
+    "tagline": "O primeiro portátil da SNK com o icônico micro-switch direcional",
+    "approxCount": "22 Jogos",
+    "romCount": 22
+  },
+  {
+    "id": "ngpc",
+    "name": "Neo Geo Pocket Color",
+    "shortName": "NGP Color",
+    "mnemonic": "ngpc",
+    "company": "SNK",
+    "color": "#222f3e",
+    "accent": "#10ac84",
+    "headerBg": "#222f3e",
+    "caseClass": "case-ngpc",
+    "libretro": "",
+    "tagline": "A consagrada versão colorida do portátil da SNK com jogos de luta impecáveis",
+    "approxCount": "116 Jogos",
+    "romCount": 116
+  },
+  {
+    "id": "o2em",
+    "name": "Magnavox Odyssey 2 / Philips Videopac",
+    "shortName": "Odyssey 2",
+    "mnemonic": "o2em",
+    "company": "Outros",
+    "color": "#4b4b4b",
+    "accent": "#e15f41",
+    "headerBg": "#4b4b4b",
+    "caseClass": "case-o2em",
+    "libretro": "",
+    "tagline": "O clássico videogame com teclado alfa-numérico embutido e voz sintetizada",
+    "approxCount": "133 Jogos",
+    "romCount": 133
+  },
+  {
+    "id": "openbor",
+    "name": "OpenBOR Beat 'em Up",
+    "shortName": "OpenBOR",
+    "mnemonic": "openbor",
+    "company": "Engines & Ports",
+    "color": "#d2dae2",
+    "accent": "#485460",
+    "headerBg": "#d2dae2",
+    "caseClass": "case-openbor",
+    "libretro": "",
+    "tagline": "O motor supremo para jogos de luta de rua Beat 'em Up feitos por fãs",
+    "approxCount": "330 Jogos",
+    "romCount": 330
+  },
+  {
+    "id": "oricatmos",
+    "name": "Oric 1 / Atmos",
+    "shortName": "Oric",
+    "mnemonic": "oricatmos",
+    "company": "Computadores",
+    "color": "#b33939",
+    "accent": "#2c2c54",
+    "headerBg": "#b33939",
+    "caseClass": "case-oricatmos",
+    "libretro": "",
+    "tagline": "O charmoso computador britânico projetado para competir com o ZX Spectrum",
+    "approxCount": "1.017 Jogos",
+    "romCount": 1017
+  },
+  {
+    "id": "p2000t",
+    "name": "Philips P2000T",
+    "shortName": "Philips P2000",
+    "mnemonic": "p2000t",
+    "company": "Computadores",
+    "color": "#40407a",
+    "accent": "#f5cd79",
+    "headerBg": "#40407a",
+    "caseClass": "case-p2000t",
+    "libretro": "",
+    "tagline": "O clássico computador pessoal holandês com chip de exibição Teletext",
+    "approxCount": "17 Jogos",
+    "romCount": 17
+  },
+  {
+    "id": "pc",
+    "name": "PC Games / Windows",
+    "shortName": "PC Games",
+    "mnemonic": "pc",
+    "company": "Computadores",
+    "color": "#00a8ff",
+    "accent": "#0097e6",
+    "headerBg": "#00a8ff",
+    "caseClass": "case-pc",
+    "libretro": "",
+    "tagline": "O maior ecossistema de jogos para computadores com títulos modernos e retrô",
+    "approxCount": "16.670 Jogos",
+    "romCount": 16670
+  },
+  {
+    "id": "pc88",
+    "name": "NEC PC-8800",
+    "shortName": "PC-88",
+    "mnemonic": "pc88",
+    "company": "NEC",
+    "color": "#636e72",
+    "accent": "#d63031",
+    "headerBg": "#636e72",
+    "caseClass": "case-pc88",
+    "libretro": "",
+    "tagline": "O lendário computador japonês onde nasceram franquias clássicas de RPG e aventura",
+    "approxCount": "2.425 Jogos",
+    "romCount": 2425
+  },
+  {
+    "id": "pc98",
+    "name": "NEC PC-9800",
+    "shortName": "PC-98",
+    "mnemonic": "pc98",
+    "company": "NEC",
+    "color": "#2d3436",
+    "accent": "#00b894",
+    "headerBg": "#2d3436",
+    "caseClass": "case-pc98",
+    "libretro": "",
+    "tagline": "A dominante plataforma de PCs japoneses dos anos 80 e 90 com acervo colossal",
+    "approxCount": "121 Jogos",
+    "romCount": 121
+  },
+  {
+    "id": "pcengine",
+    "name": "NEC PC Engine / TurboGrafx-16",
+    "shortName": "PC Engine",
+    "mnemonic": "pcengine",
+    "company": "NEC",
+    "color": "#e17055",
+    "accent": "#d63031",
+    "headerBg": "#e17055",
+    "caseClass": "case-pcengine",
+    "libretro": "",
+    "tagline": "O console ultracompacto que foi febre no Japão rivalizando com Famicom e Mega Drive",
+    "approxCount": "211 Jogos",
+    "romCount": 211
+  },
+  {
+    "id": "pcenginecd",
+    "name": "NEC PC Engine CD-ROM²",
+    "shortName": "PC Engine CD",
+    "mnemonic": "pcenginecd",
+    "company": "NEC",
+    "color": "#2d3436",
+    "accent": "#e17055",
+    "headerBg": "#2d3436",
+    "caseClass": "case-pcenginecd",
+    "libretro": "",
+    "tagline": "O primeiro sistema de videogame a adotar mídia de CD-ROM no mundo",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "pcfx",
+    "name": "NEC PC-FX",
+    "shortName": "PC-FX",
+    "mnemonic": "pcfx",
+    "company": "NEC",
+    "color": "#dfe6e9",
+    "accent": "#0984e3",
+    "headerBg": "#dfe6e9",
+    "caseClass": "case-pcfx",
+    "libretro": "",
+    "tagline": "O console de 32-bits da NEC em formato de torre com animações em alta qualidade",
+    "approxCount": "664 Jogos",
+    "romCount": 664
+  },
+  {
+    "id": "pegasus",
+    "name": "Pegasus / Famiclone",
+    "shortName": "Pegasus",
+    "mnemonic": "pegasus",
+    "company": "Outros",
+    "color": "#eb4d4b",
+    "accent": "#f0932b",
+    "headerBg": "#eb4d4b",
+    "caseClass": "case-pegasus",
+    "libretro": "",
+    "tagline": "O lendário clone de 8-bits que marcou gerações em diversos países",
+    "approxCount": "10 Jogos",
+    "romCount": 10
+  },
+  {
+    "id": "pet",
+    "name": "Commodore PET",
+    "shortName": "PET",
+    "mnemonic": "pet",
+    "company": "Commodore",
+    "color": "#33d9b2",
+    "accent": "#218c74",
+    "headerBg": "#33d9b2",
+    "caseClass": "case-pet",
+    "libretro": "",
+    "tagline": "O histórico primeiro computador pessoal completo fabricado pela Commodore",
+    "approxCount": "30 Jogos",
+    "romCount": 30
+  },
+  {
+    "id": "pico8",
+    "name": "PICO-8 Fantasy Console",
+    "shortName": "PICO-8",
+    "mnemonic": "pico8",
+    "company": "Engines & Ports",
+    "color": "#82589f",
+    "accent": "#b8e994",
+    "headerBg": "#82589f",
+    "caseClass": "case-pico8",
+    "libretro": "",
+    "tagline": "O célebre console virtual com paleta de 16 cores onde nasceu Celeste",
+    "approxCount": "459 Jogos",
+    "romCount": 459
+  },
+  {
+    "id": "pokemini",
+    "name": "Pokémon Mini",
+    "shortName": "Pokémon Mini",
+    "mnemonic": "pokemini",
+    "company": "Nintendo",
+    "color": "#303952",
+    "accent": "#596275",
+    "headerBg": "#303952",
+    "caseClass": "case-pokemini",
+    "libretro": "",
+    "tagline": "O menor console de cartuchos da Nintendo dedicado ao universo Pokémon",
+    "approxCount": "44 Jogos",
+    "romCount": 44
+  },
+  {
+    "id": "ports",
+    "name": "Ports / Remakes PC",
+    "shortName": "Ports",
+    "mnemonic": "ports",
+    "company": "Engines & Ports",
+    "color": "#575fcf",
+    "accent": "#3c40c6",
+    "headerBg": "#575fcf",
+    "caseClass": "case-ports",
+    "libretro": "",
+    "tagline": "Portes e recriações nativas para PC de clássicos dos videogames",
+    "approxCount": "14 Jogos",
+    "romCount": 14
+  },
+  {
+    "id": "prboom",
+    "name": "Doom Engine (PrBoom)",
+    "shortName": "Doom",
+    "mnemonic": "prboom",
+    "company": "Engines & Ports",
+    "color": "#b33939",
+    "accent": "#ff3838",
+    "headerBg": "#b33939",
+    "caseClass": "case-prboom",
+    "libretro": "",
+    "tagline": "O motor eterno de tiro em primeira pessoa de Doom, Doom II e Final Doom",
+    "approxCount": "46 Jogos",
+    "romCount": 46
+  },
+  {
+    "id": "ps4",
+    "name": "PlayStation 4",
+    "shortName": "PS4",
+    "mnemonic": "ps4",
+    "company": "Sony",
+    "color": "#003791",
+    "accent": "#0072ce",
+    "headerBg": "#003791",
+    "caseClass": "case-ps4",
+    "libretro": "",
+    "tagline": "A aclamada geração da Sony com sucessos consagrados e títulos marcantes",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "ps5",
+    "name": "PlayStation 5",
+    "shortName": "PS5",
+    "mnemonic": "ps5",
+    "company": "Sony",
+    "color": "#003791",
+    "accent": "#ffffff",
+    "headerBg": "#003791",
+    "caseClass": "case-ps5",
+    "libretro": "",
+    "tagline": "A mais nova geração da Sony com gráficos ultrarrealistas e carregamento instantâneo",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "psvita",
+    "name": "PlayStation Vita",
+    "shortName": "PS Vita",
+    "mnemonic": "psvita",
+    "company": "Sony",
+    "color": "#003087",
+    "accent": "#0095ff",
+    "headerBg": "#003087",
+    "caseClass": "case-psvita",
+    "libretro": "",
+    "tagline": "O portátil premium da Sony com tela OLED e biblioteca sofisticada",
+    "approxCount": "1.022 Jogos",
+    "romCount": 1022
+  },
+  {
+    "id": "pv1000",
+    "name": "Casio PV-1000",
+    "shortName": "Casio PV-1000",
+    "mnemonic": "pv1000",
+    "company": "Outros",
+    "color": "#30336b",
+    "accent": "#22a6b3",
+    "headerBg": "#30336b",
+    "caseClass": "case-pv1000",
+    "libretro": "",
+    "tagline": "O raro videogame doméstico de 8-bits fabricado pela Casio no Japão",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "samcoupe",
+    "name": "SAM Coupé",
+    "shortName": "SAM Coupé",
+    "mnemonic": "samcoupe",
+    "company": "Computadores",
+    "color": "#40407a",
+    "accent": "#706fd3",
+    "headerBg": "#40407a",
+    "caseClass": "case-samcoupe",
+    "libretro": "",
+    "tagline": "O sucessor espiritual britânico do ZX Spectrum com recursos audiovisuais expandidos",
+    "approxCount": "44 Jogos",
+    "romCount": 44
+  },
+  {
+    "id": "satellaview",
+    "name": "Super Famicom Satellaview",
+    "shortName": "Satellaview",
+    "mnemonic": "satellaview",
+    "company": "Nintendo",
+    "color": "#4a69bd",
+    "accent": "#6a89cc",
+    "headerBg": "#4a69bd",
+    "caseClass": "case-satellaview",
+    "libretro": "",
+    "tagline": "Jogos e transmissões via satélite pioneiros no Japão para Super Famicom",
+    "approxCount": "345 Jogos",
+    "romCount": 345
+  },
+  {
+    "id": "scummvm",
+    "name": "ScummVM Adventure Games",
+    "shortName": "ScummVM",
+    "mnemonic": "scummvm",
+    "company": "Engines & Ports",
+    "color": "#ff5e57",
+    "accent": "#ff3f34",
+    "headerBg": "#ff5e57",
+    "caseClass": "case-scummvm",
+    "libretro": "",
+    "tagline": "Os lendários jogos de aventura Point & Click da LucasArts, Sierra e Revolution",
+    "approxCount": "929 Jogos",
+    "romCount": 929
+  },
+  {
+    "id": "scv",
+    "name": "Epoch Super Cassette Vision",
+    "shortName": "Super Cassette",
+    "mnemonic": "scv",
+    "company": "Outros",
+    "color": "#be2edd",
+    "accent": "#e056fd",
+    "headerBg": "#be2edd",
+    "caseClass": "case-scv",
+    "libretro": "",
+    "tagline": "Console japonês de grande relevância antes da chegada do Nintendo Famicom",
+    "approxCount": "32 Jogos",
+    "romCount": 32
+  },
+  {
+    "id": "sega32x",
+    "name": "Sega 32X",
+    "shortName": "32X",
+    "mnemonic": "sega32x",
+    "company": "Sega",
+    "color": "#2d3436",
+    "accent": "#d63031",
+    "headerBg": "#2d3436",
+    "caseClass": "case-sega32x",
+    "libretro": "",
+    "tagline": "O upgrade de 32-bits que turbinou o Mega Drive com gráficos 3D",
+    "approxCount": "458 Jogos",
+    "romCount": 458
+  },
+  {
+    "id": "segastv",
+    "name": "Sega ST-V (Titan)",
+    "shortName": "Sega ST-V",
+    "mnemonic": "segastv",
+    "company": "Sega",
+    "color": "#3d3d3d",
+    "accent": "#ff9f43",
+    "headerBg": "#3d3d3d",
+    "caseClass": "case-segastv",
+    "libretro": "",
+    "tagline": "A placa de arcade da Sega que compartilha o hardware com o Sega Saturn",
+    "approxCount": "102 Jogos",
+    "romCount": 102
+  },
+  {
+    "id": "sg1000",
+    "name": "Sega SG-1000",
+    "shortName": "SG-1000",
+    "mnemonic": "sg1000",
+    "company": "Sega",
+    "color": "#0a3d62",
+    "accent": "#3c6382",
+    "headerBg": "#0a3d62",
+    "caseClass": "case-sg1000",
+    "libretro": "",
+    "tagline": "O primeiro videogame doméstico produzido pela Sega em 1983",
+    "approxCount": "212 Jogos",
+    "romCount": 212
+  },
+  {
+    "id": "simcoupe",
+    "name": "SAM Coupé",
+    "shortName": "SAM Coupé",
+    "mnemonic": "simcoupe",
+    "company": "Computadores",
+    "color": "#40407a",
+    "accent": "#706fd3",
+    "headerBg": "#40407a",
+    "caseClass": "case-simcoupe",
+    "libretro": "",
+    "tagline": "O sucessor espiritual britânico do ZX Spectrum com recursos audiovisuais expandidos",
+    "approxCount": "44 Jogos",
+    "romCount": 44
+  },
+  {
+    "id": "snes-msu",
+    "name": "Super Nintendo MSU-1",
+    "shortName": "SNES MSU-1",
+    "mnemonic": "snes-msu",
+    "company": "Nintendo",
+    "color": "#833471",
+    "accent": "#d63031",
+    "headerBg": "#833471",
+    "caseClass": "case-snes-msu",
+    "libretro": "",
+    "tagline": "Clássicos do SNES aprimorados com trilhas sonoras em qualidade de CD",
+    "approxCount": "159 Jogos",
+    "romCount": 159
+  },
+  {
+    "id": "solarus",
+    "name": "Solarus Engine",
+    "shortName": "Solarus",
+    "mnemonic": "solarus",
+    "company": "Engines & Ports",
+    "color": "#05c46b",
+    "accent": "#0be881",
+    "headerBg": "#05c46b",
+    "caseClass": "case-solarus",
+    "libretro": "",
+    "tagline": "O motor dedicado à criação de aventuras épicas de RPG de ação no estilo clássico de Zelda",
+    "approxCount": "11 Jogos",
+    "romCount": 11
+  },
+  {
+    "id": "spectravideo",
+    "name": "Spectravideo SV-318 / SV-328",
+    "shortName": "Spectravideo",
+    "mnemonic": "spectravideo",
+    "company": "Computadores",
+    "color": "#b33939",
+    "accent": "#f5cd79",
+    "headerBg": "#b33939",
+    "caseClass": "case-spectravideo",
+    "libretro": "",
+    "tagline": "O computador americano cujo design foi o precursor direto do padrão mundial MSX",
+    "approxCount": "110 Jogos",
+    "romCount": 110
+  },
+  {
+    "id": "sufami",
+    "name": "Super Famicom Sufami Turbo",
+    "shortName": "Sufami Turbo",
+    "mnemonic": "sufami",
+    "company": "Nintendo",
+    "color": "#6c5ce7",
+    "accent": "#a29bfe",
+    "headerBg": "#6c5ce7",
+    "caseClass": "case-sufami",
+    "libretro": "",
+    "tagline": "Mini-cartuchos especiais da Bandai para o Super Famicom",
+    "approxCount": "13 Jogos",
+    "romCount": 13
+  },
+  {
+    "id": "supergrafx",
+    "name": "NEC SuperGrafx",
+    "shortName": "SuperGrafx",
+    "mnemonic": "supergrafx",
+    "company": "NEC",
+    "color": "#2d3436",
+    "accent": "#00cec9",
+    "headerBg": "#2d3436",
+    "caseClass": "case-supergrafx",
+    "libretro": "",
+    "tagline": "A versão turbinada do PC Engine com chips gráficos duplos e alta resolução",
+    "approxCount": "664 Jogos",
+    "romCount": 664
+  },
+  {
+    "id": "supervision",
+    "name": "Watara Supervision",
+    "shortName": "Supervision",
+    "mnemonic": "supervision",
+    "company": "Outros",
+    "color": "#686de0",
+    "accent": "#4834d4",
+    "headerBg": "#686de0",
+    "caseClass": "case-supervision",
+    "libretro": "",
+    "tagline": "O famoso portátil de tela grande e corpo articulável concorrente do Game Boy",
+    "approxCount": "72 Jogos",
+    "romCount": 72
+  },
+  {
+    "id": "supracan",
+    "name": "Super A'Can",
+    "shortName": "Super A'Can",
+    "mnemonic": "supracan",
+    "company": "Outros",
+    "color": "#eb4d4b",
+    "accent": "#ff7979",
+    "headerBg": "#eb4d4b",
+    "caseClass": "case-supracan",
+    "libretro": "",
+    "tagline": "O poderoso e raro console taiwanês de 16-bits baseado no Motorola 68000",
+    "approxCount": "9 Jogos",
+    "romCount": 9
+  },
+  {
+    "id": "thomson",
+    "name": "Thomson MO5 / TO8",
+    "shortName": "Thomson",
+    "mnemonic": "thomson",
+    "company": "Computadores",
+    "color": "#218c74",
+    "accent": "#33d9b2",
+    "headerBg": "#218c74",
+    "caseClass": "case-thomson",
+    "libretro": "",
+    "tagline": "A linha francesa de microcomputadores amplamente adotada nas escolas",
+    "approxCount": "222 Jogos",
+    "romCount": 222
+  },
+  {
+    "id": "tic80",
+    "name": "TIC-80 Fantasy Computer",
+    "shortName": "TIC-80",
+    "mnemonic": "tic80",
+    "company": "Engines & Ports",
+    "color": "#3c40c6",
+    "accent": "#575fcf",
+    "headerBg": "#3c40c6",
+    "caseClass": "case-tic80",
+    "libretro": "",
+    "tagline": "Computador de fantasia de código aberto com centenas de jogos criativos",
+    "approxCount": "887 Jogos",
+    "romCount": 887
+  },
+  {
+    "id": "triforce",
+    "name": "Namco / Sega / Nintendo Triforce",
+    "shortName": "Triforce",
+    "mnemonic": "triforce",
+    "company": "Arcade",
+    "color": "#f1c40f",
+    "accent": "#f39c12",
+    "headerBg": "#f1c40f",
+    "caseClass": "case-triforce",
+    "libretro": "",
+    "tagline": "A união arcade que criou Mario Kart GP e F-Zero AX",
+    "approxCount": "5 Jogos",
+    "romCount": 5
+  },
+  {
+    "id": "tutor",
+    "name": "Tomy Tutor",
+    "shortName": "Tomy Tutor",
+    "mnemonic": "tutor",
+    "company": "Outros",
+    "color": "#f0932b",
+    "accent": "#ffbe76",
+    "headerBg": "#f0932b",
+    "caseClass": "case-tutor",
+    "libretro": "",
+    "tagline": "Console japonês de 16-bits para crianças da tradicional fabricante Tomy",
+    "approxCount": "9 Jogos",
+    "romCount": 9
+  },
+  {
+    "id": "uzebox",
+    "name": "Uzebox Retro Console",
+    "shortName": "Uzebox",
+    "mnemonic": "uzebox",
+    "company": "Engines & Ports",
+    "color": "#e17055",
+    "accent": "#fab1a0",
+    "headerBg": "#e17055",
+    "caseClass": "case-uzebox",
+    "libretro": "",
+    "tagline": "Console retrô minimalista construído em torno de um único microcontrolador AVR",
+    "approxCount": "55 Jogos",
+    "romCount": 55
+  },
+  {
+    "id": "vc4000",
+    "name": "Interton VC 4000",
+    "shortName": "VC 4000",
+    "mnemonic": "vc4000",
+    "company": "Outros",
+    "color": "#546de5",
+    "accent": "#778beb",
+    "headerBg": "#546de5",
+    "caseClass": "case-vc4000",
+    "libretro": "",
+    "tagline": "Console de videogame alemão lançado no final dos anos 70",
+    "approxCount": "57 Jogos",
+    "romCount": 57
+  },
+  {
+    "id": "vectrex",
+    "name": "Vectrex",
+    "shortName": "Vectrex",
+    "mnemonic": "vectrex",
+    "company": "Outros",
+    "color": "#20bf6b",
+    "accent": "#26de81",
+    "headerBg": "#20bf6b",
+    "caseClass": "case-vectrex",
+    "libretro": "",
+    "tagline": "O exclusivo console com monitor vetorial integrado e transparências coloridas",
+    "approxCount": "37 Jogos",
+    "romCount": 37
+  },
+  {
+    "id": "vg5k",
+    "name": "Philips VG5000",
+    "shortName": "VG5000",
+    "mnemonic": "vg5k",
+    "company": "Computadores",
+    "color": "#33d9b2",
+    "accent": "#40407a",
+    "headerBg": "#33d9b2",
+    "caseClass": "case-vg5k",
+    "libretro": "",
+    "tagline": "Microcomputador europeu lançado pela Philips nos anos 80",
+    "approxCount": "40 Jogos",
+    "romCount": 40
+  },
+  {
+    "id": "vircon32",
+    "name": "Vircon32 Virtual Console",
+    "shortName": "Vircon32",
+    "mnemonic": "vircon32",
+    "company": "Engines & Ports",
+    "color": "#00cec9",
+    "accent": "#81ecec",
+    "headerBg": "#00cec9",
+    "caseClass": "case-vircon32",
+    "libretro": "",
+    "tagline": "Console virtual de 32-bits com gráficos e jogabilidade no estilo dos anos 90",
+    "approxCount": "56 Jogos",
+    "romCount": 56
+  },
+  {
+    "id": "virtualboy",
+    "name": "Virtual Boy",
+    "shortName": "Virtual Boy",
+    "mnemonic": "virtualboy",
+    "company": "Nintendo",
+    "color": "#c23616",
+    "accent": "#e84118",
+    "headerBg": "#c23616",
+    "caseClass": "case-virtualboy",
+    "libretro": "",
+    "tagline": "O pioneiro console estereoscópico 3D da Nintendo",
+    "approxCount": "77 Jogos",
+    "romCount": 77
+  },
+  {
+    "id": "vsmile",
+    "name": "VTech V.Smile",
+    "shortName": "V.Smile",
+    "mnemonic": "vsmile",
+    "company": "Outros",
+    "color": "#f9ca24",
+    "accent": "#f0932b",
+    "headerBg": "#f9ca24",
+    "caseClass": "case-vsmile",
+    "libretro": "",
+    "tagline": "O popular console educativo infantil com clássicos de personagens da Disney e Pixar",
+    "approxCount": "31 Jogos",
+    "romCount": 31
+  },
+  {
+    "id": "wasm4",
+    "name": "WASM-4 Fantasy Console",
+    "shortName": "WASM-4",
+    "mnemonic": "wasm4",
+    "company": "Engines & Ports",
+    "color": "#a29bfe",
+    "accent": "#6c5ce7",
+    "headerBg": "#a29bfe",
+    "caseClass": "case-wasm4",
+    "libretro": "",
+    "tagline": "Console virtual ultramoderno baseado em WebAssembly de altíssima performance",
+    "approxCount": "99 Jogos",
+    "romCount": 99
+  },
+  {
+    "id": "wiiu",
+    "name": "Nintendo Wii U",
+    "shortName": "Wii U",
+    "mnemonic": "wiiu",
+    "company": "Nintendo",
+    "color": "#0097e6",
+    "accent": "#00a8ff",
+    "headerBg": "#0097e6",
+    "caseClass": "case-wiiu",
+    "libretro": "",
+    "tagline": "A era em alta definição da Nintendo com o inovador GamePad",
+    "approxCount": "449 Jogos",
+    "romCount": 449
+  },
+  {
+    "id": "wswan",
+    "name": "Bandai WonderSwan",
+    "shortName": "WonderSwan",
+    "mnemonic": "wswan",
+    "company": "Outros",
+    "color": "#eb3b5a",
+    "accent": "#fa8231",
+    "headerBg": "#eb3b5a",
+    "caseClass": "case-wswan",
+    "libretro": "",
+    "tagline": "O inteligente portátil criado pelo lendário Gunpei Yokoi para a Bandai",
+    "approxCount": "255 Jogos",
+    "romCount": 255
+  },
+  {
+    "id": "wswanc",
+    "name": "Bandai WonderSwan Color",
+    "shortName": "WonderSwan Color",
+    "mnemonic": "wswanc",
+    "company": "Outros",
+    "color": "#fa8231",
+    "accent": "#f7b731",
+    "headerBg": "#fa8231",
+    "caseClass": "case-wswanc",
+    "libretro": "",
+    "tagline": "A versão colorida do portátil da Bandai com memoráveis RPGs e animes",
+    "approxCount": "104 Jogos",
+    "romCount": 104
+  },
+  {
+    "id": "x1",
+    "name": "Sharp X1",
+    "shortName": "Sharp X1",
+    "mnemonic": "x1",
+    "company": "Computadores",
+    "color": "#747d8c",
+    "accent": "#ff6348",
+    "headerBg": "#747d8c",
+    "caseClass": "case-x1",
+    "libretro": "",
+    "tagline": "Computador doméstico pioneiro no Japão com integração de TV e gráficos ricos",
+    "approxCount": "772 Jogos",
+    "romCount": 772
+  },
+  {
+    "id": "x68000",
+    "name": "Sharp X68000",
+    "shortName": "Sharp X68000",
+    "mnemonic": "x68000",
+    "company": "Computadores",
+    "color": "#2f3542",
+    "accent": "#ff4757",
+    "headerBg": "#2f3542",
+    "caseClass": "case-x68000",
+    "libretro": "",
+    "tagline": "O lendário computador japonês famoso pelas conversões perfeitas de arcade",
+    "approxCount": "1.619 Jogos",
+    "romCount": 1619
+  },
+  {
+    "id": "xbox360rgh",
+    "name": "Xbox 360 RGH",
+    "shortName": "Xbox 360 RGH",
+    "mnemonic": "xbox360rgh",
+    "company": "Microsoft",
+    "color": "#107c10",
+    "accent": "#52b043",
+    "headerBg": "#107c10",
+    "caseClass": "case-xbox360rgh",
+    "libretro": "",
+    "tagline": "Acervo em formato extraído pronto para consoles Xbox 360 com RGH e Aurora",
+    "approxCount": "1.933 Jogos",
+    "romCount": 1933
+  },
+  {
+    "id": "xboxone",
+    "name": "Xbox One",
+    "shortName": "Xbox One",
+    "mnemonic": "xboxone",
+    "company": "Microsoft",
+    "color": "#107c10",
+    "accent": "#52b043",
+    "headerBg": "#107c10",
+    "caseClass": "case-xboxone",
+    "libretro": "",
+    "tagline": "A oitava geração da Microsoft com retrocompatibilidade e grandes franquias",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "xboxseries",
+    "name": "Xbox Series X/S",
+    "shortName": "Xbox Series",
+    "mnemonic": "xboxseries",
+    "company": "Microsoft",
+    "color": "#107c10",
+    "accent": "#ffffff",
+    "headerBg": "#107c10",
+    "caseClass": "case-xboxseries",
+    "libretro": "",
+    "tagline": "A geração da velocidade e poder da Microsoft com Quick Resume e 120 FPS",
+    "approxCount": "Em atualização",
+    "romCount": 0
+  },
+  {
+    "id": "xegs",
+    "name": "Atari XE Video Game System",
+    "shortName": "Atari XEGS",
+    "mnemonic": "xegs",
+    "company": "Atari",
+    "color": "#bdc3c7",
+    "accent": "#e74c3c",
+    "headerBg": "#bdc3c7",
+    "caseClass": "case-xegs",
+    "libretro": "",
+    "tagline": "O console híbrido da Atari compatível com toda a linha de software Atari 8-bit",
+    "approxCount": "36 Jogos",
+    "romCount": 36
+  },
+  {
+    "id": "zinc",
+    "name": "ZiNc Arcade (Sony ZN-1/ZN-2)",
+    "shortName": "ZiNc",
+    "mnemonic": "zinc",
+    "company": "Arcade",
+    "color": "#2c3e50",
+    "accent": "#00a8ff",
+    "headerBg": "#2c3e50",
+    "caseClass": "case-zinc",
+    "libretro": "",
+    "tagline": "Jogos arcade 3D baseados no hardware da PlayStation como Rival Schools e Strider 2",
+    "approxCount": "33 Jogos",
+    "romCount": 33
+  },
+  {
+    "id": "zx81",
+    "name": "Sinclair ZX81",
+    "shortName": "ZX81",
+    "mnemonic": "zx81",
+    "company": "Computadores",
+    "color": "#2f3542",
+    "accent": "#ced6e0",
+    "headerBg": "#2f3542",
+    "caseClass": "case-zx81",
+    "libretro": "",
+    "tagline": "O minicomputador pioneiro que popularizou a informática no início dos anos 80",
+    "approxCount": "1.191 Jogos",
+    "romCount": 1191
+  },
+  {
+    "id": "zxspectrum",
+    "name": "Sinclair ZX Spectrum",
+    "shortName": "ZX Spectrum",
+    "mnemonic": "zxspectrum",
+    "company": "Computadores",
+    "color": "#ff4757",
+    "accent": "#2ed573",
+    "headerBg": "#ff4757",
+    "caseClass": "case-zxspectrum",
+    "libretro": "",
+    "tagline": "O icônico computador britânico com teclas de borracha e biblioteca lendária",
+    "approxCount": "10.455 Jogos",
+    "romCount": 10455
+  }
+];
+
+  // PLATFORMS ativas (sera preenchida somente com os sistemas liberados do usuario)
+  let PLATFORMS = [];
+  let currentUser = null;
+
+  // --------------------------------------------------------------------------
+  // Funcoes de Autenticacao e Direitos
+  // --------------------------------------------------------------------------
+  function getStoredToken() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlToken = urlParams.get('token');
+    if (urlToken) {
+      localStorage.setItem('authToken', urlToken);
+      urlParams.delete('token');
+      const newSearch = urlParams.toString();
+      const cleanUrl = window.location.pathname + (newSearch ? '?' + newSearch : '') + window.location.hash;
+      window.history.replaceState({}, document.title, cleanUrl);
+      return urlToken;
+    }
+    return localStorage.getItem('authToken');
+  }
+
+  function isTokenExpired(token) {
+    if (!token) return true;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return Date.now() >= payload.exp * 1000;
+    } catch {
+      return true;
+    }
+  }
+
+  function redirectToLogin() {
+    localStorage.removeItem('authToken');
+    const returnUrl = window.location.href;
+    window.location.href = `${MEMBER_AREA_LOGIN_URL}?redirect=${encodeURIComponent(returnUrl)}`;
+  }
+
+  async function fetchUserEntitlements(token) {
+    const response = await fetch(BACKEND_SYSTEMS_URL, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.status === 401 || response.status === 403) {
+      redirectToLogin();
+      return null;
+    }
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status} ao consultar sistemas`);
+    }
+    return await response.json();
+  }
+
+  function filterPlatformsByEntitlements(allPlatforms, userSystems) {
+    const allowed = new Set((userSystems || []).map(s => String(s).toLowerCase().trim()));
+    return allPlatforms.filter(p => {
+      const id = (p.id || '').toLowerCase();
+      const m = (p.mnemonic || '').toLowerCase();
+      if (allowed.has(id) || allowed.has(m)) return true;
+      if (p.aliases && p.aliases.some(a => allowed.has(a.toLowerCase()))) return true;
+      if ((id === 'ps2patchs_futebol' || id === 'ps2patchs_gta') && (allowed.has('ps2') || allowed.has('ps2patchs'))) {
+        return true;
+      }
+      return false;
+    });
+  }
+
+  function updateUserProfileHeader(user, unlockedCount) {
+    const emailEl = document.getElementById('userEmailLabel');
+    const countEl = document.getElementById('userSystemsCount');
+    const avatarEl = document.getElementById('userAvatar');
+    const emptyEmail = document.getElementById('emptyAccountEmail');
+
+    if (emailEl && user?.email) {
+      emailEl.textContent = user.email;
+      emailEl.title = user.email;
+    }
+    if (emptyEmail && user?.email) {
+      emptyEmail.textContent = user.email;
+    }
+    if (avatarEl && user?.email) {
+      avatarEl.textContent = user.email.charAt(0).toUpperCase();
+    }
+    if (countEl) {
+      countEl.textContent = `${unlockedCount} ${unlockedCount === 1 ? 'Sistema Liberado' : 'Sistemas Liberados'}`;
+    }
+
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('authToken');
+        window.location.href = `${MEMBER_AREA_LOGIN_URL}`;
+      });
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Major Hit Franchises for Popularity Scoring
+  // --------------------------------------------------------------------------
+  const MASTER_HITS = [
+    // GTA Franchise
+    'san andreas', 'grand theft auto', 'vice city', 'gta',
+    // Sony Flagship
+    'god of war', 'shadow of the colossus', 'gran turismo', 'the last of us', 'uncharted',
+    // Survival Horror
+    'resident evil 4', 'resident evil', 'silent hill 2', 'silent hill',
+    // Racing Legends
+    'need for speed', 'most wanted', 'underground 2', 'underground', 'carbon', 'midnight club', 'burnout',
+    // Anime & Fighting Hits
+    'budokai tenkaichi 3', 'dragon ball', 'shippuden', 'naruto', 'shaolin monks', 'mortal kombat', 'tekken', 'def jam', 'street fighter',
+    // Football & Brazilian Favorites
+    'bomba patch', 'pes 20', 'winning eleven', 'fifa', 'downhill domination',
+    // Action / Cult Hits
+    'bully', 'black', 'devil may cry 3', 'devil may cry', 'metal gear', 'kingdom hearts', 'final fantasy x', 'hit & run', 'simpsons',
+    // Nintendo Hits
+    'mario kart', 'super mario galaxy', 'super mario', 'twilight princess', 'zelda', 'smash bros', 'pokemon', 'donkey kong',
+    // Microsoft Hits
+    'halo 3', 'halo', 'gears of war', 'forza', 'red dead redemption'
+  ];
+
+  const POPULAR_KEYWORDS = [
+    'grand theft auto', 'gta', 'san andreas', 'vice city', 'liberty city',
+    'god of war', 'resident evil', 'biohazard', 'silent hill',
+    'need for speed', 'underground', 'most wanted', 'carbon', 'prostreet',
+    'dragon ball', 'budokai', 'tenkaichi', 'naruto', 'shippuden',
+    'mortal kombat', 'street fighter', 'tekken', 'king of fighters', 'kof',
+    'bomba patch', 'pes 20', 'pro evolution soccer', 'winning eleven', 'fifa',
+    'crash bandicoot', 'crash', 'spyro', 'tony hawk',
+    'metal gear', 'mgs', 'snake eater', 'devil may cry', 'dmc',
+    'shadow of the colossus', 'kingdom hearts', 'final fantasy',
+    'black', 'bully', 'def jam', 'burnout', 'midnight club',
+    'call of duty', 'medal of honor', 'battlefield',
+    'super mario', 'mario kart', 'mario galaxy', 'zelda', 'the legend of zelda',
+    'donkey kong', 'pokemon', 'pokémon', 'metroid', 'kirby', 'smash bros',
+    'halo', 'gears of war', 'forza', 'fable', 'left 4 dead',
+    'red dead', 'red dead redemption', 'the last of us', 'uncharted',
+    'spider-man', 'spiderman', 'batman', 'arkham', 'castlevania',
+    'gran turismo', 'guitar hero', 'rock band', 'sonic the hedgehog',
+    'sonic', 'tomb raider', 'lara croft', 'assassin', 'monster hunter',
+    'persona', 'yakuza', 'dark souls', 'demon souls', 'max payne',
+    'god hand', 'downhill domination', 'mx vs atv', 'def jam fight for ny',
+    'ben 10', 'simpsons', 'hit & run', 'yu-gi-oh', 'lego'
+  ];
+
+  // --------------------------------------------------------------------------
+  // Application State
+  // --------------------------------------------------------------------------
+  const state = {
+    isHubMode: false,
+    currentPlatform: null,
+    groupedGames: [],     // Unique games (deduplicated)
+    filteredGames: [],
+    renderedCount: 0,
+    searchQuery: '',
+    selectedRegion: 'all', // all | br | usa | eur | jp
+    sortBy: 'popular',     // 'popular' (default) | 'az'
+    viewMode: 'grid',      // grid | list
+    isLoading: false,
+    selectedGame: null,
+  };
+
+  // --------------------------------------------------------------------------
+  // IndexedDB Cache Layer
+  // --------------------------------------------------------------------------
+  const DB_NAME = 'DSG_Catalog_DB_v2';
+  const DB_STORE = 'platforms';
+
+  function openDatabase() {
+    return new Promise((resolve) => {
+      if (!window.indexedDB) return resolve(null);
+      const req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(DB_STORE)) {
+          db.createObjectStore(DB_STORE, { keyPath: 'id' });
+        }
+      };
+      req.onsuccess = (e) => resolve(e.target.result);
+      req.onerror = () => resolve(null);
+    });
+  }
+
+  async function getCachedPlatform(platformId) {
+    try {
+      const db = await openDatabase();
+      if (!db) return null;
+      return new Promise((resolve) => {
+        const tx = db.transaction(DB_STORE, 'readonly');
+        const store = tx.objectStore(DB_STORE);
+        const req = store.get(platformId);
+        req.onsuccess = () => {
+          const res = req.result;
+          if (res && (Date.now() - res.timestamp < CACHE_TTL_MS)) {
+            resolve(res.data);
+          } else {
+            resolve(null);
+          }
+        };
+        req.onerror = () => resolve(null);
+      });
+    } catch {
+      return null;
+    }
+  }
+
+  async function setCachedPlatform(platformId, data) {
+    try {
+      const db = await openDatabase();
+      if (!db) return;
+      const tx = db.transaction(DB_STORE, 'readwrite');
+      const store = tx.objectStore(DB_STORE);
+      store.put({ id: platformId, timestamp: Date.now(), data });
+    } catch (e) {
+      console.warn('Failed to cache in IndexedDB:', e);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Title Parsing & Deduplication Comparison Key
+  // --------------------------------------------------------------------------
+  function getBaseTitle(raw) {
+    if (!raw) return 'Jogo sem título';
+    let title = raw.includes('/') || raw.includes('\\')
+      ? raw.substring(Math.max(raw.lastIndexOf('/'), raw.lastIndexOf('\\')) + 1)
+      : raw;
+    return title
+      .replace(/\.(iso|rvz|chd|cso|wbfs|nsp|xci|nsz|rar|7z|zip|bin|cue|gdi|cdi|sfc|smc|z64|n64|md|gen|pkg)$/i, '')
+      .replace(/^[A-Z]{3,4}[-_][0-9]{3,5}\.[0-9]{2}\./i, '')
+      .replace(/\[[0-9A-Fa-f]{16}\]/g, '')
+      .replace(/\s*\(.*?\)/g, '')
+      .replace(/\s*\[.*?\]/g, '')
+      .replace(/^[-\s_]+|[-\s_]+$/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+  }
+
+  function getComparisonKey(baseTitle) {
+    let key = (baseTitle || '').toLowerCase();
+
+    // Standardize common localizations
+    key = key.replace(/\bbrasil\b/g, 'brazil');
+    key = key.replace(/\ba era do gelo\b/g, 'ice age');
+    key = key.replace(/\bac\b/g, "assassin's creed");
+
+    // Convert Roman numerals
+    key = key.replace(/\bxv\b/g, '15')
+      .replace(/\bxiv\b/g, '14')
+      .replace(/\bxiii\b/g, '13')
+      .replace(/\bxii\b/g, '12')
+      .replace(/\bxi\b/g, '11')
+      .replace(/\bx\b/g, '10')
+      .replace(/\bix\b/g, '9')
+      .replace(/\bviii\b/g, '8')
+      .replace(/\bvii\b/g, '7')
+      .replace(/\bvi\b/g, '6')
+      .replace(/\biv\b/g, '4')
+      .replace(/\biii\b/g, '3')
+      .replace(/\bii\b/g, '2')
+      .replace(/\bv\b/g, '5');
+
+    // Remove region suffixes
+    key = key.replace(/\b(aus|usa|eur|pal|uk|jp|jpn|rf|regionfree|region\s+free|asia|ntsc|kor|chn|eng|spa|ger|fra|ita|rus|por|free)$/g, '').trim();
+
+    // Alphanumeric only
+    return key.replace(/[^a-z0-9]/g, '');
+  }
+
+  function extractRegion(str) {
+    if (!str) return '';
+    if (/\b(Brazil|Brasil|PT-BR|Dublado|Legendado|Traduzido|Bomba Patch)\b/i.test(str)) return 'Brasil';
+    if (/\b(USA|US)\b/i.test(str)) return 'USA';
+    if (/\b(Europe|En,Fr,De|En,Es,It|PAL)\b/i.test(str)) return 'Europa';
+    if (/\b(Japan|JP|NTSC-J)\b/i.test(str)) return 'Japão';
+    return '';
+  }
+
+  function extractDisc(str) {
+    const discMatch = str.match(/\((Disc|Disk|DVD|CD)\s*([0-9]+)[^)]*\)/i) || str.match(/\[(Disc|Disk|DVD|CD)\s*([0-9]+)[^\]]*\]/i);
+    return discMatch ? `Disco ${discMatch[2]}` : '';
+  }
+
+  function formatBytes(bytes) {
+    if (!bytes) return '';
+    if (typeof bytes === 'string' && isNaN(Number(bytes))) {
+      return bytes;
+    }
+    const n = Number(bytes);
+    if (isNaN(n) || n <= 0) return '';
+    const gb = n / (1024 * 1024 * 1024);
+    if (gb >= 1) return `${gb.toFixed(2)} GB`;
+    const mb = n / (1024 * 1024);
+    if (mb >= 1) return `${mb.toFixed(0)} MB`;
+    return `${Math.round(n / 1024)} KB`;
+  }
+
+  function resolveCoverUrl(entry, platform) {
+    let url = entry.cover2d_url || entry.image_url;
+    if (url && typeof url === 'string') {
+      url = url.trim();
+      if (url.startsWith('http://')) {
+        url = url.replace(/^http:\/\//i, 'https://');
+      }
+      return url;
+    }
+
+    return null;
+  }
+
+  function getCoverKey(url) {
+    if (!url || typeof url !== 'string') return null;
+    try {
+      const clean = url.split('#')[0].split('?')[0];
+      const fileName = decodeURIComponent(clean.substring(clean.lastIndexOf('/') + 1));
+      if (!fileName) return null;
+      const base = getBaseTitle(fileName);
+      const comp = getComparisonKey(base);
+      return comp || fileName.toLowerCase().replace(/[^a-z0-9]/g, '');
+    } catch {
+      return url.toLowerCase().replace(/[^a-z0-9]/g, '');
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Popularity Calculation Engine
+  // --------------------------------------------------------------------------
+  function computePopularityScore(displayTitle, rawPath, versionsCount, hasCover, isPTBR) {
+    let score = 0;
+    const lower = `${displayTitle} ${rawPath}`.toLowerCase();
+
+    // 1. Master Hit matching (Top-tier boost)
+    for (let i = 0; i < MASTER_HITS.length; i++) {
+      const hit = MASTER_HITS[i];
+      if (lower.includes(hit)) {
+        score += Math.max(500 - i * 6, 250);
+        break;
+      }
+    }
+
+    // 2. Franchise matching
+    for (let i = 0; i < POPULAR_KEYWORDS.length; i++) {
+      const kw = POPULAR_KEYWORDS[i];
+      if (lower.includes(kw)) {
+        score += Math.max(250 - i * 3, 80);
+        break;
+      }
+    }
+
+    // 3. Bonus for multiple versions / multi-disc (indicates high demand/major retail release)
+    score += Math.min(versionsCount * 12, 60);
+
+    // 4. Bonus for verified official cover art
+    if (hasCover) score += 50;
+
+    // 5. Bonus for PT-BR localized edition
+    if (isPTBR) score += 40;
+
+    // 6. Heavy penalties for non-commercial or test versions
+    if (/\b(demo|taikenban|trial|sample)\b/i.test(lower)) score -= 500;
+    if (/\b(beta|proto|prototype)\b/i.test(lower)) score -= 400;
+    if (/\b(promo|kiosk|preview|bonus disc|not for sale)\b/i.test(lower)) score -= 300;
+
+    return score;
+  }
+
+  // --------------------------------------------------------------------------
+  // DOM Elements References
+  // --------------------------------------------------------------------------
+  let dom = {};
+
+  function cacheDom() {
+    dom = {
+      header: document.querySelector('.catalog-header'),
+      headerTop: document.querySelector('.header-top'),
+      brandSection: document.querySelector('.brand-section'),
+      brandTitle: document.querySelector('.brand-title'),
+      brandBadge: document.querySelector('.brand-badge'),
+      brandSubtitle: document.querySelector('.brand-subtitle'),
+      headerActions: document.querySelector('.header-actions'),
+      bannerCard: document.getElementById('bannerCard'),
+      bannerTitle: document.getElementById('bannerTitle'),
+      bannerTagline: document.getElementById('bannerTagline'),
+      bannerTotalGames: document.getElementById('bannerTotalGames'),
+      bannerWithCovers: document.getElementById('bannerWithCovers'),
+      toolbar: document.querySelector('.catalog-toolbar'),
+      searchInput: document.getElementById('searchInput'),
+      searchClearBtn: document.getElementById('searchClearBtn'),
+      regionChips: document.getElementById('regionChips'),
+      sortSelect: document.getElementById('sortSelect'),
+      viewGridBtn: document.getElementById('viewGridBtn'),
+      viewListBtn: document.getElementById('viewListBtn'),
+      resultsCountText: document.getElementById('resultsCountText'),
+      gamesContainer: document.getElementById('gamesContainer'),
+      scrollSentinel: document.getElementById('scrollSentinel'),
+      refreshBtn: document.getElementById('refreshBtn'),
+      modalBackdrop: document.getElementById('gameModal'),
+      modalCloseBtn: document.getElementById('modalCloseBtn'),
+      modalBoxArt: document.getElementById('modalBoxArt'),
+      modalTitle: document.getElementById('modalTitle'),
+      modalConsoleBadge: document.getElementById('modalConsoleBadge'),
+      modalTags: document.getElementById('modalTags'),
+      modalFormat: document.getElementById('modalFormat'),
+      modalSize: document.getElementById('modalSize'),
+      modalRegion: document.getElementById('modalRegion'),
+      modalGenre: document.getElementById('modalGenre'),
+      modalFilename: document.getElementById('modalFilename'),
+      modalVersionsSection: document.getElementById('modalVersionsSection'),
+      modalVersionsList: document.getElementById('modalVersionsList'),
+      modalWhatsAppBtn: document.getElementById('modalWhatsAppBtn'),
+      modalCopyBtn: document.getElementById('modalCopyBtn'),
+      toast: document.getElementById('toast'),
+    };
+  }
+
+  // --------------------------------------------------------------------------
+  // Navigation & URL Routing
+  // --------------------------------------------------------------------------
+  function detectPlatformContext() {
+    function findPlat(val) {
+      if (!val) return null;
+      const v = String(val).trim().toLowerCase();
+      return PLATFORMS.find((x) => x.id === v || (x.mnemonic && x.mnemonic.toLowerCase() === v));
+    }
+
+    // 0. Preset in window (e.g. window.ACESSO_PRESET_PLATFORM = "ps2")
+    if (window.ACESSO_PRESET_PLATFORM) {
+      const p = findPlat(window.ACESSO_PRESET_PLATFORM);
+      if (p) return { platform: p, isDedicated: true };
+    }
+
+    // 1. Meta tag in HTML (e.g. in /acesso/ps2/index.html)
+    const metaTag = document.querySelector('meta[name="default-platform"]');
+    if (metaTag && metaTag.content) {
+      const p = findPlat(metaTag.content);
+      if (p) return { platform: p, isDedicated: true };
+    }
+
+    // 2. Pathname segment: e.g. /acesso/ps2 or /acesso/ps2/
+    const path = window.location.pathname.toLowerCase();
+    for (const p of PLATFORMS) {
+      if (
+        path.includes(`/acesso/${p.id}/`) ||
+        path.endsWith(`/acesso/${p.id}`) ||
+        path.includes(`/catalog/${p.id}/`) ||
+        path.endsWith(`/${p.id}/`) ||
+        path.endsWith(`/${p.id}`)
+      ) {
+        return { platform: p, isDedicated: true };
+      }
+      if (
+        p.mnemonic &&
+        (path.includes(`/acesso/${p.mnemonic.toLowerCase()}/`) ||
+          path.endsWith(`/acesso/${p.mnemonic.toLowerCase()}`) ||
+          path.endsWith(`/${p.mnemonic.toLowerCase()}/`) ||
+          path.endsWith(`/${p.mnemonic.toLowerCase()}`))
+      ) {
+        return { platform: p, isDedicated: true };
+      }
+    }
+
+    // 3. Search query: ?platform=ps2, ?system=ps2, ?mne=ps2
+    const params = new URLSearchParams(window.location.search);
+    const queryPlat = params.get('platform') || params.get('system') || params.get('console') || params.get('mne');
+    if (queryPlat) {
+      const p = findPlat(queryPlat);
+      if (p) return { platform: p, isDedicated: true };
+    }
+
+    // 4. Hash: #ps2
+    const hash = window.location.hash.replace(/^[#/]+/, '').toLowerCase();
+    if (hash) {
+      const p = findPlat(hash);
+      if (p) return { platform: p, isDedicated: true };
+    }
+
+    return { platform: null, isDedicated: false };
+  }
+
+  function renderHubMode() {
+    state.isHubMode = true;
+    document.title = 'Meus Sistemas Liberados - Downloads Digital Store Games';
+
+    // Hide banner
+    if (dom.bannerCard) dom.bannerCard.parentElement.style.display = 'none';
+
+    // Update Header
+    if (dom.brandTitle) {
+      dom.brandTitle.innerHTML = 'Área de Downloads <span class="brand-badge">Meus Sistemas</span>';
+    }
+    if (dom.brandSubtitle) {
+      dom.brandSubtitle.textContent = `${PLATFORMS.length} sistemas liberados para download na sua conta`; const backHubWrap = document.getElementById('bannerBackHubWrap'); if (backHubWrap) backHubWrap.style.display = 'none';
+    }
+
+    // Configure Toolbar for Hub Mode
+    if (dom.toolbar) {
+      dom.toolbar.style.display = 'block';
+      if (dom.sortSelect && dom.sortSelect.parentElement) {
+        dom.sortSelect.parentElement.style.display = 'none';
+      }
+      if (dom.searchInput) {
+        dom.searchInput.placeholder = 'Buscar plataforma ou console (ex: Nintendo, PS2, Sega, Arcade, Amiga...)';
+        dom.searchInput.value = '';
+      }
+      if (dom.searchClearBtn) dom.searchClearBtn.style.display = 'none';
+
+      // Setup Hub Category Chips
+      if (dom.regionChips) {
+        const categories = [
+          'Todos',
+          'Sony',
+          'Nintendo',
+          'Sega',
+          'Microsoft',
+          'Arcade',
+          'Atari',
+          'Commodore',
+          'Computadores',
+          'Engines & Ports',
+          'Outros',
+        ];
+        dom.regionChips.innerHTML = `
+          <span class="filter-chip-label">Fabricante / Tipo:</span>
+          ${categories.map((c, i) => `
+            <button class="filter-chip ${i === 0 ? 'active' : ''}" data-hub-cat="${c}">${c}</button>
+          `).join('')}
+        `;
+
+        dom.regionChips.onclick = (e) => {
+          const btn = e.target.closest('button[data-hub-cat]');
+          if (!btn) return;
+          dom.regionChips.querySelectorAll('.filter-chip').forEach((b) => b.classList.remove('active'));
+          btn.classList.add('active');
+          state.hubCategory = btn.getAttribute('data-hub-cat');
+          filterAndRenderHubCards();
+        };
+      }
+
+      // Search input listener for Hub
+      let hubSearchDebounce = null;
+      if (dom.searchInput) {
+        dom.searchInput.oninput = (e) => {
+          clearTimeout(hubSearchDebounce);
+          state.hubSearchQuery = e.target.value;
+          if (dom.searchClearBtn) {
+            dom.searchClearBtn.style.display = state.hubSearchQuery ? 'block' : 'none';
+          }
+          hubSearchDebounce = setTimeout(() => {
+            filterAndRenderHubCards();
+          }, 80);
+        };
+      }
+
+      if (dom.searchClearBtn) {
+        dom.searchClearBtn.onclick = () => {
+          if (dom.searchInput) dom.searchInput.value = '';
+          state.hubSearchQuery = '';
+          dom.searchClearBtn.style.display = 'none';
+          filterAndRenderHubCards();
+        };
+      }
+    }
+
+    state.hubCategory = 'Todos';
+    state.hubSearchQuery = '';
+    filterAndRenderHubCards();
+
+    if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
+  }
+
+  function filterAndRenderHubCards() {
+    const q = (state.hubSearchQuery || '').trim().toLowerCase();
+    const cat = state.hubCategory || 'Todos';
+
+    const filtered = PLATFORMS.filter((p) => {
+      // Category filter
+      if (cat !== 'Todos') {
+        if (cat === 'Outros') {
+          const mainCats = ['Sony', 'Nintendo', 'Sega', 'Microsoft', 'Arcade', 'Atari', 'Commodore', 'Computadores', 'Engines & Ports'];
+          if (mainCats.includes(p.company)) return false;
+        } else if (p.company !== cat) {
+          return false;
+        }
+      }
+
+      // Query filter
+      if (q) {
+        const match =
+          p.name.toLowerCase().includes(q) ||
+          p.shortName.toLowerCase().includes(q) ||
+          p.mnemonic.toLowerCase().includes(q) ||
+          p.company.toLowerCase().includes(q) ||
+          p.tagline.toLowerCase().includes(q);
+        if (!match) return false;
+      }
+
+      return true;
+    });
+
+    if (dom.resultsCountText) {
+      dom.resultsCountText.innerHTML = `Exibindo <strong>${filtered.length}</strong> de <strong>${PLATFORMS.length}</strong> sistemas e plataformas disponíveis`;
+    }
+
+    dom.gamesContainer.className = 'hub-grid';
+    if (filtered.length === 0) {
+      dom.gamesContainer.innerHTML = `
+        <div class="empty-state" style="grid-column: 1 / -1; padding: 4rem 1rem; text-align: center;">
+          <p style="font-size: 1.15rem; font-weight: 700; color: #fff;">Nenhuma plataforma encontrada</p>
+          <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem;">
+            Tente buscar por outro termo ou selecione "Todos" nos filtros acima.
+          </p>
+        </div>
+      `;
+      return;
+    }
+
+    dom.gamesContainer.innerHTML = filtered.map((p) => `
+      <a href="./${p.id}/" class="hub-card" style="--card-accent: ${p.accent}; --card-glow: ${p.accent}33; --card-border: ${p.accent}55;">
+        <div class="hub-card-header">
+          <div class="hub-card-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+              <path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"></path>
+            </svg>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.25rem;">
+            <span class="hub-card-badge">${escapeHtml(p.approxCount)}</span>
+            <span class="hub-card-company">${escapeHtml(p.company)}</span>
+          </div>
+        </div>
+        <div class="hub-card-title">${escapeHtml(p.name)}</div>
+        <div class="hub-card-desc">${escapeHtml(p.tagline)}</div>
+        <div class="hub-card-footer">
+          <span>Acessar Jogos &amp; Baixar</span>
+          <span>→</span>
+        </div>
+      </a>
+    `).join('');
+  }
+
+  // --------------------------------------------------------------------------
+  // Dedicated Platform Setup
+  // --------------------------------------------------------------------------
+  function applyPlatformTheme(platform) {
+    document.documentElement.style.setProperty('--console-primary', platform.accent);
+    document.documentElement.style.setProperty('--console-glow', `${platform.accent}44`);
+    document.documentElement.style.setProperty('--console-border', `${platform.accent}66`);
+    document.documentElement.style.setProperty('--console-header-bg', platform.headerBg);
+
+    // Update Header for Dedicated Mode
+    if (dom.brandTitle) {
+      dom.brandTitle.innerHTML = `Catálogo ${escapeHtml(platform.name)} <span class="brand-badge">${escapeHtml(platform.shortName)}</span>`;
+    }
+    if (dom.brandSubtitle) {
+      dom.brandSubtitle.textContent = 'Acervo oficial completo e atualizado';
+    }
+
+    // Add "Back to Hub" link in header actions if not already present
+    let backBtn = document.getElementById('backHubBtn');
+    if (!backBtn && dom.headerActions) {
+      backBtn = document.createElement('a');
+      backBtn.id = 'backHubBtn';
+      const isSubFolder = /\/catalog\/[^\/]+\/?$/i.test(window.location.pathname) && !/\/catalog\/(index\.html)?$/i.test(window.location.pathname);
+      backBtn.href = isSubFolder ? '../' : './';
+      backBtn.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Outros Catálogos</span>
+      `;
+      dom.headerActions.insertBefore(backBtn, dom.headerActions.firstChild);
+    }
+
+    // Update Banner Info
+    if (dom.bannerTitle) dom.bannerTitle.textContent = platform.name;
+    if (dom.bannerTagline) dom.bannerTagline.textContent = platform.tagline;
+    if (dom.searchInput) dom.searchInput.placeholder = `Buscar entre ${platform.approxCount} em ${platform.shortName}...`;
+
+    document.title = `Downloads ${platform.name} - Digital Store Games`; const backHubWrap = document.getElementById('bannerBackHubWrap'); if (backHubWrap) backHubWrap.style.display = 'block';
+  }
+
+  // --------------------------------------------------------------------------
+  // Fetch Games Data & Deduplication Grouping
+  // --------------------------------------------------------------------------
+  async function loadPlatformData(platform, forceRefresh = false) {
+    state.isLoading = true;
+    renderLoadingState();
+
+    try {
+      let rawEntries = null;
+
+      // Check cache unless force refresh
+      if (!forceRefresh) {
+        rawEntries = await getCachedPlatform(platform.id);
+      }
+
+      if (!rawEntries) {
+        const payload = {
+          mnemonicos: [
+            {
+              name: platform.mnemonic,
+              infos: ['image_url', 'cover2d_url', 'genre', 'players'],
+            },
+          ],
+        };
+
+        const resp = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!resp.ok) {
+          throw new Error(`Servidor retornou erro ${resp.status}`);
+        }
+
+        const data = await resp.json();
+        rawEntries = data.entries || [];
+
+        if (rawEntries.length > 0) {
+          setCachedPlatform(platform.id, rawEntries);
+        }
+      }
+
+      // Handle custom filters (e.g. ps2_futebol or ps2patchs_gta_games)
+      let processed = rawEntries;
+      if (platform.filterCustom === 'futebol') {
+        processed = rawEntries.filter((e) => {
+          const path = (e.path || '').toLowerCase();
+          return (
+            path.includes('bomba') ||
+            path.includes('pes 20') ||
+            path.includes('futebol') ||
+            path.includes('fifa') ||
+            path.includes('we10') ||
+            path.includes('brasileir')
+          );
+        });
+      } else if (platform.filterCustom === 'gta') {
+        processed = rawEntries.filter((e) => {
+          const path = (e.path || '').toLowerCase();
+          return path.includes('gta') || path.includes('grand theft auto');
+        });
+      }
+
+      // ======================================================================
+      // DEDUPLICATION & GROUPING LOGIC (NO REPEATED ITEMS)
+      // Group by cover and then by title
+      // ======================================================================
+      const groups = [];
+      const coverMap = new Map(); // normalizedCoverKey -> group
+      const titleMap = new Map(); // compKey -> group
+
+      for (let i = 0; i < processed.length; i++) {
+        const entry = processed[i];
+        const rawPath = entry.path || '';
+        const baseTitle = getBaseTitle(rawPath);
+        const compKey = getComparisonKey(baseTitle) || rawPath.toLowerCase();
+        const coverUrl = resolveCoverUrl(entry, platform);
+        const coverKey = getCoverKey(coverUrl);
+        const region = extractRegion(rawPath);
+        const disc = extractDisc(rawPath);
+        const isPTBR = region === 'Brasil' || /\b(Brasil|PT-BR|Dublado|Legendado|Traduzido|Bomba Patch)\b/i.test(rawPath);
+
+        const versionData = {
+          rawPath,
+          sizeFormatted: formatBytes(entry.size),
+          sizeBytes: parseFloat(entry.size) || 0,
+          region: region || 'Global',
+          disc,
+          isPTBR,
+          format: (rawPath.split('.').pop() || 'ISO').toUpperCase(),
+          coverUrl,
+          link: entry.link,
+          genre: entry.genre || '',
+        };
+
+        // 1. Group by cover key first (same cover image = exact same game)
+        let group = null;
+        if (coverKey && coverMap.has(coverKey)) {
+          group = coverMap.get(coverKey);
+        }
+
+        // 2. Then group by title key
+        if (!group && compKey && titleMap.has(compKey)) {
+          group = titleMap.get(compKey);
+        }
+
+        // 3. If matched by cover, but title exists in a different group, merge them
+        if (group && compKey && titleMap.has(compKey) && titleMap.get(compKey) !== group) {
+          const otherGroup = titleMap.get(compKey);
+          for (let v = 0; v < otherGroup.versions.length; v++) {
+            const ver = otherGroup.versions[v];
+            group.versions.push(ver);
+            if (ver.disc) group.discs.add(ver.disc);
+            if (ver.region) group.regions.add(ver.region);
+            if (ver.isPTBR) group.isPTBR = true;
+          }
+          if (!group.coverUrl && otherGroup.coverUrl) {
+            group.coverUrl = otherGroup.coverUrl;
+            group.hasCover = true;
+          }
+          // Re-map references
+          for (const [k, g] of titleMap.entries()) {
+            if (g === otherGroup) titleMap.set(k, group);
+          }
+          for (const [k, g] of coverMap.entries()) {
+            if (g === otherGroup) coverMap.set(k, group);
+          }
+          const oIdx = groups.indexOf(otherGroup);
+          if (oIdx !== -1) groups.splice(oIdx, 1);
+        }
+
+        if (!group) {
+          group = {
+            id: `${platform.id}_${compKey}`,
+            displayTitle: baseTitle,
+            compKey: compKey,
+            coverUrl: coverUrl,
+            hasCover: Boolean(coverUrl),
+            isPTBR: isPTBR,
+            discs: new Set(),
+            regions: new Set(),
+            genre: entry.genre || '',
+            versions: [versionData],
+            bestSizeFormatted: versionData.sizeFormatted,
+            rawPrimaryPath: rawPath,
+          };
+          if (disc) group.discs.add(disc);
+          if (region) group.regions.add(region);
+          groups.push(group);
+        } else {
+          group.versions.push(versionData);
+          if (disc) group.discs.add(disc);
+          if (region) group.regions.add(region);
+          if (isPTBR) group.isPTBR = true;
+
+          // If this version has a verified cover and group doesn't, adopt it
+          if (!group.coverUrl && coverUrl) {
+            group.coverUrl = coverUrl;
+            group.hasCover = true;
+          }
+
+          // Prioritize PT-BR or USA title for cleaner representation
+          if (isPTBR || region === 'USA') {
+            group.displayTitle = baseTitle;
+            group.rawPrimaryPath = rawPath;
+          }
+        }
+
+        if (coverKey) coverMap.set(coverKey, group);
+        if (compKey) titleMap.set(compKey, group);
+      }
+
+      // Convert grouped list and compute popularity scores
+      const groupedList = groups.map((g) => {
+        const discsArr = Array.from(g.discs);
+        const regionsArr = Array.from(g.regions);
+
+        // Calculate popularity score for sorting
+        const score = computePopularityScore(
+          g.displayTitle,
+          g.rawPrimaryPath,
+          g.versions.length,
+          g.hasCover,
+          g.isPTBR
+        );
+
+        return {
+          ...g,
+          discsCount: discsArr.length,
+          discsLabel: discsArr.length > 1 ? `${discsArr.length} Discos` : '',
+          versionsCount: g.versions.length,
+          versionsLabel: g.versions.length > 1 ? `${g.versions.length} Versões` : '',
+          regionsLabel: regionsArr.join(', '),
+          popularityScore: score,
+        };
+      });
+
+      // ALWAYS PRE-SORT: Games with cover FIRST, games without cover ALWAYS LAST; then by popularity descending
+      groupedList.sort((a, b) => {
+        const aHas = a.hasCover ? 1 : 0;
+        const bHas = b.hasCover ? 1 : 0;
+        if (bHas !== aHas) {
+          return bHas - aHas;
+        }
+        if (b.popularityScore !== a.popularityScore) {
+          return b.popularityScore - a.popularityScore;
+        }
+        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+      });
+
+      state.groupedGames = groupedList;
+
+      // Update Banner Stats (Total Unique Games only - cover % hidden per user request)
+      const totalUnique = state.groupedGames.length;
+
+      if (dom.bannerTotalGames) dom.bannerTotalGames.textContent = `${totalUnique.toLocaleString('pt-BR')} Títulos`;
+      if (dom.bannerWithCovers && dom.bannerWithCovers.parentElement) {
+        dom.bannerWithCovers.parentElement.style.display = 'none';
+      }
+
+      // Apply initial filters and popularity sorting
+      applyFilterAndSort();
+    } catch (err) {
+      console.error('Error loading catalog:', err);
+      renderErrorState(err.message || 'Falha de conexão com a base de jogos.');
+    } finally {
+      state.isLoading = false;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Filtering & Sorting (2 Options: Mais Populares [default] & Ordem Alfabética)
+  // --------------------------------------------------------------------------
+  function applyFilterAndSort() {
+    let result = state.groupedGames;
+
+    // Search query filter
+    const query = state.searchQuery.trim().toLowerCase();
+    if (query) {
+      result = result.filter((g) => {
+        return (
+          g.displayTitle.toLowerCase().includes(query) ||
+          g.compKey.includes(query) ||
+          (g.genre && g.genre.toLowerCase().includes(query)) ||
+          g.versions.some((v) => v.rawPath.toLowerCase().includes(query))
+        );
+      });
+    }
+
+    // Region / Category Chip filter
+    if (state.selectedRegion === 'br') {
+      result = result.filter((g) => g.isPTBR);
+    } else if (state.selectedRegion === 'usa') {
+      result = result.filter((g) => g.regions.has('USA'));
+    } else if (state.selectedRegion === 'eur') {
+      result = result.filter((g) => g.regions.has('Europa'));
+    } else if (state.selectedRegion === 'jp') {
+      result = result.filter((g) => g.regions.has('Japão'));
+    }
+
+    // Sorting (Exactly 2 options: 'popular' by default, or 'az')
+    // Games with cover ALWAYS FIRST, games without cover ALWAYS LAST in ANY sorting mode
+    result.sort((a, b) => {
+      // 1. Cover priority: Games with covers always come first
+      const aHas = a.hasCover ? 1 : 0;
+      const bHas = b.hasCover ? 1 : 0;
+      if (bHas !== aHas) {
+        return bHas - aHas;
+      }
+
+      // 2. Base sorting mode
+      if (state.sortBy === 'popular') {
+        if (b.popularityScore !== a.popularityScore) {
+          return b.popularityScore - a.popularityScore;
+        }
+        return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+      }
+
+      // 'az'
+      return a.displayTitle.localeCompare(b.displayTitle, 'pt-BR');
+    });
+
+    state.filteredGames = result;
+    state.renderedCount = 0;
+
+    // Update Counter text
+    if (dom.resultsCountText) {
+      dom.resultsCountText.innerHTML = `Exibindo <strong>${result.length.toLocaleString('pt-BR')}</strong> títulos de <strong>${state.groupedGames.length.toLocaleString('pt-BR')}</strong>`;
+    }
+
+    dom.gamesContainer.innerHTML = '';
+    renderNextBatch();
+  }
+
+  // --------------------------------------------------------------------------
+  // Rendering: 3D Cards & List View with Virtualized Scrolling
+  // --------------------------------------------------------------------------
+  function renderNextBatch() {
+    if (state.filteredGames.length === 0) {
+      renderEmptyState();
+      return;
+    }
+
+    const start = state.renderedCount;
+    const end = Math.min(start + BATCH_SIZE, state.filteredGames.length);
+    if (start >= end) return;
+
+    const fragment = document.createDocumentFragment();
+
+    for (let i = start; i < end; i++) {
+      const game = state.filteredGames[i];
+      const el = state.viewMode === 'grid' ? createGridCard(game) : createListRow(game);
+      fragment.appendChild(el);
+    }
+
+    dom.gamesContainer.appendChild(fragment);
+    state.renderedCount = end;
+
+    if (dom.scrollSentinel) {
+      dom.scrollSentinel.style.display = state.renderedCount < state.filteredGames.length ? 'flex' : 'none';
+    }
+  }
+
+  function createGridCard(game) {
+    const card = document.createElement('div');
+    card.className = 'game-card';
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-label', game.displayTitle);
+
+    // Badges inside the 3D case
+    let badgesHtml = '';
+    if (game.isPTBR) {
+      badgesHtml += `<span class="case-badge badge-br">🇧🇷 PT-BR</span>`;
+    }
+    if (game.discsLabel) {
+      badgesHtml += `<span class="case-badge badge-multidisc">${escapeHtml(game.discsLabel)}</span>`;
+    } else if (game.versionsCount > 1) {
+      badgesHtml += `<span class="case-badge badge-versions">${game.versionsCount} Versões</span>`;
+    }
+
+    // Cover Image with clean Fallback
+    const fallbackHtml = getFallbackHtml(game);
+    const coverHtml = game.coverUrl
+      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+         <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
+      : `<div class="box-art-fallback">${fallbackHtml}</div>`;
+
+    card.innerHTML = `
+      <div class="game-box-3d">
+        <div class="game-box-inner">
+          <div class="case-header-band ${state.currentPlatform.caseClass}">
+            <span>${state.currentPlatform.shortName}</span>
+            <span>DVD-ROM</span>
+          </div>
+          <div class="box-badges">
+            ${badgesHtml}
+          </div>
+          <div class="box-art-img-wrap">
+            ${coverHtml}
+            <div class="card-hover-overlay">
+              <span class="overlay-btn">Ver Opções & Detalhes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="game-card-meta">
+        <div class="game-card-title" title="${escapeHtml(game.displayTitle)}">${escapeHtml(game.displayTitle)}</div>
+        <div class="game-card-tags">
+          ${game.bestSizeFormatted ? `<span class="game-tag-pill">💾 ${escapeHtml(game.bestSizeFormatted)}</span>` : ''}
+          ${game.genre ? `<span class="game-tag-pill">• ${escapeHtml(game.genre)}</span>` : ''}
+                <div class="game-card-actions">
+          <a href="${escapeHtml(game.versions?.[0]?.link || '#')}" target="_blank" download class="game-btn-download" title="Baixar ${escapeHtml(game.displayTitle)}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Baixar ROM</span>
+          </a>
+        </div>
+</div>
+      </div>
+    `;
+
+    
+    const dlBtn = card.querySelector('.game-btn-download');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', (e) => e.stopPropagation());
+    }
+card.addEventListener('click', () => openGameModal(game));
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openGameModal(game);
+      }
+    });
+
+    return card;
+  }
+
+  function getFallbackHtml(game) {
+    const consoleName = (state.currentPlatform && state.currentPlatform.shortName) || 'OFICIAL';
+    return `
+      <div class="fallback-content">
+        <div class="fallback-console-tag">${escapeHtml(consoleName)}</div>
+        <div class="fallback-disc-art">
+          <svg class="fallback-console-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <rect x="2" y="6" width="20" height="12" rx="2"></rect>
+            <path d="M6 12h4m-2-2v4m7-2h.01m2.99 0h.01"></path>
+          </svg>
+        </div>
+        <div class="fallback-title">${escapeHtml(game.displayTitle)}</div>
+        <div class="fallback-pill">Edição Digital</div>
+      </div>
+    `;
+  }
+
+  function createListRow(game) {
+    const row = document.createElement('div');
+    row.className = 'list-row';
+    row.setAttribute('tabindex', '0');
+    row.setAttribute('role', 'button');
+
+    const thumbSrc = game.coverUrl || '';
+    const consoleName = (state.currentPlatform && state.currentPlatform.shortName) || 'ROM';
+    const thumbHtml = thumbSrc
+      ? `<img class="list-row-thumb" src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+         <div class="list-row-thumb list-row-thumb-fallback" style="display:none;">${escapeHtml(consoleName)}</div>`
+      : `<div class="list-row-thumb list-row-thumb-fallback">${escapeHtml(consoleName)}</div>`;
+
+    row.innerHTML = `
+      <div class="list-row-left">
+        ${thumbHtml}
+        <div class="list-row-info">
+          <div class="list-row-title">${escapeHtml(game.displayTitle)}</div>
+          <div class="list-row-tags">
+            ${game.isPTBR ? `<span class="case-badge badge-br">PT-BR</span>` : ''}
+            ${game.discsLabel ? `<span class="case-badge badge-multidisc">${escapeHtml(game.discsLabel)}</span>` : ''}
+            ${game.versionsCount > 1 ? `<span class="case-badge badge-versions">${game.versionsCount} Versões</span>` : ''}
+            ${game.genre ? `<span class="game-tag-pill">${escapeHtml(game.genre)}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="list-row-right">
+        <span class="list-row-size">${escapeHtml(game.bestSizeFormatted || 'Digital')}</span>
+              <a href="${escapeHtml(game.versions?.[0]?.link || '#')}" target="_blank" download class="game-btn-download" style="width:auto; padding:0.35rem 0.65rem;" title="Baixar ${escapeHtml(game.displayTitle)}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" style="width:12px; height:12px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>Baixar</span>
+        </a>
+</div>
+    `;
+
+    
+    const rowDlBtn = row.querySelector('.game-btn-download');
+    if (rowDlBtn) {
+      rowDlBtn.addEventListener('click', (e) => e.stopPropagation());
+    }
+row.addEventListener('click', () => openGameModal(game));
+    row.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openGameModal(game);
+      }
+    });
+
+    return row;
+  }
+
+  // --------------------------------------------------------------------------
+  // States: Loading, Empty, Error
+  // --------------------------------------------------------------------------
+  function renderLoadingState() {
+    dom.gamesContainer.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1;">
+        <div class="spinner"></div>
+        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">Carregando catálogo de ${state.currentPlatform.name}...</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Agrupando edições e ordenando pelos mais populares...</p>
+      </div>
+    `;
+    if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
+  }
+
+  function renderEmptyState() {
+    dom.gamesContainer.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1; padding: 5rem 1rem;">
+        <svg style="width: 48px; height: 48px; color: var(--text-muted); opacity: 0.6;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">Nenhum jogo encontrado</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 320px;">
+          Não encontramos jogos correspondentes ao termo "<strong>${escapeHtml(state.searchQuery)}</strong>" com os filtros aplicados.
+        </p>
+        <button class="action-btn" onclick="document.getElementById('searchInput').value=''; document.getElementById('searchInput').dispatchEvent(new Event('input'));" style="margin-top: 0.5rem;">
+          Limpar Busca
+        </button>
+      </div>
+    `;
+    if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
+  }
+
+  function renderErrorState(message) {
+    dom.gamesContainer.innerHTML = `
+      <div class="loading-container" style="grid-column: 1 / -1; padding: 4rem 1rem;">
+        <svg style="width: 48px; height: 48px; color: #f43f5e;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <p style="font-size: 1.1rem; font-weight: 700; color: #fff;">Erro ao carregar catálogo</p>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); max-width: 400px;">
+          ${escapeHtml(message)}
+        </p>
+        <button class="action-btn" id="retryLoadBtn" style="margin-top: 0.5rem; background: var(--console-primary); color: #fff;">
+          Tentar Novamente
+        </button>
+      </div>
+    `;
+    const retryBtn = document.getElementById('retryLoadBtn');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => loadPlatformData(state.currentPlatform, true));
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Game Details Modal with Grouped Versions
+  // --------------------------------------------------------------------------
+  function openGameModal(game) {
+    state.selectedGame = game;
+
+    if (dom.modalTitle) dom.modalTitle.textContent = game.displayTitle;
+    if (dom.modalConsoleBadge) dom.modalConsoleBadge.textContent = state.currentPlatform.name;
+
+    // Cover image in modal
+    if (dom.modalBoxArt) {
+      const fallbackHtml = getFallbackHtml(game);
+      dom.modalBoxArt.innerHTML = game.coverUrl
+        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+           <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
+        : `<div class="box-art-fallback">${fallbackHtml}</div>`;
+    }
+
+    // Modal tags
+    if (dom.modalTags) {
+      let tagsHtml = '';
+      if (game.isPTBR) tagsHtml += `<span class="modal-tag" style="background:#009c3b; color:#ffdf00; border-color:#ffdf00;">🇧🇷 PT-BR</span>`;
+      if (game.discsLabel) tagsHtml += `<span class="modal-tag">${escapeHtml(game.discsLabel)}</span>`;
+      if (game.versionsCount > 1) tagsHtml += `<span class="modal-tag" style="color:#fbbf24;">${game.versionsCount} Versões Disponíveis</span>`;
+      if (game.regionsLabel) tagsHtml += `<span class="modal-tag">${escapeHtml(game.regionsLabel)}</span>`;
+      dom.modalTags.innerHTML = tagsHtml;
+    }
+
+    // Metadata table
+    const primaryVersion = game.versions[0] || {};
+    if (dom.modalFormat) dom.modalFormat.textContent = primaryVersion.format || 'ISO';
+    if (dom.modalSize) dom.modalSize.textContent = game.bestSizeFormatted || 'Tamanho padrão';
+    if (dom.modalRegion) dom.modalRegion.textContent = game.regionsLabel || 'Global';
+    if (dom.modalGenre) dom.modalGenre.textContent = game.genre || 'Geral / Clássico';
+    if (dom.modalFilename) dom.modalFilename.textContent = game.rawPrimaryPath;
+
+    // Render grouped versions list
+    if (dom.modalVersionsSection && dom.modalVersionsList) {
+      if (game.versions.length > 1) {
+        dom.modalVersionsSection.style.display = 'flex';
+        dom.modalVersionsList.innerHTML = game.versions.map((v, idx) => `
+          <div class="modal-version-item">
+            <span class="modal-version-name" title="${escapeHtml(v.rawPath)}">${escapeHtml(v.rawPath)}</span>
+            <div class="modal-version-meta">
+              <span>${v.disc ? escapeHtml(v.disc) : escapeHtml(v.region)}</span>
+              <span>•</span>
+              <span>${escapeHtml(v.sizeFormatted || v.format)}</span>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        dom.modalVersionsSection.style.display = 'none';
+      }
+    }
+
+    // Download ROM Button
+    const modalDlBtn = document.getElementById('modalDownloadBtn');
+    const modalDlLabel = document.getElementById('modalDownloadLabel');
+    const dlLink = primaryVersion.link || (game.versions && game.versions[0]?.link) || '#';
+    if (modalDlBtn) {
+      modalDlBtn.href = dlLink;
+      if (modalDlLabel) {
+        modalDlLabel.textContent = `Baixar Jogo ${game.bestSizeFormatted ? '(' + game.bestSizeFormatted + ')' : ''}`;
+      }
+    }
+
+    // Copy Download Link Button
+    const modalCopyBtn = document.getElementById('modalCopyBtn');
+    if (modalCopyBtn) {
+      modalCopyBtn.onclick = () => {
+        navigator.clipboard.writeText(dlLink).then(() => {
+          showToast('Link de download copiado para a área de transferência!');
+        }).catch(() => {
+          showToast('Não foi possível copiar o link.');
+        });
+      };
+    }
+
+    dom.modalBackdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeGameModal() {
+    state.selectedGame = null;
+    dom.modalBackdrop.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function showToast(msg) {
+    if (!dom.toast) return;
+    dom.toast.textContent = msg;
+    dom.toast.classList.add('show');
+    setTimeout(() => dom.toast.classList.remove('show'), 2500);
+  }
+
+  // --------------------------------------------------------------------------
+  // Utility: HTML Escaping
+  // --------------------------------------------------------------------------
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  // --------------------------------------------------------------------------
+  // Initialize Application
+  // --------------------------------------------------------------------------
+  async function init() {
+    cacheDom();
+
+    const overlay = document.getElementById('authLoadingOverlay');
+
+    // 1. Verificacao de Autenticacao
+    const token = getStoredToken();
+    if (!token || isTokenExpired(token)) {
+      redirectToLogin();
+      return;
+    }
+
+    // 2. Consulta de Direitos no Backend
+    let entitlementData = null;
+    try {
+      entitlementData = await fetchUserEntitlements(token);
+    } catch (err) {
+      console.error('Erro na consulta de direitos:', err);
+      if (overlay) {
+        overlay.innerHTML = `
+          <div style="font-size:2rem; margin-bottom:1rem;">⚠️</div>
+          <div style="font-weight:700; font-size:1.1rem; color:#f87171;">Não foi possível carregar seus direitos de acesso.</div>
+          <div style="font-size:0.85rem; color:#94a3b8; max-width:400px; text-align:center; margin-top:0.5rem;">
+            Verifique sua conexão ou tente novamente em alguns instantes.
+          </div>
+          <div style="margin-top:1.5rem; display:flex; gap:0.75rem;">
+            <button onclick="window.location.reload()" class="action-btn btn-refresh" style="padding:0.6rem 1.2rem;">Tentar Novamente</button>
+            <button onclick="redirectToLogin()" class="btn-header-action" style="padding:0.6rem 1.2rem;">Fazer Login Novamente</button>
+          </div>
+        `;
+      }
+      return;
+    }
+
+    if (!entitlementData || !entitlementData.success) {
+      redirectToLogin();
+      return;
+    }
+
+    currentUser = {
+      email: entitlementData.email || '',
+      user_id: entitlementData.user_id,
+      systems: entitlementData.systems || []
+    };
+
+    // 3. Filtrar Plataformas Liberadas
+    PLATFORMS = filterPlatformsByEntitlements(ALL_PLATFORMS, currentUser.systems);
+
+    updateUserProfileHeader(currentUser, PLATFORMS.length);
+
+    // Ocultar Overlay de Loading
+    if (overlay) {
+      overlay.style.opacity = '0';
+      setTimeout(() => overlay.remove(), 300);
+    }
+
+    // Caso o usuario nao tenha nenhum sistema liberado
+    if (PLATFORMS.length === 0) {
+      const emptySec = document.getElementById('emptyEntitlementsSection');
+      if (emptySec) emptySec.style.display = 'block';
+      if (dom.toolbar) dom.toolbar.style.display = 'none';
+      if (dom.bannerCard) dom.bannerCard.parentElement.style.display = 'none';
+      return;
+    }
+
+    // 4. Verificar contexto (plataforma predefinida ou Hub)
+    const context = detectPlatformContext();
+
+    setupEventListeners();
+    setupScrollObserver();
+
+    if (context.isDedicated && context.platform) {
+      state.currentPlatform = context.platform;
+      state.sortBy = 'popular';
+      if (dom.sortSelect) dom.sortSelect.value = 'popular';
+      applyPlatformTheme(state.currentPlatform);
+      loadPlatformData(state.currentPlatform);
+    } else {
+      renderHubMode();
+    }
+  }
+
+  function setupEventListeners() {
+    // Search input
+    let searchDebounceTimer = null;
+    if (dom.searchInput) {
+      dom.searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchDebounceTimer);
+        state.searchQuery = e.target.value;
+        if (dom.searchClearBtn) {
+          dom.searchClearBtn.style.display = state.searchQuery ? 'block' : 'none';
+        }
+
+        searchDebounceTimer = setTimeout(() => {
+          applyFilterAndSort();
+        }, 100);
+      });
+    }
+
+    if (dom.searchClearBtn) {
+      dom.searchClearBtn.addEventListener('click', () => {
+        dom.searchInput.value = '';
+        state.searchQuery = '';
+        dom.searchClearBtn.style.display = 'none';
+        dom.searchInput.focus();
+        applyFilterAndSort();
+      });
+    }
+
+    // Keyboard shortcut '/'
+    window.addEventListener('keydown', (e) => {
+      if (e.key === '/' && document.activeElement !== dom.searchInput) {
+        e.preventDefault();
+        if (dom.searchInput) {
+          dom.searchInput.focus();
+          dom.searchInput.select();
+        }
+      }
+      if (e.key === 'Escape' && dom.modalBackdrop.classList.contains('open')) {
+        closeGameModal();
+      }
+    });
+
+    // Region chips
+    if (dom.regionChips) {
+      dom.regionChips.addEventListener('click', (e) => {
+        const chip = e.target.closest('.filter-chip');
+        if (!chip) return;
+        dom.regionChips.querySelectorAll('.filter-chip').forEach((c) => c.classList.remove('active'));
+        chip.classList.add('active');
+        state.selectedRegion = chip.getAttribute('data-region') || 'all';
+        applyFilterAndSort();
+      });
+    }
+
+    // Sort select (Exactly 2 options: popular [default] and az)
+    if (dom.sortSelect) {
+      dom.sortSelect.value = state.sortBy || 'popular';
+      dom.sortSelect.addEventListener('change', (e) => {
+        state.sortBy = e.target.value === 'az' ? 'az' : 'popular';
+        applyFilterAndSort();
+      });
+    }
+
+    // View toggle
+    if (dom.viewGridBtn && dom.viewListBtn) {
+      dom.viewGridBtn.addEventListener('click', () => {
+        state.viewMode = 'grid';
+        dom.viewGridBtn.classList.add('active');
+        dom.viewListBtn.classList.remove('active');
+        dom.gamesContainer.className = 'games-grid';
+        applyFilterAndSort();
+      });
+      dom.viewListBtn.addEventListener('click', () => {
+        state.viewMode = 'list';
+        dom.viewListBtn.classList.add('active');
+        dom.viewGridBtn.classList.remove('active');
+        dom.gamesContainer.className = 'games-list-view';
+        applyFilterAndSort();
+      });
+    }
+
+    // Refresh button
+    if (dom.refreshBtn) {
+      dom.refreshBtn.addEventListener('click', () => {
+        showToast('Atualizando dados da base central...');
+        loadPlatformData(state.currentPlatform, true);
+      });
+    }
+
+    // Modal close
+    if (dom.modalCloseBtn) {
+      dom.modalCloseBtn.addEventListener('click', closeGameModal);
+    }
+    if (dom.modalBackdrop) {
+      dom.modalBackdrop.addEventListener('click', (e) => {
+        if (e.target === dom.modalBackdrop) closeGameModal();
+      });
+    }
+
+    // Copy title
+    if (dom.modalCopyBtn) {
+      dom.modalCopyBtn.addEventListener('click', () => {
+        if (!state.selectedGame) return;
+        navigator.clipboard.writeText(state.selectedGame.displayTitle).then(() => {
+          showToast('Título copiado para a área de transferência!');
+        });
+      });
+    }
+  }
+
+  function setupScrollObserver() {
+    if (!dom.scrollSentinel || !window.IntersectionObserver) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && !state.isLoading && state.renderedCount < state.filteredGames.length) {
+          renderNextBatch();
+        }
+      },
+      { rootMargin: '300px' }
+    );
+
+    observer.observe(dom.scrollSentinel);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnBackHub = document.getElementById('btnBackToHub');
+      if (btnBackHub) {
+        btnBackHub.addEventListener('click', (e) => {
+          e.preventDefault();
+          renderHubMode();
+        });
+      }
+      const brandLink = document.getElementById('brandLink');
+      if (brandLink) {
+        brandLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          renderHubMode();
+        });
+      }
+    });
+
+})();

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="default-platform" content="mame289">
+  <script>window.ACESSO_PRESET_PLATFORM = "mame289";</script>
+  <title>Downloads MAME 0.289 - Digital Store Games</title>
+  <meta name="description" content="Acesse e baixe os jogos e ROMs dos seus sistemas liberados.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="../../catalog/catalog.css?v=6">
+  <link rel="stylesheet" href="../acesso.css?v=1">
+</head>
+<body>
+
+  <!-- Loading Overlay inicial durante validacao de auth -->
+  <div id="authLoadingOverlay" class="auth-loading-overlay">
+    <div class="auth-loading-spinner"></div>
+    <div style="font-weight: 700; font-size: 1.1rem; letter-spacing: -0.01em;">Verificando permissões e sistemas...</div>
+    <div style="font-size: 0.85rem; color: #94a3b8;">Conectando à Área de Membros Digital Store Games</div>
+  </div>
+
+  <!-- ========================================================================
+       Sticky Glassmorphic Navigation Header
+       ======================================================================== -->
+  <header class="catalog-header" id="mainHeader">
+    <div class="header-inner">
+      <div class="header-top">
+        <a href="../../" class="brand-section" id="brandLink" title="Ver meus sistemas liberados">
+          <div class="brand-gaming-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="6" width="20" height="12" rx="3"></rect>
+              <path d="M6 12h4m-2-2v4m7-2h.01m3 0h.01"></path>
+            </svg>
+          </div>
+          <div class="brand-title-wrap">
+            <div class="brand-title">
+              Área de Downloads
+              <span class="brand-badge" id="brandConsoleBadge">Meus Sistemas</span>
+            </div>
+            <span class="brand-subtitle" id="brandSubtitle">Sistemas &amp; Jogos Liberados na Sua Conta</span>
+          </div>
+        </a>
+
+        <!-- User Profile & Action Buttons -->
+        <div class="header-actions">
+          <div class="user-profile-bar" id="userProfileBar">
+            <div class="user-avatar-icon" id="userAvatar">U</div>
+            <div class="user-info-text">
+              <span class="user-email-label" id="userEmailLabel">carregando...</span>
+              <span class="user-badge-entitlements" id="userSystemsBadge">
+                <span class="user-badge-dot"></span>
+                <span id="userSystemsCount">Verificando...</span>
+              </span>
+            </div>
+          </div>
+
+          <div class="header-user-actions">
+            <a href="https://digitalmemberarea.digitalstoregames.com/area-cliente" class="btn-header-action" title="Ir para a Área do Cliente">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>Área do Cliente</span>
+            </a>
+
+            <button class="btn-header-action btn-header-logout" id="logoutBtn" title="Encerrar sessão">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Sair</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       Active Console Hero Banner
+       ======================================================================== -->
+  <section class="platform-banner" aria-label="Informações da Plataforma">
+    <div class="banner-card" id="bannerCard">
+      <div class="banner-info">
+        <div class="banner-title-row">
+          <h1 class="banner-title" id="bannerTitle">Carregando Sistema...</h1>
+          <span class="banner-status-badge">
+            <span class="dot"></span>
+            Acesso Liberado
+          </span>
+        </div>
+        <p class="banner-tagline" id="bannerTagline">Jogos liberados na sua conta com download direto.</p>
+      </div>
+
+      <div class="banner-stats">
+        <div class="stat-item">
+          <span class="stat-val" id="bannerTotalGames">--</span>
+          <span class="stat-label">Jogos Disponíveis</span>
+        </div>
+        <div class="stat-item" id="bannerBackHubWrap" style="display: none;">
+          <a href="../../" class="action-btn" id="btnBackToHub" style="text-decoration:none; background: rgba(255,255,255,0.08); padding: 0.5rem 0.85rem; border-radius: 8px; font-size: 0.78rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 0.4rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="19" y1="12" x2="5" y2="12"></line>
+              <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            <span>Ver Meus Sistemas</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Controls Toolbar: Search, Filters & Views
+       ======================================================================== -->
+  <section class="catalog-toolbar" aria-label="Filtros e Busca">
+    <div class="toolbar-card">
+      <div class="search-and-modes">
+        <div class="search-input-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Buscar jogo por título, região, gênero..."
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" title="Limpar busca">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="toolbar-controls">
+          <select id="sortSelect" class="control-select" aria-label="Ordenar por">
+            <option value="popular" selected>Mais Populares</option>
+            <option value="az">Ordem Alfabética</option>
+          </select>
+
+          <div class="view-toggle-wrap">
+            <button id="viewGridBtn" class="view-toggle-btn active" title="Visualização em Grade 3D">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button id="viewListBtn" class="view-toggle-btn" title="Visualização em Lista">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Chips -->
+      <div class="filter-chips-row" id="regionChips">
+        <span class="filter-chip-label">Filtros:</span>
+        <button class="filter-chip active" data-region="all">Todos</button>
+        <button class="filter-chip" data-region="br">🇧🇷 Brasil / PT-BR</button>
+        <button class="filter-chip" data-region="usa">🇺🇸 USA</button>
+        <button class="filter-chip" data-region="eur">🇪🇺 Europa</button>
+        <button class="filter-chip" data-region="jp">🇯🇵 Japão</button>
+      </div>
+
+      <!-- Counter -->
+      <div class="results-count-bar">
+        <span id="resultsCountText">Carregando acervo liberado...</span>
+        <span style="font-size: 0.7rem; color: var(--text-muted);">Pressione <strong>/</strong> para buscar</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Hub: Central Platform Selection Grid (Only Unlocked Systems)
+       ======================================================================== -->
+  <section class="hub-container" id="hubSection" style="display: none;">
+    <div class="hub-grid" id="hubGrid">
+      <!-- Hub cards rendered dynamically -->
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Empty Entitlements State (When user has 0 unlocked systems)
+       ======================================================================== -->
+  <section id="emptyEntitlementsSection" style="display: none;">
+    <div class="empty-entitlements-card">
+      <div class="empty-entitlements-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h2 class="empty-entitlements-title">Nenhum sistema liberado nesta conta</h2>
+      <p class="empty-entitlements-desc">
+        A conta <strong id="emptyAccountEmail" style="color:#fff;"></strong> ainda não possui pacotes ou consoles liberados.<br>
+        Se você acabou de comprar, o sistema pode levar alguns instantes para confirmar seu pagamento.
+      </p>
+      <div style="display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+        <button onclick="window.location.reload()" class="action-btn btn-refresh" style="padding: 0.65rem 1.25rem;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
+          </svg>
+          <span>Atualizar Permissões</span>
+        </button>
+        <a href="https://digitalmemberarea.digitalstoregames.com/area-cliente" class="btn-header-action" style="padding: 0.65rem 1.25rem; font-size: 0.85rem;">
+          Ir para a Área do Cliente
+        </a>
+        <a href="https://wa.me/5541996260115?text=Ol%C3%A1!%20Acabei%20de%20comprar%20e%20gostaria%20de%20verificar%20meus%20sistemas%20de%20jogos." target="_blank" rel="noopener noreferrer" class="action-btn btn-whatsapp" style="padding: 0.65rem 1.25rem;">
+          Suporte no WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Games View (Grid / List)
+       ======================================================================== -->
+  <main class="catalog-main" id="gamesSection">
+    <!-- Notice de sistema nao liberado se tentou acessar URL restrita -->
+    <div id="unauthorizedNotice" class="unauthorized-notice" style="display: none;">
+      <h3 id="unauthorizedTitle">Acesso Restrito</h3>
+      <p id="unauthorizedMsg">Você não possui permissão para acessar os jogos deste sistema.</p>
+      <div class="unauthorized-notice-actions">
+        <a href="../../" class="game-btn-download" style="width: auto; padding: 0.5rem 1.25rem;">
+          Ver Meus Sistemas Liberados
+        </a>
+      </div>
+    </div>
+
+    <!-- Active Games Grid Container -->
+    <div class="games-grid" id="gamesGrid">
+      <!-- Cards rendered here dynamically -->
+    </div>
+
+    <!-- Loading Placeholder -->
+    <div class="catalog-loading" id="catalogLoading">
+      <div class="loading-spinner"></div>
+      <p>Carregando jogos e capas em tempo real...</p>
+    </div>
+
+    <!-- Empty Results State -->
+    <div class="catalog-empty" id="catalogEmpty" style="display: none;">
+      <div class="empty-icon">🎮</div>
+      <h3>Nenhum jogo encontrado</h3>
+      <p>Tente ajustar os filtros ou o termo de busca para encontrar o que procura.</p>
+      <button class="empty-reset-btn" id="emptyResetBtn">Limpar Filtros</button>
+    </div>
+
+    <!-- Infinite Scroll Sentinel -->
+    <div id="scrollSentinel" style="height: 40px; margin-top: 2rem;"></div>
+  </main>
+
+  <!-- ========================================================================
+       Game Detail Modal (With Direct ROM Download)
+       ======================================================================== -->
+  <div class="game-modal-backdrop" id="gameModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="game-modal-container">
+      <button class="modal-close-btn" id="modalCloseBtn" aria-label="Fechar modal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="modal-content-grid">
+        <div class="modal-cover-column">
+          <div class="modal-box-art" id="modalBoxArt">
+            <!-- Box Art Rendered Here -->
+          </div>
+        </div>
+
+        <div class="modal-details-column">
+          <div class="modal-header-info">
+            <span class="modal-console-badge" id="modalConsoleBadge">PlayStation 2</span>
+            <h2 class="modal-title" id="modalTitle">Nome do Jogo</h2>
+            <div class="modal-tags-row" id="modalTags">
+              <!-- Tags rendered here -->
+            </div>
+          </div>
+
+          <div class="modal-meta-table">
+            <span class="meta-label">Formato:</span>
+            <span class="meta-val" id="modalFormat">ISO</span>
+
+            <span class="meta-label">Tamanho:</span>
+            <span class="meta-val" id="modalSize">--</span>
+
+            <span class="meta-label">Região:</span>
+            <span class="meta-val" id="modalRegion">--</span>
+
+            <span class="meta-label">Gênero:</span>
+            <span class="meta-val" id="modalGenre">--</span>
+
+            <span class="meta-label">Arquivo:</span>
+            <span class="meta-val" id="modalFilename" style="font-family: var(--font-mono); font-size: 0.72rem;">--</span>
+          </div>
+
+          <!-- Grouped Versions / Discs Section -->
+          <div class="modal-versions-section" id="modalVersionsSection" style="display: none;">
+            <div class="modal-versions-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+              <span>Edições &amp; Discos Inclusos</span>
+            </div>
+            <div class="modal-versions-list" id="modalVersionsList">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+
+          <!-- Botoes de Download do Jogo -->
+          <div class="modal-download-actions">
+            <a href="#" target="_blank" download class="modal-btn-download-primary" id="modalDownloadBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span id="modalDownloadLabel">Baixar Jogo</span>
+            </a>
+
+            <button class="modal-btn-copy-link" id="modalCopyBtn" title="Copiar link de download do jogo">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <span>Copiar Link de Download</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast">Link copiado!</div>
+
+  <!-- ========================================================================
+       Footer
+       ======================================================================== -->
+  <footer class="catalog-footer">
+    <div class="footer-inner">
+      <div class="footer-links">
+        <a href="../../">Início</a>
+        <a href="https://digitalmemberarea.digitalstoregames.com/area-cliente">Área do Cliente</a>
+        <a href="https://digitalmemberarea.digitalstoregames.com/login">Login</a>
+        <a href="../termoservico.html">Termos de Serviço</a>
+        <a href="../politica-de-privacidade.html">Política de Privacidade</a>
+      </div>
+      <p>© 2026 Digital Store Games. Área exclusiva para membros e compradores autorizados.</p>
+    </div>
+  </footer>
+
+  <!-- Script Application -->
+  <script src="../acesso.js?v=1"></script>
+</body>
+</html>
