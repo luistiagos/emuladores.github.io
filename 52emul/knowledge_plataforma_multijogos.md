@@ -40,9 +40,9 @@
 ---
 
 ## 3. Preço e Oferta
-*   **Preço Atual (Promocional)**: **R$ 39,00** à vista.
+*   **Preço Atual (Promocional)**: **R$ 45,90** à vista.
 *   **Preço Âncora (Original)**: R$ 197,90.
-*   **Parcelamento**: Até **7x de R$ 6,56** no cartão.
+*   **Parcelamento**: Até **7x de R$ 7,72** no cartão.
 *   **Garantia**: **7 Dias** incondicional.
 *   **Segurança**: Coberto pelo **Compra Garantida do Mercado Pago** (https://www.mercadopago.com.br/compragarantida/clientes).
 *   **Formas de Pagamento**: Pix, Boleto, Cartão de Crédito (parcelado) e saldo Mercado Pago.
@@ -123,8 +123,8 @@ Tutorial: https://www.youtube.com/watch?v=52yO1shEK8g&t=10s&pp=ygUgbW9kbyBkZXNlb
 ### Cliente: "Não tem amostra grátis?"
 **Resposta**: Não, mas você tem **7 dias de garantia**. Se não gostar, devolvemos seu dinheiro — sem perguntas.
 
-### Cliente: "O preço aumentou / no site fala R$39 mas no checkout aparece valor maior?"
-**Resposta**: O produto principal custa **R$39**. Se o valor no checkout está diferente, é porque foram selecionados um ou mais **pacotes extras opcionais** (Xbox 360, Xbox Clássico, Nintendo Switch ou Sega Saturn). Esses pacotes aparecem como opções durante o checkout — basta desmarcá-los para o total voltar a R$39. Eles nunca são adicionados automaticamente.
+### Cliente: "O preço aumentou / no site fala R$45,90 mas no checkout aparece valor maior?"
+**Resposta**: O produto principal custa **R$45,90**. Se o valor no checkout está diferente, é porque foram selecionados um ou mais **pacotes extras opcionais** (Xbox 360, Xbox Clássico, Nintendo Switch ou Sega Saturn). Esses pacotes aparecem como opções durante o checkout — basta desmarcá-los para o total voltar a R$45,90. Eles nunca são adicionados automaticamente.
 
 ### Cliente: "Como faço para adquirir?"
 **Resposta**: Acesse nosso site oficial: https://emulators.digitalstoregames.com/52emul/
@@ -151,9 +151,9 @@ Ofertas 100% opcionais exibidas durante o checkout. O cliente pode adicioná-las
 | **Plataforma Sega Saturn** | Todos os jogos do Saturn para PC, Notebook, Android e iOS — Acesso Vitalício | R$ 25,00 | **R$ 10,00** |
 
 **Exemplos de total no checkout:**
-*   Produto principal apenas: **R$ 39,00**
-*   + Xbox 360: R$ 69,00 | + Xbox Clássico: R$ 59,00 | + Switch: R$ 69,00 | + Saturn: R$ 49,00
-*   Todos os bumps selecionados: **R$ 129,00**
+*   Produto principal apenas: **R$ 45,90**
+*   + Xbox 360: R$ 75,90 | + Xbox Clássico: R$ 65,90 | + Switch: R$ 75,90 | + Saturn: R$ 55,90
+*   Todos os bumps selecionados: **R$ 135,90**
 
 *(Disponibilidade pode variar — confirmar diretamente no checkout.)*
 

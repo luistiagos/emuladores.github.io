@@ -88,9 +88,9 @@ Este documento contém todas as informações detalhadas sobre o produto "Plataf
 *   **Organização Inteligente**: Listas de favoritos, filtros por gênero, capas e vídeos.
 
 ## 3. Preço e Oferta
-*   **Preço Atual (Promocional)**: **R$ 39,00** à vista.
+*   **Preço Atual (Promocional)**: **R$ 45,90** à vista.
 *   **Preço "Ancora" (Original)**: R$ 197,90.
-*   **Parcelamento**: Até **7x de R$ 6,56** no cartão.
+*   **Parcelamento**: Até **7x de R$ 7,72** no cartão.
 *   **Garantia**: **7 Dias** de garantia incondicional.
 *   **Segurança**: Coberto pelo programa **Compra Garantida do Mercado Pago**. (https://www.mercadopago.com.br/compragarantida/clientes).
 *   **Formas de Pagamento**: Pix, Boleto, Cartão de Crédito (inclusive parcelado) e saldo do Mercado Pago.

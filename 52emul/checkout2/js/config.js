@@ -4,7 +4,7 @@ const BASE = {
   id: 'principal-52emul',
   name: '52 Emuladores + 100.000 jogos',
   original_price: 100.00,
-  price: 39.00
+  price: 45.90
 };
 BASE.economy = BASE.original_price - BASE.price;
 

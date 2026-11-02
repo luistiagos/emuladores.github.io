@@ -5,7 +5,7 @@ const BASE = {
   id: 'principal-52emul',
   name: 'Plataforma Multijogos',
   original_price: 197.90,
-  price: 39.00
+  price: 45.90
 };
 BASE.economy = BASE.original_price - BASE.price;
 
