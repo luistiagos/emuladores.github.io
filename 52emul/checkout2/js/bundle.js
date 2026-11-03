@@ -27,16 +27,11 @@ async function ensureMainPackageIdFromStore() {
 
   _mainPackagePromise = (async () => {
     try {
-      const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/principal`);
-      if (!response.ok) return getMainPackageId();
-      const data = await response.json();
+      const data = await loadPrincipalPackage();
       const resolved = Number(data?.package_id ?? data?.id);
       if (Number.isFinite(resolved) && resolved > 0) {
         MAIN_PACKAGE_ID = resolved;
       }
-      return getMainPackageId();
-    } catch (err) {
-      console.warn('Could not resolve principal package for store', STOREID, err);
       return getMainPackageId();
     } finally {
       _mainPackageReady = true;
@@ -44,6 +39,50 @@ async function ensureMainPackageIdFromStore() {
   })();
 
   return _mainPackagePromise;
+}
+
+// Um fetch so de /packages/principal, servindo as duas pontas: o id do pacote (quando
+// o index.html nao o define) e o preco exibido. Falha devolve null.
+let _principalPackagePromise = null;
+function loadPrincipalPackage() {
+  if (!_principalPackagePromise) {
+    _principalPackagePromise = (async () => {
+      try {
+        const response = await fetch(`https://digitalstoregames.pythonanywhere.com/store/${STOREID}/packages/principal`);
+        if (!response.ok) return null;
+        return await response.json();
+      } catch (err) {
+        console.warn('Could not resolve principal package for store', STOREID, err);
+        return null;
+      }
+    })();
+  }
+  return _principalPackagePromise;
+}
+
+// O preco que a tela mostra vem do banco, que e quem cobra: StorePackage.price com
+// Package.PRICE de reserva (mercadopagohelper._order_item_price). BASE e o HTML sao so
+// a primeira pintura, e ficam valendo se a API falhar. So aplica se o pacote da
+// resposta for o que vai ser cobrado (?storeid= troca a loja e mantem o pacote).
+// Doc: docs/modules/lojas-produtos/bugs/2026-11-02-precos-hardcoded-descentralizados-em-prompts-e-paginas.md
+async function hydrateBasePriceFromStore() {
+  const data = await loadPrincipalPackage();
+  const pid = Number(data?.package_id);
+  if (!Number.isFinite(pid) || pid <= 0) return;
+  if (MAIN_PACKAGE_ID > 0 && pid !== Number(MAIN_PACKAGE_ID)) return;
+  const price = Number(data.price ?? data.package_price);
+  if (!Number.isFinite(price) || price <= 0) return;
+
+  BASE.price = price;
+  const relprice = Number(data.relprice);
+  if (Number.isFinite(relprice) && relprice > price) BASE.original_price = relprice;
+  BASE.economy = BASE.original_price - BASE.price;
+
+  const avista = document.getElementById('avistaVlr');
+  if (avista) avista.textContent = fmt(BASE.price);
+  const strike = document.querySelector('.strike');
+  if (strike) strike.textContent = fmt(BASE.original_price);
+  renderSummary();
 }
 
 const BUMP_DESCRIPTION_FALLBACK = {
@@ -1138,6 +1177,7 @@ function startRotation() {
 
 // Initialize the page
 renderSummary();
+hydrateBasePriceFromStore();
 startRotation();
 savelead(STOREID, 'AddToCart');
 
