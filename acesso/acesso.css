@@ -348,3 +348,256 @@
   }
 }
 
+/* ==========================================================================
+   Layout Unificado & Fluido (Header, Toolbar, Hub de Sistemas e Catalogo)
+   Elimina espacos vazios laterais e garante alinhamento perfeito de ponta a ponta
+   ========================================================================== */
+.header-inner,
+.catalog-toolbar,
+.hub-container,
+.catalog-main {
+  width: 100% !important;
+  max-width: 1720px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 768px) {
+  .header-inner,
+  .catalog-toolbar,
+  .hub-container,
+  .catalog-main {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+}
+
+/* ==========================================================================
+   Barra de Filtros e Busca - Design Integrado, Elegante e Sem Espacos Mortos
+   ========================================================================== */
+.catalog-toolbar {
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+.toolbar-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.85) 0%, rgba(15, 23, 42, 0.6) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 1.25rem 1.5rem !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 1rem !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Campo de Busca Ampliado e com Foco Suave */
+.search-and-modes {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  width: 100% !important;
+}
+
+.search-input-wrap {
+  flex: 1 !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+.search-input {
+  height: 48px !important;
+  background: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 12px !important;
+  font-size: 0.92rem !important;
+  padding-left: 2.75rem !important;
+  padding-right: 2.5rem !important;
+  color: #ffffff !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.search-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+  background: rgba(0, 0, 0, 0.65) !important;
+}
+
+.search-icon {
+  position: absolute !important;
+  left: 0.95rem !important;
+  width: 18px !important;
+  height: 18px !important;
+  color: #94a3b8 !important;
+}
+
+/* Chips de Filtro Modernos com Efeito Pilula */
+.filter-chips-row {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.45rem !important;
+  flex-wrap: wrap !important;
+  padding: 0.2rem 0 !important;
+}
+
+.filter-chip-label {
+  font-size: 0.75rem !important;
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  margin-right: 0.35rem !important;
+  display: inline-flex !important;
+  align-items: center !important;
+}
+
+.filter-chip {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: #cbd5e1 !important;
+  padding: 0.35rem 0.85rem !important;
+  border-radius: 9999px !important;
+  font-size: 0.78rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.35rem !important;
+  user-select: none !important;
+}
+
+.filter-chip:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-color: rgba(255, 255, 255, 0.25) !important;
+  transform: translateY(-1px) !important;
+}
+
+.filter-chip.active {
+  background: linear-gradient(135deg, #2563eb, #3b82f6) !important;
+  border-color: #60a5fa !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4) !important;
+}
+
+/* Barra de Contagem e Dica */
+.results-count-bar {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 0.5rem !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.06) !important;
+  font-size: 0.8rem !important;
+  color: #94a3b8 !important;
+}
+
+/* ==========================================================================
+   Grid do Hub de Sistemas Liberados
+   ========================================================================== */
+.hub-container {
+  margin-top: 1.25rem !important;
+  margin-bottom: 3.5rem !important;
+  display: block;
+}
+
+.hub-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)) !important;
+  gap: 1.25rem !important;
+  width: 100% !important;
+}
+
+.hub-card {
+  position: relative !important;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, rgba(15, 23, 42, 0.55) 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 14px !important;
+  padding: 1.35rem !important;
+  min-height: 185px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4) !important;
+  text-decoration: none !important;
+}
+
+.hub-card::before {
+  content: "" !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 3px !important;
+  background: var(--card-accent, #3b82f6) !important;
+  opacity: 0.9 !important;
+}
+
+.hub-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: var(--card-accent, #3b82f6) !important;
+  box-shadow: 0 16px 30px rgba(0, 0, 0, 0.6), 0 0 20px var(--card-glow, rgba(59, 130, 246, 0.25)) !important;
+}
+
+/* ==========================================================================
+   Modal de Detalhes do Jogo - 100% Oculto ate ser Acionado
+   ========================================================================== */
+.modal-backdrop,
+.game-modal-backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(4, 7, 13, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1.5rem !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.25s !important;
+}
+
+.modal-backdrop.open,
+.game-modal-backdrop.open {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+}
+
+.modal-dialog,
+.game-modal-container {
+  position: relative !important;
+  background: #0f172a !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 35px rgba(16, 185, 129, 0.2) !important;
+  width: 100% !important;
+  max-width: 820px !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+  transform: translateY(12px) scale(0.98) !important;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  padding: 1.5rem !important;
+  box-sizing: border-box !important;
+}
+
+.modal-backdrop.open .modal-dialog,
+.game-modal-backdrop.open .game-modal-container {
+  transform: translateY(0) scale(1) !important;
+}
+
