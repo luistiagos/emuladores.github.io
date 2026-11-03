@@ -70,3 +70,4 @@ for alias_id, target_id in aliases.items():
     print(f"Created alias directory {alias_id}/ -> ../{target_id}/")
 
 print("All acesso platform pages generated successfully!")
+
