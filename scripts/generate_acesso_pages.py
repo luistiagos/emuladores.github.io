@@ -4,17 +4,43 @@ import json
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 acesso_dir = os.path.join(base_dir, "acesso")
-template_file = os.path.join(acesso_dir, "index.html")
-
-with open(template_file, "r", encoding="utf-8") as f:
-    template = f.read()
 
 # Load compiled platforms
 platforms_json_path = os.path.join(r"c:\projects\digitalstoregamesproject\scratch\compiled_platforms.json")
 with open(platforms_json_path, "r", encoding="utf-8") as f:
     platforms = json.load(f)
 
-print(f"Loaded {len(platforms)} platforms for acesso generation.")
+print(f"Loaded {len(platforms)} platforms for acesso redirect generation.")
+
+def make_redirect_html(target_url, title, heading):
+    return f"""<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title}</title>
+  <meta http-equiv="refresh" content="0; url={target_url}">
+  <script>
+    (function() {{
+      var target = '{target_url}' + window.location.search + window.location.hash;
+      window.location.replace(target);
+    }})();
+  </script>
+</head>
+<body style="background:#080b11;color:#fff;font-family:system-ui,-apple-system,sans-serif;text-align:center;padding:4rem 1.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;">
+  <div style="max-width:420px;background:#0f172a;border:1px solid rgba(255,255,255,0.1);border-radius:1.25rem;padding:2.5rem;box-shadow:0 20px 40px rgba(0,0,0,0.5);">
+    <div style="font-size:2.5rem;margin-bottom:1rem;">🎮</div>
+    <h1 style="font-size:1.25rem;font-weight:700;margin:0 0 0.5rem 0;">{heading}</h1>
+    <p style="font-size:0.875rem;color:#94a3b8;margin:0 0 1.5rem 0;line-height:1.5;">
+      Redirecionando para a nova Área de Membros oficial...
+    </p>
+    <a href="{target_url}" style="display:inline-block;padding:0.75rem 1.5rem;background:#10b981;color:#000;font-weight:700;font-size:0.85rem;border-radius:0.75rem;text-decoration:none;">
+      Acessar Jogos
+    </a>
+  </div>
+</body>
+</html>
+"""
 
 created_count = 0
 for p in platforms:
@@ -23,25 +49,19 @@ for p in platforms:
     sub_dir = os.path.join(acesso_dir, plat_id)
     os.makedirs(sub_dir, exist_ok=True)
 
-    # Adjust relative paths for subfolder
-    sub_html = template.replace('href="../catalog/catalog.css', 'href="../../catalog/catalog.css')
-    sub_html = sub_html.replace('href="./acesso.css', 'href="../acesso.css')
-    sub_html = sub_html.replace('src="./acesso.js', 'src="../acesso.js')
-    sub_html = sub_html.replace('href="../termoservico.html"', 'href="../../termoservico.html"')
-    sub_html = sub_html.replace('href="../politica-de-privacidade.html"', 'href="../../politica-de-privacidade.html"')
-    sub_html = sub_html.replace('href="../"', 'href="../../"')
-    sub_html = sub_html.replace('href="./"', 'href="../"')
-
-    # Insert preset script and default-platform meta tag
-    meta_tag = f'<meta name="default-platform" content="{plat_id}">\n  <script>window.ACESSO_PRESET_PLATFORM = "{plat_id}";</script>\n  <title>Downloads {plat_name} - Digital Store Games</title>'
-    sub_html = sub_html.replace("<title>Área de Acesso &amp; Downloads de Jogos - Digital Store Games</title>", meta_tag)
+    target_url = f"https://digitalmemberarea.digitalstoregames.com/acesso/{plat_id}"
+    html = make_redirect_html(
+        target_url=target_url,
+        title=f"Downloads {plat_name} - Digital Store Games",
+        heading=f"Catálogo {plat_name}"
+    )
 
     out_file = os.path.join(sub_dir, "index.html")
     with open(out_file, "w", encoding="utf-8") as out_f:
-        out_f.write(sub_html)
+        out_f.write(html)
     created_count += 1
 
-print(f"Created/updated {created_count} platform subdirectories in acesso/ with index.html.")
+print(f"Created/updated {created_count} platform subdirectories in acesso/ with redirect to digitalmemberarea.")
 
 # Aliases
 aliases = {
@@ -53,23 +73,14 @@ aliases = {
 for alias_id, target_id in aliases.items():
     alias_dir = os.path.join(acesso_dir, alias_id)
     os.makedirs(alias_dir, exist_ok=True)
-    alias_html = f"""<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=../{target_id}/">
-  <title>Redirecionando para Downloads...</title>
-  <script>location.replace('../{target_id}/');</script>
-</head>
-<body style="background:#080b11;color:#fff;font-family:sans-serif;text-align:center;padding:3rem;">
-  <p>Redirecionando para a área de downloads...</p>
-  <p><a href="../{target_id}/" style="color:#10b981;">Clique aqui se não for redirecionado automaticamente.</a></p>
-</body>
-</html>
-"""
+    target_url = f"https://digitalmemberarea.digitalstoregames.com/acesso/{target_id}"
+    alias_html = make_redirect_html(
+        target_url=target_url,
+        title=f"Downloads - Digital Store Games",
+        heading=f"Redirecionando para {target_id.upper()}..."
+    )
     with open(os.path.join(alias_dir, "index.html"), "w", encoding="utf-8") as af:
         af.write(alias_html)
-    print(f"Created alias directory {alias_id}/ -> ../{target_id}/")
+    print(f"Created alias directory {alias_id}/ -> {target_url}")
 
-print("All acesso platform pages generated successfully!")
-
+print("All acesso platform redirects generated successfully!")
