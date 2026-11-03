@@ -235,7 +235,7 @@
   <!-- ========================================================================
        Games View (Grid / List)
        ======================================================================== -->
-  <main class="catalog-main" id="gamesSection">
+  <main class="catalog-main" id="gamesSection" style="display: none;">
     <!-- Notice de sistema nao liberado se tentou acessar URL restrita -->
     <div id="unauthorizedNotice" class="unauthorized-notice" style="display: none;">
       <h3 id="unauthorizedTitle">Acesso Restrito</h3>
@@ -252,22 +252,8 @@
       <!-- Cards rendered here dynamically -->
     </div>
 
-    <!-- Loading Placeholder -->
-    <div class="catalog-loading" id="catalogLoading">
-      <div class="loading-spinner"></div>
-      <p>Carregando jogos e capas em tempo real...</p>
-    </div>
-
-    <!-- Empty Results State -->
-    <div class="catalog-empty" id="catalogEmpty" style="display: none;">
-      <div class="empty-icon">🎮</div>
-      <h3>Nenhum jogo encontrado</h3>
-      <p>Tente ajustar os filtros ou o termo de busca para encontrar o que procura.</p>
-      <button class="empty-reset-btn" id="emptyResetBtn">Limpar Filtros</button>
-    </div>
-
     <!-- Infinite Scroll Sentinel -->
-    <div id="scrollSentinel" style="height: 40px; margin-top: 2rem;"></div>
+    <div id="scrollSentinel" style="height: 40px; margin-top: 2rem; display: none;"></div>
   </main>
 
   <!-- ========================================================================
@@ -374,7 +360,7 @@
   </footer>
 
   <!-- Script Application -->
-  <script src="./acesso.js?v=1"></script>
+  <script src="./acesso.js?v=2"></script>
 </body>
 </html>
 

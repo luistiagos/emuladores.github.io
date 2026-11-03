@@ -32,7 +32,7 @@
   <header class="catalog-header" id="mainHeader">
     <div class="header-inner">
       <div class="header-top">
-        <a href="../../" class="brand-section" id="brandLink" title="Ver meus sistemas liberados">
+        <a href="../" class="brand-section" id="brandLink" title="Ver meus sistemas liberados">
           <div class="brand-gaming-icon" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="6" width="20" height="12" rx="3"></rect>
@@ -106,7 +106,7 @@
           <span class="stat-label">Jogos Disponíveis</span>
         </div>
         <div class="stat-item" id="bannerBackHubWrap" style="display: none;">
-          <a href="../../" class="action-btn" id="btnBackToHub" style="text-decoration:none; background: rgba(255,255,255,0.08); padding: 0.5rem 0.85rem; border-radius: 8px; font-size: 0.78rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 0.4rem;">
+          <a href="../" class="action-btn" id="btnBackToHub" style="text-decoration:none; background: rgba(255,255,255,0.08); padding: 0.5rem 0.85rem; border-radius: 8px; font-size: 0.78rem; font-weight: 700; color: #fff; display: inline-flex; align-items: center; gap: 0.4rem;">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
               <line x1="19" y1="12" x2="5" y2="12"></line>
               <polyline points="12 19 5 12 12 5"></polyline>
@@ -237,13 +237,13 @@
   <!-- ========================================================================
        Games View (Grid / List)
        ======================================================================== -->
-  <main class="catalog-main" id="gamesSection">
+  <main class="catalog-main" id="gamesSection" style="display: none;">
     <!-- Notice de sistema nao liberado se tentou acessar URL restrita -->
     <div id="unauthorizedNotice" class="unauthorized-notice" style="display: none;">
       <h3 id="unauthorizedTitle">Acesso Restrito</h3>
       <p id="unauthorizedMsg">Você não possui permissão para acessar os jogos deste sistema.</p>
       <div class="unauthorized-notice-actions">
-        <a href="../../" class="game-btn-download" style="width: auto; padding: 0.5rem 1.25rem;">
+        <a href="../" class="game-btn-download" style="width: auto; padding: 0.5rem 1.25rem;">
           Ver Meus Sistemas Liberados
         </a>
       </div>
@@ -254,22 +254,8 @@
       <!-- Cards rendered here dynamically -->
     </div>
 
-    <!-- Loading Placeholder -->
-    <div class="catalog-loading" id="catalogLoading">
-      <div class="loading-spinner"></div>
-      <p>Carregando jogos e capas em tempo real...</p>
-    </div>
-
-    <!-- Empty Results State -->
-    <div class="catalog-empty" id="catalogEmpty" style="display: none;">
-      <div class="empty-icon">🎮</div>
-      <h3>Nenhum jogo encontrado</h3>
-      <p>Tente ajustar os filtros ou o termo de busca para encontrar o que procura.</p>
-      <button class="empty-reset-btn" id="emptyResetBtn">Limpar Filtros</button>
-    </div>
-
     <!-- Infinite Scroll Sentinel -->
-    <div id="scrollSentinel" style="height: 40px; margin-top: 2rem;"></div>
+    <div id="scrollSentinel" style="height: 40px; margin-top: 2rem; display: none;"></div>
   </main>
 
   <!-- ========================================================================
@@ -368,14 +354,15 @@
         <a href="../../">Início</a>
         <a href="https://digitalmemberarea.digitalstoregames.com/area-cliente">Área do Cliente</a>
         <a href="https://digitalmemberarea.digitalstoregames.com/login">Login</a>
-        <a href="../termoservico.html">Termos de Serviço</a>
-        <a href="../politica-de-privacidade.html">Política de Privacidade</a>
+        <a href="../../termoservico.html">Termos de Serviço</a>
+        <a href="../../politica-de-privacidade.html">Política de Privacidade</a>
       </div>
       <p>© 2026 Digital Store Games. Área exclusiva para membros e compradores autorizados.</p>
     </div>
   </footer>
 
   <!-- Script Application -->
-  <script src="../acesso.js?v=1"></script>
+  <script src="../acesso.js?v=2"></script>
 </body>
 </html>
+

@@ -24,11 +24,13 @@ for p in platforms:
     os.makedirs(sub_dir, exist_ok=True)
 
     # Adjust relative paths for subfolder
-    sub_html = template.replace("../catalog/catalog.css", "../../catalog/catalog.css")
-    sub_html = sub_html.replace("./acesso.css", "../acesso.css")
-    sub_html = sub_html.replace("./acesso.js", "../acesso.js")
-    sub_html = sub_html.replace('href="./"', 'href="../"')
+    sub_html = template.replace('href="../catalog/catalog.css', 'href="../../catalog/catalog.css')
+    sub_html = sub_html.replace('href="./acesso.css', 'href="../acesso.css')
+    sub_html = sub_html.replace('src="./acesso.js', 'src="../acesso.js')
+    sub_html = sub_html.replace('href="../termoservico.html"', 'href="../../termoservico.html"')
+    sub_html = sub_html.replace('href="../politica-de-privacidade.html"', 'href="../../politica-de-privacidade.html"')
     sub_html = sub_html.replace('href="../"', 'href="../../"')
+    sub_html = sub_html.replace('href="./"', 'href="../"')
 
     # Insert preset script and default-platform meta tag
     meta_tag = f'<meta name="default-platform" content="{plat_id}">\n  <script>window.ACESSO_PRESET_PLATFORM = "{plat_id}";</script>\n  <title>Downloads {plat_name} - Digital Store Games</title>'

@@ -2945,7 +2945,15 @@
       viewGridBtn: document.getElementById('viewGridBtn'),
       viewListBtn: document.getElementById('viewListBtn'),
       resultsCountText: document.getElementById('resultsCountText'),
-      gamesContainer: document.getElementById('gamesContainer'),
+      gamesGrid: document.getElementById('gamesGrid') || document.getElementById('gamesContainer'),
+      gamesContainer: document.getElementById('gamesGrid') || document.getElementById('gamesContainer'),
+      hubSection: document.getElementById('hubSection'),
+      hubGrid: document.getElementById('hubGrid'),
+      gamesSection: document.getElementById('gamesSection'),
+      unauthorizedNotice: document.getElementById('unauthorizedNotice'),
+      emptyEntitlementsSection: document.getElementById('emptyEntitlementsSection'),
+      catalogLoading: document.getElementById('catalogLoading'),
+      catalogEmpty: document.getElementById('catalogEmpty'),
       scrollSentinel: document.getElementById('scrollSentinel'),
       refreshBtn: document.getElementById('refreshBtn'),
       modalBackdrop: document.getElementById('gameModal'),
@@ -2971,79 +2979,102 @@
   // Navigation & URL Routing
   // --------------------------------------------------------------------------
   function detectPlatformContext() {
-    function findPlat(val) {
+    function findPlatInAll(val) {
       if (!val) return null;
       const v = String(val).trim().toLowerCase();
-      return PLATFORMS.find((x) => x.id === v || (x.mnemonic && x.mnemonic.toLowerCase() === v));
+      return ALL_PLATFORMS.find((x) => x.id === v || (x.mnemonic && x.mnemonic.toLowerCase() === v));
     }
+
+    let found = null;
 
     // 0. Preset in window (e.g. window.ACESSO_PRESET_PLATFORM = "ps2")
     if (window.ACESSO_PRESET_PLATFORM) {
-      const p = findPlat(window.ACESSO_PRESET_PLATFORM);
-      if (p) return { platform: p, isDedicated: true };
+      found = findPlatInAll(window.ACESSO_PRESET_PLATFORM);
     }
 
     // 1. Meta tag in HTML (e.g. in /acesso/ps2/index.html)
-    const metaTag = document.querySelector('meta[name="default-platform"]');
-    if (metaTag && metaTag.content) {
-      const p = findPlat(metaTag.content);
-      if (p) return { platform: p, isDedicated: true };
+    if (!found) {
+      const metaTag = document.querySelector('meta[name="default-platform"]');
+      if (metaTag && metaTag.content) {
+        found = findPlatInAll(metaTag.content);
+      }
     }
 
     // 2. Pathname segment: e.g. /acesso/ps2 or /acesso/ps2/
-    const path = window.location.pathname.toLowerCase();
-    for (const p of PLATFORMS) {
-      if (
-        path.includes(`/acesso/${p.id}/`) ||
-        path.endsWith(`/acesso/${p.id}`) ||
-        path.includes(`/catalog/${p.id}/`) ||
-        path.endsWith(`/${p.id}/`) ||
-        path.endsWith(`/${p.id}`)
-      ) {
-        return { platform: p, isDedicated: true };
-      }
-      if (
-        p.mnemonic &&
-        (path.includes(`/acesso/${p.mnemonic.toLowerCase()}/`) ||
-          path.endsWith(`/acesso/${p.mnemonic.toLowerCase()}`) ||
-          path.endsWith(`/${p.mnemonic.toLowerCase()}/`) ||
-          path.endsWith(`/${p.mnemonic.toLowerCase()}`))
-      ) {
-        return { platform: p, isDedicated: true };
+    if (!found) {
+      const path = window.location.pathname.toLowerCase();
+      for (const p of ALL_PLATFORMS) {
+        if (
+          path.includes(`/acesso/${p.id}/`) ||
+          path.endsWith(`/acesso/${p.id}`) ||
+          path.includes(`/catalog/${p.id}/`) ||
+          path.endsWith(`/${p.id}/`) ||
+          path.endsWith(`/${p.id}`)
+        ) {
+          found = p;
+          break;
+        }
+        if (
+          p.mnemonic &&
+          (path.includes(`/acesso/${p.mnemonic.toLowerCase()}/`) ||
+            path.endsWith(`/acesso/${p.mnemonic.toLowerCase()}`) ||
+            path.endsWith(`/${p.mnemonic.toLowerCase()}/`) ||
+            path.endsWith(`/${p.mnemonic.toLowerCase()}`))
+        ) {
+          found = p;
+          break;
+        }
       }
     }
 
     // 3. Search query: ?platform=ps2, ?system=ps2, ?mne=ps2
-    const params = new URLSearchParams(window.location.search);
-    const queryPlat = params.get('platform') || params.get('system') || params.get('console') || params.get('mne');
-    if (queryPlat) {
-      const p = findPlat(queryPlat);
-      if (p) return { platform: p, isDedicated: true };
+    if (!found) {
+      const params = new URLSearchParams(window.location.search);
+      const queryPlat = params.get('platform') || params.get('system') || params.get('console') || params.get('mne');
+      if (queryPlat) {
+        found = findPlatInAll(queryPlat);
+      }
     }
 
     // 4. Hash: #ps2
-    const hash = window.location.hash.replace(/^[#/]+/, '').toLowerCase();
-    if (hash) {
-      const p = findPlat(hash);
-      if (p) return { platform: p, isDedicated: true };
+    if (!found) {
+      const hash = window.location.hash.replace(/^[#/]+/, '').toLowerCase();
+      if (hash) {
+        found = findPlatInAll(hash);
+      }
     }
 
-    return { platform: null, isDedicated: false };
+    if (found) {
+      const isAuthorized = PLATFORMS.some((p) => p.id === found.id);
+      return { platform: found, isDedicated: true, isAuthorized: isAuthorized };
+    }
+
+    return { platform: null, isDedicated: false, isAuthorized: false };
   }
 
   function renderHubMode() {
     state.isHubMode = true;
     document.title = 'Meus Sistemas Liberados - Downloads Digital Store Games';
 
+    // Show Hub section and hide Games section
+    if (dom.hubSection) dom.hubSection.style.display = 'block';
+    if (dom.gamesSection) dom.gamesSection.style.display = 'none';
+    if (dom.unauthorizedNotice) dom.unauthorizedNotice.style.display = 'none';
+    if (dom.catalogLoading) dom.catalogLoading.style.display = 'none';
+
     // Hide banner
-    if (dom.bannerCard) dom.bannerCard.parentElement.style.display = 'none';
+    if (dom.bannerCard && dom.bannerCard.parentElement) {
+      dom.bannerCard.parentElement.style.display = 'none';
+    }
 
     // Update Header
     if (dom.brandTitle) {
       dom.brandTitle.innerHTML = 'Área de Downloads <span class="brand-badge">Meus Sistemas</span>';
     }
     if (dom.brandSubtitle) {
-      dom.brandSubtitle.textContent = `${PLATFORMS.length} sistemas liberados para download na sua conta`; const backHubWrap = document.getElementById('bannerBackHubWrap'); if (backHubWrap) backHubWrap.style.display = 'none';
+      dom.brandSubtitle.textContent = `${PLATFORMS.length} ${PLATFORMS.length === 1 ? 'sistema liberado' : 'sistemas liberados'} para download na sua conta`;
+      const backHubWrap = document.getElementById('bannerBackHubWrap');
+      if (backHubWrap) backHubWrap.style.display = 'none';
     }
 
     // Configure Toolbar for Hub Mode
@@ -3155,9 +3186,15 @@
       dom.resultsCountText.innerHTML = `Exibindo <strong>${filtered.length}</strong> de <strong>${PLATFORMS.length}</strong> sistemas e plataformas disponíveis`;
     }
 
-    dom.gamesContainer.className = 'hub-grid';
+    const container = dom.hubGrid || dom.gamesGrid || dom.gamesContainer;
+    if (!container) return;
+
+    if (container.classList) {
+      container.classList.add('hub-grid');
+    }
+
     if (filtered.length === 0) {
-      dom.gamesContainer.innerHTML = `
+      container.innerHTML = `
         <div class="empty-state" style="grid-column: 1 / -1; padding: 4rem 1rem; text-align: center;">
           <p style="font-size: 1.15rem; font-weight: 700; color: #fff;">Nenhuma plataforma encontrada</p>
           <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem;">
@@ -3168,8 +3205,9 @@
       return;
     }
 
-    dom.gamesContainer.innerHTML = filtered.map((p) => `
-      <a href="./${p.id}/" class="hub-card" style="--card-accent: ${p.accent}; --card-glow: ${p.accent}33; --card-border: ${p.accent}55;">
+    const hubBase = window.location.pathname.replace(/\/+$/, '') + '/';
+    container.innerHTML = filtered.map((p) => `
+      <a href="${hubBase}${p.id}/" class="hub-card" style="--card-accent: ${p.accent}; --card-glow: ${p.accent}33; --card-border: ${p.accent}55;">
         <div class="hub-card-header">
           <div class="hub-card-icon">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -3214,14 +3252,15 @@
     if (!backBtn && dom.headerActions) {
       backBtn = document.createElement('a');
       backBtn.id = 'backHubBtn';
-      const isSubFolder = /\/catalog\/[^\/]+\/?$/i.test(window.location.pathname) && !/\/catalog\/(index\.html)?$/i.test(window.location.pathname);
+      backBtn.className = 'btn-header-action';
+      const isSubFolder = /\/acesso\/[^\/]+\/?$/i.test(window.location.pathname) && !/\/acesso\/(index\.html)?$/i.test(window.location.pathname);
       backBtn.href = isSubFolder ? '../' : './';
       backBtn.innerHTML = `
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
           <line x1="19" y1="12" x2="5" y2="12"></line>
           <polyline points="12 19 5 12 12 5"></polyline>
         </svg>
-        <span>Outros Catálogos</span>
+        <span>Meus Sistemas</span>
       `;
       dom.headerActions.insertBefore(backBtn, dom.headerActions.firstChild);
     }
@@ -3231,7 +3270,9 @@
     if (dom.bannerTagline) dom.bannerTagline.textContent = platform.tagline;
     if (dom.searchInput) dom.searchInput.placeholder = `Buscar entre ${platform.approxCount} em ${platform.shortName}...`;
 
-    document.title = `Downloads ${platform.name} - Digital Store Games`; const backHubWrap = document.getElementById('bannerBackHubWrap'); if (backHubWrap) backHubWrap.style.display = 'block';
+    document.title = `Downloads ${platform.name} - Digital Store Games`;
+    const backHubWrap = document.getElementById('bannerBackHubWrap');
+    if (backHubWrap) backHubWrap.style.display = 'block';
   }
 
   // --------------------------------------------------------------------------
@@ -3469,6 +3510,7 @@
   // Filtering & Sorting (2 Options: Mais Populares [default] & Ordem Alfabética)
   // --------------------------------------------------------------------------
   function applyFilterAndSort() {
+    if (state.isHubMode) return;
     let result = state.groupedGames;
 
     // Search query filter
@@ -3933,25 +3975,45 @@ row.addEventListener('click', () => openGameModal(game));
 
     // Caso o usuario nao tenha nenhum sistema liberado
     if (PLATFORMS.length === 0) {
-      const emptySec = document.getElementById('emptyEntitlementsSection');
-      if (emptySec) emptySec.style.display = 'block';
+      if (dom.emptyEntitlementsSection) dom.emptyEntitlementsSection.style.display = 'block';
+      if (dom.hubSection) dom.hubSection.style.display = 'none';
+      if (dom.gamesSection) dom.gamesSection.style.display = 'none';
       if (dom.toolbar) dom.toolbar.style.display = 'none';
-      if (dom.bannerCard) dom.bannerCard.parentElement.style.display = 'none';
+      if (dom.bannerCard && dom.bannerCard.parentElement) dom.bannerCard.parentElement.style.display = 'none';
       return;
     }
 
     // 4. Verificar contexto (plataforma predefinida ou Hub)
     const context = detectPlatformContext();
 
-    setupEventListeners();
-    setupScrollObserver();
-
     if (context.isDedicated && context.platform) {
       state.currentPlatform = context.platform;
-      state.sortBy = 'popular';
-      if (dom.sortSelect) dom.sortSelect.value = 'popular';
       applyPlatformTheme(state.currentPlatform);
-      loadPlatformData(state.currentPlatform);
+
+      if (context.isAuthorized) {
+        if (dom.hubSection) dom.hubSection.style.display = 'none';
+        if (dom.gamesSection) dom.gamesSection.style.display = 'block';
+        if (dom.unauthorizedNotice) dom.unauthorizedNotice.style.display = 'none';
+        if (dom.gamesGrid) dom.gamesGrid.style.display = '';
+        if (dom.toolbar) dom.toolbar.style.display = 'block';
+
+        state.sortBy = 'popular';
+        if (dom.sortSelect) dom.sortSelect.value = 'popular';
+
+        setupEventListeners();
+        setupScrollObserver();
+        loadPlatformData(state.currentPlatform);
+      } else {
+        // Usuario tentou acessar uma plataforma nao autorizada
+        if (dom.hubSection) dom.hubSection.style.display = 'none';
+        if (dom.gamesSection) dom.gamesSection.style.display = 'block';
+        if (dom.unauthorizedNotice) dom.unauthorizedNotice.style.display = 'block';
+        if (dom.gamesGrid) dom.gamesGrid.style.display = 'none';
+        if (dom.scrollSentinel) dom.scrollSentinel.style.display = 'none';
+        if (dom.toolbar) dom.toolbar.style.display = 'none';
+        if (dom.catalogLoading) dom.catalogLoading.style.display = 'none';
+        document.title = `Acesso Restrito - ${state.currentPlatform.name} - Digital Store Games`;
+      }
     } else {
       renderHubMode();
     }
