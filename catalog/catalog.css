@@ -737,6 +737,7 @@ body::before {
   position: relative;
   width: 100%;
   aspect-ratio: 3 / 4.2;
+  min-height: 0;
   perspective: 800px;
   transform-style: preserve-3d;
 }
@@ -745,6 +746,7 @@ body::before {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 0;
   border-radius: 6px;
   overflow: hidden;
   background: #0d121c;
@@ -841,11 +843,14 @@ body::before {
   position: relative;
   width: 100%;
   height: 100%;
+  min-height: 0;
   overflow: hidden;
   background: #111827;
 }
 
 .box-art-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -859,6 +864,8 @@ body::before {
 
 /* Placeholder / Fallback Cover */
 .box-art-fallback {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   display: flex;
@@ -870,7 +877,6 @@ body::before {
   background: 
     radial-gradient(circle at 50% 35%, var(--console-glow) 0%, transparent 75%),
     linear-gradient(180deg, #182235 0%, #0c1017 100%);
-  position: relative;
   overflow: hidden;
 }
 .box-art-fallback::before {
@@ -1036,6 +1042,7 @@ body::before {
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.15s ease;
+  min-height: 2.05rem;
 }
 .game-card:hover .game-card-title {
   color: var(--console-primary);
