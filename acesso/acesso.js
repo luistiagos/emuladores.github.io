@@ -2722,7 +2722,7 @@
   // --------------------------------------------------------------------------
   // IndexedDB Cache Layer
   // --------------------------------------------------------------------------
-  const DB_NAME = 'DSG_Catalog_DB_v2';
+  const DB_NAME = 'DSG_Catalog_DB_v3';
   const DB_STORE = 'platforms';
 
   function openDatabase() {
@@ -3299,7 +3299,6 @@
           mnemonicos: [
             {
               name: platform.mnemonic,
-              infos: ['image_url', 'cover2d_url', 'genre', 'players'],
             },
           ],
         };
@@ -3354,7 +3353,20 @@
       for (let i = 0; i < processed.length; i++) {
         const entry = processed[i];
         const rawPath = entry.path || '';
-        const baseTitle = getBaseTitle(rawPath);
+        const rawStem = (rawPath.includes('/') || rawPath.includes('\\')
+          ? rawPath.substring(Math.max(rawPath.lastIndexOf('/'), rawPath.lastIndexOf('\\')) + 1)
+          : rawPath).replace(/\.[^/.]+$/, '').trim();
+
+        let baseTitle = getBaseTitle(rawPath);
+        if (entry.name && typeof entry.name === 'string') {
+          const cleanEntryName = entry.name.trim();
+          const isArcadeStem = /^[a-z0-9_]{1,10}$/i.test(rawStem) && !rawStem.includes(' ');
+          if (isArcadeStem && cleanEntryName.length > rawStem.length) {
+            baseTitle = cleanEntryName;
+          } else if (!baseTitle) {
+            baseTitle = cleanEntryName;
+          }
+        }
         const compKey = getComparisonKey(baseTitle) || rawPath.toLowerCase();
         const coverUrl = resolveCoverUrl(entry, platform);
         const coverKey = getCoverKey(coverUrl);
@@ -3625,7 +3637,7 @@
     // Cover Image with clean Fallback
     const fallbackHtml = getFallbackHtml(game);
     const coverHtml = game.coverUrl
-      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+      ? `<img class="box-art-img" src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
          <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
       : `<div class="box-art-fallback">${fallbackHtml}</div>`;
 
@@ -3708,7 +3720,7 @@ card.addEventListener('click', () => openGameModal(game));
     const thumbSrc = game.coverUrl || '';
     const consoleName = (state.currentPlatform && state.currentPlatform.shortName) || 'ROM';
     const thumbHtml = thumbSrc
-      ? `<img class="list-row-thumb" src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+      ? `<img class="list-row-thumb" src="${escapeHtml(thumbSrc)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
          <div class="list-row-thumb list-row-thumb-fallback" style="display:none;">${escapeHtml(consoleName)}</div>`
       : `<div class="list-row-thumb list-row-thumb-fallback">${escapeHtml(consoleName)}</div>`;
 
@@ -3823,7 +3835,7 @@ row.addEventListener('click', () => openGameModal(game));
     if (dom.modalBoxArt) {
       const fallbackHtml = getFallbackHtml(game);
       dom.modalBoxArt.innerHTML = game.coverUrl
-        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
+        ? `<img src="${escapeHtml(game.coverUrl)}" alt="${escapeHtml(game.displayTitle)}" referrerpolicy="no-referrer" onerror="this.style.display='none'; if(this.nextElementSibling) this.nextElementSibling.style.display='flex';" />
            <div class="box-art-fallback" style="display:none;">${fallbackHtml}</div>`
         : `<div class="box-art-fallback">${fallbackHtml}</div>`;
     }
