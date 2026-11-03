@@ -10,6 +10,10 @@
 
   const MEMBER_AREA_LOGIN_URL = 'https://digitalmemberarea.digitalstoregames.com/login';
   const BACKEND_SYSTEMS_URL = 'https://digitalstoregames.pythonanywhere.com/api/app/user/systems';
+  const API_ENDPOINT = 'https://emuladores.pythonanywhere.com/api/catalog/manifest';
+  const WHATSAPP_NUMBER = '5541996260115';
+  const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+  const BATCH_SIZE = 48; // Infinite scroll chunk size
 
   // --------------------------------------------------------------------------
   // Definicao de Todas as 169 Plataformas
