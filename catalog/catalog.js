@@ -2622,11 +2622,27 @@
   // IndexedDB Cache Layer
   // --------------------------------------------------------------------------
   const DB_NAME = 'DSG_Catalog_DB_v3';
+  const LEGACY_DB_NAMES = ['DSG_Catalog_DB', 'DSG_Catalog_DB_v1', 'DSG_Catalog_DB_v2'];
+  const CACHE_SCHEMA_VERSION = 2;
   const DB_STORE = 'platforms';
+  let legacyDbsCleaned = false;
+
+  function cleanupLegacyDatabases() {
+    if (legacyDbsCleaned || !window.indexedDB || typeof window.indexedDB.deleteDatabase !== "function") return;
+    legacyDbsCleaned = true;
+    for (const legacyName of LEGACY_DB_NAMES) {
+      try {
+        window.indexedDB.deleteDatabase(legacyName);
+      } catch {
+        // ignore legacy cleanup error
+      }
+    }
+  }
 
   function openDatabase() {
     return new Promise((resolve) => {
       if (!window.indexedDB) return resolve(null);
+      cleanupLegacyDatabases();
       const req = indexedDB.open(DB_NAME, 1);
       req.onupgradeneeded = (e) => {
         const db = e.target.result;
@@ -2649,7 +2665,7 @@
         const req = store.get(platformId);
         req.onsuccess = () => {
           const res = req.result;
-          if (res && (Date.now() - res.timestamp < CACHE_TTL_MS)) {
+          if (res && res.schemaVersion === CACHE_SCHEMA_VERSION && (Date.now() - res.timestamp < CACHE_TTL_MS)) {
             resolve(res.data);
           } else {
             resolve(null);
@@ -2668,7 +2684,7 @@
       if (!db) return;
       const tx = db.transaction(DB_STORE, 'readwrite');
       const store = tx.objectStore(DB_STORE);
-      store.put({ id: platformId, timestamp: Date.now(), data });
+      store.put({ id: platformId, timestamp: Date.now(), schemaVersion: CACHE_SCHEMA_VERSION, data });
     } catch (e) {
       console.warn('Failed to cache in IndexedDB:', e);
     }
