@@ -2852,6 +2852,9 @@
     return getComparisonKey(s);
   }
 
+  const FORBIDDEN_VARIANTS = /^(alpha|turbo|super|plus|zero|collection|remix|hd|party|kart|racing|strikers|tennis|golf|baseball|soccer|fighter|tournament|championship|edition|ex|vs|cross|x|dash|prime|adventure|chronicles|gaiden|portable|advance|heroes|wars|origins|evolution)/;
+  const MOD_FRANCHISES = /^(gta|grandtheftauto|bombapatch|pes\d+|winningeleven|fifa|ranma)/;
+
   function isCompatibleForCoverMerge(titleA, titleB) {
     const compA = getComparisonKey(titleA);
     const compB = getComparisonKey(titleB);
@@ -2860,8 +2863,29 @@
 
     const canA = getCanonicalGameKey(titleA);
     const canB = getCanonicalGameKey(titleB);
-    if (!canA || !canB) return false;
-    return canA === canB;
+    if (canA && canB && canA === canB) return true;
+
+    // Subtitle of a numbered sequel: only allowed if shorter ends with a digit
+    const shorter = compA.length <= compB.length ? compA : compB;
+    const longer = compA.length <= compB.length ? compB : compA;
+
+    if (longer.startsWith(shorter) && shorter.length >= 6) {
+      if (MOD_FRANCHISES.test(shorter)) return false;
+      // MUST end with digit to ensure it is already a numbered sequel (e.g. crashbandicoot2)
+      // and NOT a generic franchise prefix (like dragonballzsparking, rushingbeat, tinytoonadventures)
+      if (!/\d$/.test(shorter)) return false;
+
+      const rest = longer.slice(shorter.length);
+      // Rest cannot start with a digit or variant
+      if (/^\d/.test(rest)) return false;
+      if (FORBIDDEN_VARIANTS.test(rest)) return false;
+      // Rest cannot have digits inside (which would indicate a sub-sequel like 2v4)
+      if (/\d/.test(rest)) return false;
+
+      return true;
+    }
+
+    return false;
   }
 
   function extractRegion(str) {
