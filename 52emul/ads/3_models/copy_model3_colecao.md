@@ -25,7 +25,7 @@ Invista na **Diversão Infinita**.
 🔹 Save State (Salve onde quiser)
 🔹 Bônus: Dezenas de jogos traduzidos para PT-BR 🇧🇷
 
-⚠️ **Atenção:** O preço promocional de R$ 45,90 pode subir a qualquer momento.
+⚠️ **Atenção:** O preço promocional de R$ 39,00 pode subir a qualquer momento.
 
 👇 **Garanta sua coleção vitalícia antes que aumente:**
 [Link]
