@@ -37,10 +37,10 @@
 ### Modelo: 52 Emuladores (Otimizado)
 
 **PRIMARY TEXT:**
-> 100.000 jogos de 52 consoles diferentes no seu PC. Zero configuração, diversão infinita por R$ 45,90. Nostalgia garantida! 🕹️
+> 100.000 jogos de 52 consoles diferentes no seu PC. Zero configuração, diversão infinita por R$ 39. Nostalgia garantida! 🕹️
 
 **HEADLINE:**
-> 100k Jogos: R$ 45,90
+> 100k Jogos: R$ 39
 
 **DESCRIPTION:**
 > Tudo pronto. Jogue agora.
