@@ -264,8 +264,10 @@ function maskPhone(v) {
     return n.replace(/(\d{0,2})(\d{0,4})(\d{0,4}).*/, function (_, a, b, c) {
       let out = '';
       if (a) out += '(' + a;
-      if (a && a.length === 2) out += ') ';
-      if (b) out += b;
+      // So fecha o DDD quando ha digito depois: com ') ' fixo o backspace apagava o
+      // separador, a mascara o recolocava e o DDD nunca era apagado.
+      // docs/modules/pagamentos/bugs/2026-11-21-mascara-de-telefone-do-checkout-impede-apagar-o-ddd.md
+      if (b) out += ') ' + b;
       if (c) out += '-' + c;
       return out;
     });
@@ -1052,13 +1054,40 @@ function startRotation() {
   }));
 
   // Phone mask
-  cel.addEventListener('input', () => {
-    const pos = cel.selectionStart;
-    const before = cel.value;
-    cel.value = maskPhone(cel.value);
-    const diff = cel.value.length - before.length;
+  // Backspace que pega so um separador ('(', ')', ' ', '-') apaga o digito anterior,
+  // senao a mascara recoloca o separador e o campo trava. O cursor volta para depois do
+  // mesmo numero de digitos que tinha antes dele.
+  // docs/modules/pagamentos/bugs/2026-11-21-mascara-de-telefone-do-checkout-impede-apagar-o-ddd.md
+  let celPrev = cel.value;
+  cel.addEventListener('focus', () => { celPrev = cel.value; });
+  cel.addEventListener('input', (e) => {
+    const digitsOf = (s) => (s || '').replace(/\D+/g, '');
+    let raw = cel.value;
+    let pos = cel.selectionStart;
+    if (pos == null) pos = raw.length;
+    if (e && e.inputType === 'deleteContentBackward' &&
+        raw.length < celPrev.length && digitsOf(raw) === digitsOf(celPrev)) {
+      let i = pos - 1;
+      while (i >= 0 && !/\d/.test(raw[i])) i--;
+      if (i >= 0) {
+        raw = raw.slice(0, i) + raw.slice(i + 1);
+        pos = i;
+      }
+    }
+    const digitsBefore = digitsOf(raw.slice(0, pos)).length;
+    cel.value = maskPhone(raw);
+    celPrev = cel.value;
+    let caret = cel.value.length;
+    if (digitsBefore === 0) {
+      caret = 0;
+    } else {
+      let seen = 0;
+      for (let k = 0; k < cel.value.length; k++) {
+        if (/\d/.test(cel.value[k]) && ++seen === digitsBefore) { caret = k + 1; break; }
+      }
+    }
     try {
-      cel.selectionEnd = Math.max(0, (pos || cel.value.length) + diff);
+      cel.setSelectionRange(caret, caret);
     } catch (_) { }
   });
 
