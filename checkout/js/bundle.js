@@ -97,6 +97,11 @@ function starSVG(size = 14) {
 }
 
 function maskPhone(v) {
+  // Numero de fora do pais: comeca com '+'; fica '+' + digitos (ate 15, E.164), sem mascara BR.
+  // docs/modules/pagamentos/changes/2026-11-21-whatsapp-internacional-no-checkout/spec.md
+  if ((v || '').replace(/^\s+/, '').charAt(0) === '+') {
+    return '+' + v.replace(/\D+/g, '').slice(0, 15);
+  }
   const n = (v || '').replace(/\D+/g, '').slice(0, 12);
   if (n.length <= 10) {
     return n.replace(/(\d{0,2})(\d{0,4})(\d{0,4}).*/, function (_, a, b, c) {
@@ -119,6 +124,12 @@ function maskPhone(v) {
 function isValidPhone(phone) {
   if (!phone) return false;
   const digits = phone.replace(/\D/g, '');
+  if (phone.trim().charAt(0) === '+') {
+    // DDI 55 segue a regra BR do backend (55 + DDD + 8 ou 9 digitos); outro DDI: 8 a 15
+    // digitos sem 0 inicial. docs/modules/pagamentos/changes/2026-11-21-whatsapp-internacional-no-checkout/spec.md
+    if (digits.indexOf('55') === 0) return digits.length === 12 || digits.length === 13;
+    return digits.length >= 8 && digits.length <= 15 && digits.charAt(0) !== '0';
+  }
   return digits.length >= 10 && digits.length <= 12;
 }
 
@@ -978,7 +989,9 @@ function startRotation() {
     celPrev = cel.value;
     let caret = cel.value.length;
     if (digitsBefore === 0) {
-      caret = 0;
+      // Com o '+' antes do cursor, o cursor fica depois dele: em 0, o proximo digito
+      // entraria antes do '+' e o numero voltaria ao modo BR.
+      caret = (pos > 0 && cel.value.charAt(0) === '+') ? 1 : 0;
     } else {
       let seen = 0;
       for (let k = 0; k < cel.value.length; k++) {

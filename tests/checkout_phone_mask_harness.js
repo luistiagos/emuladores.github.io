@@ -7,6 +7,8 @@
 //   cenario.value  -> valor inicial do campo (ja mascarado)
 //   cenario.caret  -> cursor inicial (default: fim)
 //   cenario.steps  -> lista de "type:<texto>" | "back:<n>"
+//   cenario.calls  -> lista de [nomeDaFuncao, arg] chamadas no bundle carregado
+//                     (maskPhone/isValidPhone); com calls, imprime a lista de retornos
 // Chamado por tests/test_checkout_phone_mask.py.
 // Doc: docs/modules/pagamentos/bugs/2026-11-21-mascara-de-telefone-do-checkout-impede-apagar-o-ddd.md
 'use strict';
@@ -69,6 +71,12 @@ const fire = (type, ev) => (cel.listeners[type] || []).forEach((fn) => fn(ev || 
 if (!(cel.listeners.input || []).length) {
   process.stderr.write('bundle nao registrou listener de input no #cel');
   process.exit(1);
+}
+
+if (scenario.calls) {
+  const out = scenario.calls.map(([fn, arg]) => vm.runInContext(fn, ctx)(arg));
+  process.stdout.write(JSON.stringify(out));
+  process.exit(0);
 }
 
 cel.value = scenario.value || '';
